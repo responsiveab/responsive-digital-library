@@ -24,4 +24,4 @@
 
 ### Entering the container
 
-<code>docker exec -it <container id> /bin/bash</code>
+<code>docker exec -it \<container id\> /bin/bash</code>
