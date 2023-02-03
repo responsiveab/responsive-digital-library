@@ -1,4 +1,4 @@
-# Installing docker on Ubuntu
+# Installing docker
 
 1) go to https://download.docker.com/ and download packages suitable for your system
 
