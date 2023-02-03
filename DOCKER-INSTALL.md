@@ -10,3 +10,14 @@
 ./docker-ce-cli_20.10.13\~3-0\~ubuntu-jammy_amd64.deb \\
 ./docker-compose-plugin_2.10.2~ubuntu-jammy_amd64.deb
 </code>
+
+## Testing installation
+
+1) sudo docker run hello-world
+
+2) service docker status
+
+## Setting up mongoDB container
+
+<code>docker pull mongo</code><br>
+<code>docker run --name mongodb -d mongo</code>
