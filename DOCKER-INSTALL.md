@@ -21,3 +21,7 @@
 
 <code>docker pull mongo</code><br>
 <code>docker run --name mongodb -d mongo</code>
+
+### Entering the container
+
+<code>sudo docker exec -it <container id> /bin/bash</code>
