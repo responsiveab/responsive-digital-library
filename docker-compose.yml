@@ -1,60 +1,56 @@
-version: "3"
+version: '3.9'
 
 services:
-  client:
-    build:
-      context: ./client/
-      dockerfile: Dockerfile
-    image: responsive-client
-    container_name: responsive-react-client
-    command: npm run start
-    depends_on:
-      - server
-    ports:
-      - "3000:3000"
-    networks:
-      - responsive-network
-    volumes:
-      - ./client/:/usr/app
-      - ./usr/app/node_modules
-
   server:
     build:
-      context: ./server/
+      context: ./server
       dockerfile: Dockerfile
-    image: responsive-server
-    container_name: responsive-node-server
+    image: myapp-server
+    container_name: myapp-node-server
     command: npm run start
+    volumes:
+      - ./server/:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - "8080:8080"
-    networks:
-      - responsive-network
     depends_on:
       - mongo
     env_file: ./server/.env
     environment:
       - NODE_ENV=development
-    volumes:
-      - ./server/:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - mongo
-
+    networks:
+      - app-network
   mongo:
     image: mongo:latest
+    volumes:
+      - data-volume:/data/db
     ports:
       - "27017:27017"
     networks:
-      - responsive-network
+      - app-network
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: myapp-client
+    container_name: myapp-react-client
+    command: npm run start
     volumes:
-      - mongo-data:/data/db
+      - ./client/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
 
 networks:
-  responsive-network:
-    driver: bridge
+    app-network:
+        driver: bridge
 
 volumes:
-  data-volume:
-  node_modules:
-  web-root:
-    driver: local
+    data-volume:
+    node_modules:
+    web-root:
+      driver: local
