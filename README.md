@@ -3,3 +3,5 @@
 ## [workflow](WORKFLOW.md)
 
 ## [installing docker](DOCKER-INSTALL.md)
+
+## [license](LICENSE)
