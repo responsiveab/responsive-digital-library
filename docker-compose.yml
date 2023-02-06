@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  client:
+    build:
+      context: ./client/
+      dockerfile: Dockerfile
+    image: responsive-client
+    container_name: responsive-react-client
+    command: npm run start
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    networks:
+      - responsive-network
+    volumes:
+      - ./client/:/usr/app
+      - ./usr/app/node_modules
+
+  server:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    image: responsive-server
+    container_name: responsive-node-server
+    command: npm run start
+    ports:
+      - "8080:8080"
+    networks:
+      - responsive-network
+    depends_on:
+      - mongo
+    env_file: ./server/.env
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./server/:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - responsive-network
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  responsive-network:
+    driver: bridge
+
+volumes:
+  data-volume:
+  node_modules:
+  web-root:
+    driver: local
