@@ -5,6 +5,8 @@ to start all the containers in development mode, simply run following command in
 
 (you will have to install docker, docker-compose and all of their dependencies in order for this to work. also make sure the docker service is running on your system)
 
+for instructions on installing docker see [DOCKER-INSTALL](DOCKER-INSTALL.md)
+
 ## [workflow](WORKFLOW.md)
 
 ## [license](LICENSE)
