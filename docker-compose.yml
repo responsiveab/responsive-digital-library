@@ -5,8 +5,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: myapp-server
-    container_name: myapp-node-server
+    image: responsive-library-server
+    container_name: responsive-library-node-server
     command: npm run start
     volumes:
       - ./server/:/usr/src/app
@@ -19,7 +19,7 @@ services:
     environment:
       - NODE_ENV=development
     networks:
-      - app-network
+      - responsive-library-network
   mongo:
     image: mongo:latest
     volumes:
@@ -27,13 +27,13 @@ services:
     ports:
       - "27017:27017"
     networks:
-      - app-network
+      - responsive-library-network
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
-    image: myapp-client
-    container_name: myapp-react-client
+    image: responsive-library-client
+    container_name: responsive-library-react-client
     command: npm run start
     volumes:
       - ./client/:/usr/app
@@ -43,10 +43,10 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - app-network
+      - responsive-library-network
 
 networks:
-    app-network:
+    responsive-library-network:
         driver: bridge
 
 volumes:

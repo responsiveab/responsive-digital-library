@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.1",
-  "description": "Myapp Server built using node, express",
+  "description": "Responsive Digital Library",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack-cli --config webpack/webpack.dev.js",
@@ -9,8 +9,8 @@
     "dev": "webpack-dev-server --open --config webpack/webpack.dev.js",
     "test": "jest --config jest.config.json"
   },
-  "author": "Sujay Kundu",
-  "repository": "https://github.com/sujaykundu777/mern-docker",
+  "author": "PUM03",
+  "repository": "https://github.com/PUM03-2023/responsive-digital-library",
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.12.5",

@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 
 dotenv.config();
 
-// mongoose options
 const options = {
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -14,7 +13,6 @@ const options = {
   bufferMaxEntries: 0
 };
 
-// mongodb environment variables
 const {
     MONGO_HOSTNAME,
     MONGO_DB,
@@ -23,13 +21,12 @@ const {
 
 const dbConnectionURL = {
      'LOCAL_DB_URL': `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`,
-     'REMOTE_DB_URL': process.env.MONGODB_URI  //atlas url
+     'REMOTE_DB_URL': process.env.MONGODB_URI
 };
 mongoose.connect(dbConnectionURL.LOCAL_DB_URL, options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Mongodb Connection Error:' + dbConnectionURL.LOCALURL));
 db.once('open', () => {
-     // we're connected !
      console.log('Mongodb Connection Successful');
 });
 
