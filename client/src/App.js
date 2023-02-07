@@ -1,15 +1,20 @@
 import React from 'react';
 import './App.css';
-import logo from './logo.svg';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <Header/>
+      <main className="App-content">
+        <h1>Welcome to Responsive Digital Library</h1>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Here you will be able to keep track of your books.
         </p>
-      </header>
+      </main>
+      <Footer/>
     </div>
   );
 }
