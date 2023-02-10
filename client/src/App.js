@@ -3,6 +3,7 @@ import './App.css';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
+import BookPreview from './components/BookPreview';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <p>
           Here you will be able to keep track of your books.
         </p>
+        <BookPreview title={"example title"} desc={"this book does not exist in real life"} id={9781933107981}/>
       </main>
       <Footer/>
     </div>
