@@ -14,7 +14,8 @@ function App() {
         <p>
           Here you will be able to keep track of your books.
         </p>
-        <BookPreview title={"example title"} desc={"this book does not exist in real life"} id={9781933107981}/>
+        <BookPreview title={"Study Manual for the Test of Essential Academic Skills"} desc={"This book is written by Assessment Technologies Inc. Staff"} id={9781933107981}/>
+        <BookPreview title={"Preparing for the Biology AP* Exam"} desc={"Good for students"} id={9780133458145}/>
       </main>
       <Footer/>
     </div>
