@@ -14,13 +14,15 @@ function App() {
   return (
     <div className="App">
       <Header/>
+      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index/>}/>
           <Route path="/*" element={<Error/>}/>
-          <Route path="/books" element={<Book title={"Min titel"} desc={"Detta är min beskrivning"}/>}/>
+          <Route path="/books/:id" element={<Book/>}/>
         </Routes>
       </BrowserRouter>
+
       <Footer/>
     </div>
   );

@@ -1,5 +1,9 @@
 import './css/BookPreview.css';
 
+import {
+    Link
+} from "react-router-dom";
+
 function BookPreview(props) {
     return (
     <div className="BookPreview-Wrapper">
@@ -10,7 +14,7 @@ function BookPreview(props) {
             }
         </div>
         <div className="MetaData-Wrapper">
-            <p><b>TITLE:</b> {props.title}</p>
+            <p><b>TITLE:</b>  <Link to={"/books/" + props.id}>{props.title}</Link></p>
             {
                 props.desc ? <><hr/><p><b>DESCRIPTION:</b> {props.desc}</p></> : <></>
                 // COMMENT: This field does not necessarily exist
