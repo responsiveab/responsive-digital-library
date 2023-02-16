@@ -3,20 +3,24 @@ import './App.css';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import BookPreview from './components/BookPreview';
+
+import Index from './pages/Index';
+import Error from './pages/Error';
+import Book from './pages/Book';
+
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
   return (
     <div className="App">
       <Header/>
-      <main className="App-content">
-        <h1>Welcome to Responsive Digital Library</h1>
-        <p>
-          Here you will be able to keep track of your books.
-        </p>
-        <BookPreview title={"Study Manual for the Test of Essential Academic Skills"} desc={"This book is written by Assessment Technologies Inc. Staff"} id={9781933107981}/>
-        <BookPreview title={"Preparing for the Biology AP* Exam"} desc={"Good for students"} id={9780133458145}/>
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index/>}/>
+          <Route path="/*" element={<Error/>}/>
+          <Route path="/books" element={<Book title={"Min titel"} desc={"Detta är min beskrivning"}/>}/>
+        </Routes>
+      </BrowserRouter>
       <Footer/>
     </div>
   );
