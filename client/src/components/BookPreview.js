@@ -1,3 +1,5 @@
+import React, {useEffect, useState} from 'react'
+
 import './css/BookPreview.css';
 
 import {
@@ -5,19 +7,35 @@ import {
 } from "react-router-dom";
 
 function BookPreview(props) {
+    const [title, setTitle] = useState(undefined);
+    const [desc, setDesc] = useState(undefined);
+    const [img, setImg] = useState(undefined);
+
+    useEffect(() => {
+        var isbn = require('node-isbn');
+        isbn.resolve(props.id, function (err, book) {
+            if (err) {
+                console.log('Book not found', err);
+            } else {
+                setTitle(book.title);
+                setDesc(book.description);
+                setImg(book.imageLinks.thumbnail);
+                console.log(book);
+            }
+        });
+    }, [])
+
     return (
     <div className="BookPreview-Wrapper">
         <div className="CoverImage-Wrapper">
             {
-                <img src={"https://images.isbndb.com/covers/79/81/" + props.id + ".jpg"} width="128px"></img>
-                // TODO: Send whole src path through props
+                <img src={img} width="128px"></img>
             }
         </div>
         <div className="MetaData-Wrapper">
-            <p><b>TITLE:</b>  <Link to={"/books/" + props.id}>{props.title}</Link></p>
+            <p><b>TITLE:</b>  <Link to={"/books/" + props.id}>{title}</Link></p>
             {
-                props.desc ? <><hr/><p><b>DESCRIPTION:</b> {props.desc}</p></> : <></>
-                // COMMENT: This field does not necessarily exist
+                desc ? <><hr/><p><b>DESCRIPTION:</b> {desc}</p></> : <></>
                 // TODO: Collapse text and add '...' if text is too long
             }
             <hr/>
