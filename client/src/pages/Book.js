@@ -1,5 +1,7 @@
 import './css/Book.css'
 
+import Tag from '../components/Tag'
+
 import {
     useParams
 } from "react-router-dom";
@@ -16,6 +18,9 @@ function Book(props) {
     const [author, setAuthor] = useState(undefined);
     const [category, setCategory] = useState(undefined);
     const [img, setImg] = useState(undefined);
+
+    // TODO: fetch tags from our database
+    const tags = ['this', 'is', 'some', 'test', 'tags'];
 
     useEffect(() => {
         // COMMENT: This should be fetched from our database in the future 
@@ -56,6 +61,9 @@ function Book(props) {
             <p className='Book-Author'><b>Author: </b>{author}</p>
             <p className='Book-Category'><b>Category: </b>{category}</p>
             <p className='Book-Id'><b>ISBN: </b>{id}</p>
+            <div className='Tags-Wrapper'>
+                {tags.map((tag) => <Tag content={tag} />)}
+            </div>
         </div>
 
     </main>);
