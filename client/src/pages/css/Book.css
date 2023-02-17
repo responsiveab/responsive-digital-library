@@ -2,6 +2,32 @@
     width: 50%;
     height: 100%;
     margin: auto;
-    text-align: center;
     margin-top: 32px;
+}
+
+.Book-Header {
+    width: 100%;
+    height: 256px;
+}
+
+.Book-Thumbnail {
+    width: 30%;
+    float: left;
+}
+
+.Book-Sub-Title {
+    margin-top: 16px;
+}
+
+.Book-Desc {
+    margin-top: 16px;
+}
+
+.Book-Text {
+    width: 70%;
+    float: right;
+}
+
+.Book-Meta {
+    text-align: left;
 }
