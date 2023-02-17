@@ -1,0 +1,9 @@
+.Tag-Wrapper {
+    background-color: lightblue;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 4px;
+    margin: 2px;
+    font-size: 12px;
+    display: inline-block;
+}
