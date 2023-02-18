@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import router from '././routes';
 import bookRouter from './routes/book.routes';
+import userRouter from './routes/user.routes';
 import './config/mongodb.config';
 
 var cors = require('cors')
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 
 app.use('/api', router);
 app.use('/api/books', bookRouter);
+app.use('/api/users', userRouter);
 
 app.get('/', function(req, res){
   res.send('Server: Hello!');
