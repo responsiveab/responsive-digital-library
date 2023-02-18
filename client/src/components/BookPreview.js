@@ -23,13 +23,14 @@ function BookPreview(props) {
                 console.log(book);
             }
         });
+    // eslint-disable-next-line
     }, [])
 
     return (
     <div className="BookPreview-Wrapper">
         <div className="CoverImage-Wrapper">
             {
-                <img src={img} width="128px"></img>
+                <img src={img} width="128px" alt="cover"></img>
             }
         </div>
         <div className="MetaData-Wrapper">

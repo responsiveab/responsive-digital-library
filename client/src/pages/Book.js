@@ -41,13 +41,14 @@ function Book(props) {
                 console.log(book);
             }
         });
+    // eslint-disable-next-line
     }, [])
 
     return (
     <main className='Book-Wrapper'>
         <div className='Book-Header'>
             <div className='Book-Thumbnail'>
-                <img src={img} height='256px'></img>
+                <img src={img} height='256px' alt="thumbnail"></img>
             </div>
             <div className='Book-Text'>
                 <h1 className='Book-Title'>{title}</h1>
