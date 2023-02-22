@@ -26,6 +26,17 @@ function Add() {
         })
     }
 
+    // TODO: Move temporary removeBook function to better location
+    const removeBook = () => {
+        axios.delete("http://localhost:8080/api/books/" + isbnNr)
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
     const addBook = () => {
         axios.get("http://localhost:8080/api/books/" + isbnNr)
         .then(res => {
@@ -51,6 +62,7 @@ function Add() {
         <form action='#'>
             <input type="text" id="isbn" name="isbn" onInput={e => setIsbnNr(e.target.value)}/>
             <button type="submit" onClick={fetchBook}>Fetch Book</button>
+            <button type="submit" onClick={removeBook}>Remove Book</button>
         </form>
     </>);
 }

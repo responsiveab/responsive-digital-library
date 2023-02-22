@@ -21,6 +21,10 @@ TODO: Adapt styling for smaller screens (for example phones)
     float: left;
 }
 
+.CoverImage-Wrapper img {
+    height: 166px;
+}
+
 .MetaData-Wrapper {
     text-align: left;
 
