@@ -3,30 +3,35 @@ import axios, * as others from 'axios';
 
 function Add() {
     const [book, setBook] = useState({
+        id:"",
         title:"",
         body:"",
         author:""
     })
 
-    const [id, setId] = useState(undefined);
+    const [isbnNr, setIsbnNr] = useState(undefined);
 
     function fetchBook() {
         var isbn = require('node-isbn');
-        isbn.resolve(id, function (err, fetched_book) {
+        isbn.resolve(isbnNr, function (err, fetched_book) {
             if (err) {
                 console.log('Book not found', err);
             } else {
-                console.log(fetched_book)
+                book.id = isbnNr
                 book.title = fetched_book.title
                 book.body = fetched_book.description
                 book.author = fetched_book.authors[0]
-                console.log(book)
                 addBook();
             }
         });
     }
 
     const addBook = () => {
+        /*
+        axios.get("http://localhost:8080/api/books/63f61ac920139d004a2762c7")
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err))
+        */
         if (book) {
          axios.post("http://localhost:8080/api/books/", book)
          .then(res=>console.log(res))
@@ -40,7 +45,7 @@ function Add() {
     return (
     <>
         <form action='#'>
-            <input type="text" id="isbn" name="isbn" onInput={e => setId(e.target.value)}/>
+            <input type="text" id="isbn" name="isbn" onInput={e => setIsbnNr(e.target.value)}/>
             <button type="submit" onClick={fetchBook}>Fetch Book</button>
         </form>
     </>);
