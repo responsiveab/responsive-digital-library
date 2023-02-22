@@ -23,23 +23,27 @@ function Add() {
                 book.author = fetched_book.authors[0]
                 addBook();
             }
-        });
+        })
     }
 
     const addBook = () => {
-        /*
-        axios.get("http://localhost:8080/api/books/63f61ac920139d004a2762c7")
-        .then(res=>console.log(res))
-        .catch(err=>console.log(err))
-        */
-        if (book) {
-         axios.post("http://localhost:8080/api/books/", book)
-         .then(res=>console.log(res))
-         .catch(err=>console.log(err))
-        }
-        else {
-            alert("invalid input")
-        }
+        axios.get("http://localhost:8080/api/books/" + isbnNr)
+        .then(res => {
+            console.log(res)
+            if(!res.data.data) {
+                if (book) {
+                    axios.post("http://localhost:8080/api/books/", book)
+                    .then(res=>console.log(res))
+                    .catch(err=>console.log(err))
+                }
+                else {
+                    alert("invalid input")
+                }
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     return (
