@@ -10,6 +10,7 @@ function Add() {
     })
 
     const [isbnNr, setIsbnNr] = useState(undefined);
+    const [tag, setTag] = useState(undefined);
 
     function fetchBook() {
         var isbn = require('node-isbn');
@@ -57,12 +58,36 @@ function Add() {
         })
     }
 
+    const addTag = () => {
+        let newTag = {
+            name: tag,
+            slug: 'tag-1'
+        }
+        axios.post("http://localhost:8080/api/tags/", newTag)
+        .then(res=> {
+            console.log(res)
+            let modifiedFields = {
+                tag: res.data.data
+            }
+            axios.patch("http://localhost:8080/api/tags/" + isbnNr, modifiedFields)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        })
+        .catch(err=>console.log(err))
+    }
+
     return (
     <>
         <form action='#'>
             <input type="text" id="isbn" name="isbn" onInput={e => setIsbnNr(e.target.value)}/>
             <button type="submit" onClick={fetchBook}>Fetch Book</button>
             <button type="submit" onClick={removeBook}>Remove Book</button>
+            <input type="text" id="tag" name="tag" onInput={e => setTag(e.target.value)}/>
+            <button type="submit" onClick={addTag}>Add Tag</button>
         </form>
     </>);
 }
