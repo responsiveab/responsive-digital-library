@@ -9,4 +9,6 @@ for instructions on installing docker see [DOCKER-INSTALL](DOCKER-INSTALL.md)
 
 ## [workflow](WORKFLOW.md)
 
+## [docker troubleshooting](DOCKER-TROUBLESHOOTING.md)
+
 ## [license](LICENSE)
