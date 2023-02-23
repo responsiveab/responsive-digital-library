@@ -11,7 +11,13 @@ const bookSchema = new mongoose.Schema({
    },
    author: {
        type: String
-   }
+   },
+   tags: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Tag"
+        }
+   ]
 });
 
 const Book = mongoose.model("Book", bookSchema);
