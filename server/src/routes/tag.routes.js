@@ -3,6 +3,22 @@ import Tag from '../models/tag.model';
 import Book from '../models/book.model';
 const tagRouter = express.Router();
 
+// Get all Tags
+tagRouter.get('/', (req, res, next) => {
+    Tag.find({} , function(err, result){
+        if(err){
+            res.status(400).send({
+                'success': false,
+                'error': err.message
+            });
+        }
+        res.status(200).send({
+            'success': true,
+            'data': result
+        });
+    });
+});
+
 // Add Single Tag
 tagRouter.post("/", (req, res, next) => {
     let newTag = {
