@@ -28,7 +28,7 @@ services:
       - data-volume:/data/db
     ports:
       - "127.0.0.1:27017:27017"
-     # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
+      # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
       # - "27017:27017" 
     networks:
       - responsive-library-network
