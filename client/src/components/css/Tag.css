@@ -1,6 +1,5 @@
 .Tag-Wrapper {
     border-radius: 8px;
-    border: 1px solid black;
     padding: 4px;
     margin: 2px;
     font-size: 12px;
@@ -10,4 +9,5 @@
 .Tag-Wrapper a {
     color: white;
     font-weight: bold;
+    text-decoration: none;
 }

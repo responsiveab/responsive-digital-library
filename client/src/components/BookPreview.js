@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react'
 
 import './css/BookPreview.css';
+import Tag from './Tag'
 
 import {
     Link
 } from "react-router-dom";
+
+import axios, * as others from 'axios';
 
 function trimString(string){
     var textLength = 200;
@@ -17,6 +20,7 @@ function trimString(string){
 
 function BookPreview(props) {
     const [img, setImg] = useState(undefined);
+    const [tags, setTags] = useState([]);
 
     // TODO: Fetch image from database
     useEffect(() => {
@@ -28,6 +32,18 @@ function BookPreview(props) {
                 setImg(book.imageLinks.thumbnail);
             }
         });
+
+        axios.get("http://localhost:8080/api/books/" + props.id)
+        .then(res => {
+            for(var i = 0; i < res.data.data.tags.length; i++) {
+                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
+                .then(res => {
+                    tags.push(res.data.data.name)
+                })
+                .catch(err => console.log(err))
+            }
+        })
+        .catch(err => console.log(err))
     // eslint-disable-next-line
     }, [])
 
@@ -39,16 +55,16 @@ function BookPreview(props) {
             }
         </div>
         <div className="MetaData-Wrapper">
-            <p><b>TITLE:</b>  <Link to={"/books/" + props.id}>{props.title}</Link></p>
+            <h3><b><Link to={"/books/" + props.id}>{props.title}</Link></b></h3>
             {
-                props.body ? <><hr/><p><b>DESCRIPTION:</b> {trimString(props.body)}</p></> : <></>
+                props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
             }
             {
-                props.author ? <><hr/><p><b>AUTHOR:</b> {props.author}</p><hr/></> : <></>
+                props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
             }
-            <p><b>ISBN:</b> {props.id}</p>
+            {/*TODO: see if we want this, <p><b>ISBN:</b> {props.id}</p>*/}
             {
-                props.tags ? <><hr/><p><b>TAGS:</b></p></> : <></>
+                tags ? <div className='tags-wrapper'>{tags.map((tag) => <Tag key={tag} content={tag} />)}</div> : <></>
                 // TODO: Map all tags from response to <Tag\>-tag
                 // TODO: Hide some tags if there are too many
             }
