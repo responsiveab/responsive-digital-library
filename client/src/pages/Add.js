@@ -4,14 +4,6 @@ import axios, * as others from 'axios';
 import './css/Add.css'
 
 function Add() {
-    /* 
-    {
-        id:"isbnNr",
-        title:"fetched_book.title",
-        body:"fetched_book.description",
-        author:"fetched_book.authors[0]"
-    }
-    */
     const [book, setBook] = useState(undefined)
 
     const [isbnNr, setIsbnNr] = useState(undefined);
@@ -30,19 +22,7 @@ function Add() {
                     author:fetched_book.authors[0]
                 }
                 setBook(newBook);
-                addBook();
             }
-        })
-    }
-
-    // TODO: Move temporary removeBook function to better location
-    const removeBook = () => {
-        axios.delete("http://localhost:8080/api/books/" + isbnNr)
-        .then(res => {
-            console.log(res)
-        })
-        .catch(err => {
-            console.log(err)
         })
     }
 
@@ -92,7 +72,10 @@ function Add() {
     <>
         <form action='#' className='add-book-form'>
             <input type="text" id="isbn-input" name="isbn" placeholder='ISBN' onInput={e => setIsbnNr(e.target.value)}/>
-            <button type="submit" id="isbn-submit" onClick={fetchBook}>Lägg till bok</button>
+            {
+                isbnNr && (isbnNr.length > 8) &&
+                (book ? <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button> : <button type='button' id="isbn-submit" onClick={fetchBook}>Hämta bok</button>)
+            }
         </form>
         <div>
             {
@@ -104,7 +87,7 @@ function Add() {
                         <p><i>{book.body}</i></p>
                         <p><b>{book.id}</b></p>
                         <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
-                        <button type="submit" id="tag-submit" onClick={addTag}>Lägg till tagg</button>
+                        <button type='button' id="tag-submit" onClick={addTag}>Lägg till tagg</button>
                     </form>
                 </>
             }
