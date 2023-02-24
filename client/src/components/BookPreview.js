@@ -6,7 +6,6 @@ import {
     Link
 } from "react-router-dom";
 
-// Trims string in whitespaces based on textLength, returns string
 function trimString(string){
     var textLength = 200;
     var trimmedString = string.substr(0, textLength);
@@ -42,11 +41,7 @@ function BookPreview(props) {
         <div className="MetaData-Wrapper">
             <p><b>TITLE:</b>  <Link to={"/books/" + props.id}>{props.title}</Link></p>
             {
-                
-                //props.body ? <><hr/><p><b>DESCRIPTION:</b> {props.body.slice(0,100)+".."}</p></> : <></>
                 props.body ? <><hr/><p><b>DESCRIPTION:</b> {trimString(props.body)}</p></> : <></>
-
-                // TODO: Collapse text and add '...' if text is too long
             }
             {
                 props.author ? <><hr/><p><b>AUTHOR:</b> {props.author}</p><hr/></> : <></>
