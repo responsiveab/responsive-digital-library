@@ -1,0 +1,31 @@
+.App-header {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    padding: 8px;
+    background-color: white;
+    color: white;
+}
+
+.icon {
+    color: black;
+    vertical-align: middle;
+    font-size: 32px;
+}
+
+input {
+    width: 85%;
+    padding: 8px;
+    border: none;
+}
+
+.searchbar {
+    width: 50%;
+    margin: auto;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+hr {
+    margin-top: 8px;
+}
