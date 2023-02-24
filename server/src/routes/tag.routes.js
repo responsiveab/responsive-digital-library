@@ -19,6 +19,22 @@ tagRouter.get('/', (req, res, next) => {
     });
 });
 
+// Get Single Tag
+tagRouter.get("/:tag_id", (req, res, next) => {
+  Tag.findById(req.params.tag_id, function (err, result) {
+      if(err){
+           res.status(400).send({
+             success: false,
+             error: err.message
+           });
+      }
+      res.status(200).send({
+          success: true,
+          data: result
+      });
+   });
+});
+
 // Add Single Tag
 tagRouter.post("/", (req, res, next) => {
     let newTag = {

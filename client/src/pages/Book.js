@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
+import axios, * as others from 'axios';
 
 function Book(props) {
     let { id } = useParams();
@@ -20,7 +21,7 @@ function Book(props) {
     const [img, setImg] = useState(undefined);
 
     // TODO: fetch tags from our database
-    const tags = ['this', 'is', 'some', 'test', 'tags'];
+    const [tags, setTags] = useState([]);
 
     useEffect(() => {
         // COMMENT: This should be fetched from our database in the future 
@@ -38,9 +39,21 @@ function Book(props) {
                 setAuthor(book.authors[0]); // TODO: Traverse whole list
                 setCategory(book.categories[0]); // TODO: Traverse whole list
                 setImg(book.imageLinks.thumbnail);
-                console.log(book);
             }
         });
+
+        // TODO: This will make the server crash if there is no tags on a book
+        axios.get("http://localhost:8080/api/books/" + id)
+        .then(res => {
+            for(var i = 0; i < res.data.data.tags.length; i++) {
+                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
+                .then(res => {
+                    tags.push(res.data.data.name)
+                })
+                .catch(err => console.log(err))
+            }
+        })
+        .catch(err => console.log(err))
     // eslint-disable-next-line
     }, [])
 
@@ -63,7 +76,7 @@ function Book(props) {
             <p className='Book-Category'><b>Category: </b>{category}</p>
             <p className='Book-Id'><b>ISBN: </b>{id}</p>
             <div className='Tags-Wrapper'>
-                {tags.map((tag) => <Tag content={tag} />)}
+                {tags.map((tag) => <Tag key={tag} content={tag} />)}
             </div>
         </div>
 
