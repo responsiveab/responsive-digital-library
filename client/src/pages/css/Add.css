@@ -7,12 +7,19 @@
     border: 1px solid black;
 }
 
-#tag-input, #tag-submit {
-    width: 100%;
-    padding: 8px;
+#tag-input {
+    padding: 4px;
     margin-top: 8px;
     border-radius: 8px;
     font-size: 16px;
+    border: 1px solid black;
+    margin-right: 4px;
+}
+
+#tag-submit {
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 8px;
     border: 1px solid black;
 }
 
@@ -21,9 +28,7 @@
     margin: auto;
 }
 
-.edit-book-form {
-    width: 50%;
-    margin: auto;
+.outline {
     margin-top: 16px;
     border: 1px solid black;
     border-radius: 8px;
