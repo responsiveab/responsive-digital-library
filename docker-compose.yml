@@ -12,7 +12,9 @@ services:
       - ./server/:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
+      # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
+      # - "8080:8080"
     depends_on:
       - mongo
     env_file: ./server/.env
@@ -25,7 +27,9 @@ services:
     volumes:
       - data-volume:/data/db
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
+     # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
+      # - "27017:27017" 
     networks:
       - responsive-library-network
   client:
@@ -41,7 +45,9 @@ services:
     depends_on:
       - server
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
+      # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
+      # - "3000:3000"
     networks:
       - responsive-library-network
 
