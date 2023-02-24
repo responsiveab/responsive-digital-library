@@ -13,7 +13,7 @@
     font-size: 32px;
 }
 
-input {
+.App-header input {
     width: 85%;
     padding: 8px;
     border: none;

@@ -1,13 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
 
+import './css/Add.css'
+
 function Add() {
-    const [book, setBook] = useState({
-        id:"",
-        title:"",
-        body:"",
-        author:""
-    })
+    /* 
+    {
+        id:"isbnNr",
+        title:"fetched_book.title",
+        body:"fetched_book.description",
+        author:"fetched_book.authors[0]"
+    }
+    */
+    const [book, setBook] = useState(undefined)
 
     const [isbnNr, setIsbnNr] = useState(undefined);
     const [tag, setTag] = useState(undefined);
@@ -18,10 +23,13 @@ function Add() {
             if (err) {
                 console.log('Book not found', err);
             } else {
-                book.id = isbnNr
-                book.title = fetched_book.title
-                book.body = fetched_book.description
-                book.author = fetched_book.authors[0]
+                let newBook = {
+                    id:isbnNr,
+                    title:fetched_book.title,
+                    body:fetched_book.description,
+                    author:fetched_book.authors[0]
+                }
+                setBook(newBook);
                 addBook();
             }
         })
@@ -82,13 +90,25 @@ function Add() {
 
     return (
     <>
-        <form action='#'>
-            <input type="text" id="isbn" name="isbn" onInput={e => setIsbnNr(e.target.value)}/>
-            <button type="submit" onClick={fetchBook}>Fetch Book</button>
-            <button type="submit" onClick={removeBook}>Remove Book</button>
-            <input type="text" id="tag" name="tag" onInput={e => setTag(e.target.value)}/>
-            <button type="submit" onClick={addTag}>Add Tag</button>
+        <form action='#' className='add-book-form'>
+            <input type="text" id="isbn-input" name="isbn" placeholder='ISBN' onInput={e => setIsbnNr(e.target.value)}/>
+            <button type="submit" id="isbn-submit" onClick={fetchBook}>Lägg till bok</button>
         </form>
+        <div>
+            {
+                book && 
+                <>
+                    <form action='#' className='edit-book-form'>
+                        <h3>{book.title}</h3>
+                        <p>{book.author}</p>
+                        <p><i>{book.body}</i></p>
+                        <p><b>{book.id}</b></p>
+                        <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
+                        <button type="submit" id="tag-submit" onClick={addTag}>Lägg till tagg</button>
+                    </form>
+                </>
+            }
+        </div>
     </>);
 }
 

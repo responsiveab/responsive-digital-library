@@ -1,0 +1,31 @@
+#isbn-input, #isbn-submit {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+#tag-input, #tag-submit {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+.add-book-form {
+    width: 50%;
+    margin: auto;
+}
+
+.edit-book-form {
+    width: 50%;
+    margin: auto;
+    margin-top: 16px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 8px;
+}
