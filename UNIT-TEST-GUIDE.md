@@ -18,9 +18,10 @@ function sum(a, b) {
 module.exports = sum;
 ```
 
-### 3. Create a test file <code>Test_PUM03_XXX.js.</code>
+### 3. Create a test file <code>App.test.js.</code>
 
 ```
+// Test for PUM03-XYZ.
 const sum = require('./sum'); 
   test('adds 1 + 2 to equal 3', () => {
     expect(sum(1, 2)).toBe(3);  // With given input 1 and 2, their sum should be 3. 
