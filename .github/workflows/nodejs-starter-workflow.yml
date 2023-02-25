@@ -9,8 +9,8 @@ on:
 jobs:
     build:
       runs-on: ubuntu-latest # change this later to docker containers
-  
-        
+      env: 
+        working-directory: ./client
 
       strategy:
         matrix:
@@ -30,6 +30,7 @@ jobs:
             node-version: ${{ matrix.node-version }}
 
         - run: ls
+          working-directory: ./client
         - run: npm install
         - run: npm ci
           working-directory: ./client
