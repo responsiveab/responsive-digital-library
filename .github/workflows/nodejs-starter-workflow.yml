@@ -7,27 +7,37 @@ on:
     branches: [ PUM03-021 ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest # change this later to docker containers
+    build:
+      runs-on: ubuntu-latest # change this later to docker containers
+  
+        
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+      strategy:
+        matrix:
+          node-version: [19.x]
 
-    steps:
-      - uses: actions/checkout@v3
-        with: 
-          ref: 'PUM03-021' 
-          
-      - name: Start containers 
-        run: docker-compose -f "docker-compose.yml" up -d --build
-      
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: ls
-      - run: npm install
-      # - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+      steps:
+        - uses: actions/checkout@v3
+          with: 
+            ref: 'PUM03-021' 
+
+        - name: Start containers 
+          run: docker-compose -f "docker-compose.yml" up -d --build
+
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v3
+          with:
+            node-version: ${{ matrix.node-version }}
+
+        - run: ls
+        - run: npm install
+        - run: npm ci
+          working-directory: ./client
+        - run: npm ci
+          working-directory: ./server
+        - run: npm run build --if-present
+          working-directory: ./client
+        - run: npm run build --if-present
+          working-directory: ./server
+        - run: npm test
+          working-directory: ./client
