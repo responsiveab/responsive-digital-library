@@ -9,8 +9,8 @@ on:
 jobs:
     build:
       runs-on: ubuntu-latest # change this later to docker containers
-  
-        
+      env: 
+        working-directory: ./client
 
       strategy:
         matrix:
@@ -21,23 +21,42 @@ jobs:
           with: 
             ref: 'PUM03-021' 
 
-        - name: Start containers 
-          run: docker-compose -f "docker-compose.yml" up -d --build
-
         - name: Use Node.js ${{ matrix.node-version }}
           uses: actions/setup-node@v3
           with:
             node-version: ${{ matrix.node-version }}
 
-        - run: ls
-        - run: npm install
-        - run: npm ci
+        - name: List client files
+          run: ls
           working-directory: ./client
-        - run: npm ci
+          
+        - name: Install npm ci in client
+          run: npm ci
+          working-directory: ./client
+          
+        - name: List server files
+          run: ls
           working-directory: ./server
-        - run: npm run build --if-present
-          working-directory: ./client
-        - run: npm run build --if-present
+        
+        - name: Install npm in server
+          run: npm install
           working-directory: ./server
-        - run: npm test
+        
+        - name: Install npm ci in server
+          run: npm ci
+          working-directory: ./server
+          
+        - name: Builds client, if client exists
+          run: npm run build --if-present
           working-directory: ./client
+          
+        - name: Builds server, if client exists
+          run: npm run build --if-present
+          working-directory: ./server
+          
+        - name: Runs automated unit tests in client side
+          run: npm test
+          working-directory: ./client
+          
+        - name: Start containers 
+          run: docker-compose -f "docker-compose.yml" up -d --build
