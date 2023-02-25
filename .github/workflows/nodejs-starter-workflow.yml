@@ -38,6 +38,10 @@ jobs:
           run: ls
           working-directory: ./server
         
+        - name: Install npm in server
+          run: npm install
+          working-directory: ./server
+        
         - name: Install npm ci in server
           run: npm ci
           working-directory: ./server
