@@ -46,13 +46,13 @@ jobs:
           run: npm ci
           working-directory: ./server
           
-        - name: Builds client, if client exists
-          run: npm run build --if-present
-          working-directory: ./client
+        #- name: Builds client, if client exists
+        #  run: npm run build --if-present
+        #  working-directory: ./client
           
-        - name: Builds server, if client exists
-          run: npm run build --if-present
-          working-directory: ./server
+        #- name: Builds server, if client exists
+        #  run: npm run build --if-present
+        #  working-directory: ./server
           
         - name: Runs automated unit tests in client side
           run: npm test
