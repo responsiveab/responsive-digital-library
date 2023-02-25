@@ -33,6 +33,10 @@ jobs:
         - name: Install npm ci in client
           run: npm ci
           working-directory: ./client
+          
+        - name: List server files
+          run: ls
+          working-directory: ./server
         
         - name: Install npm ci in server
           run: npm ci
