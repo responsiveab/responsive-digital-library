@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ PUM03-021 ]
+    branches: [ PUM03-043 ]
   pull_request:
-    branches: [ PUM03-021 ]
+    branches: [ PUM03-043 ]
 
 jobs:
     build:
