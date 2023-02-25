@@ -25,15 +25,15 @@ jobs:
           uses: actions/setup-node@v3
           with:
             node-version: ${{ matrix.node-version }}
-
-        - name: List client files
-          run: ls
-          working-directory: ./client
           
         - name: Install npm ci in client
           run: npm ci
           working-directory: ./client
           
+        - name: List client files
+          run: ls
+          working-directory: ./client
+        
         - name: List server files
           run: ls
           working-directory: ./server
