@@ -21,8 +21,10 @@ jobs:
           with: 
             ref: 'PUM03-021' 
 
-        - name: Start containers 
-          run: docker-compose -f "docker-compose.yml" up -d --build
+        #- name: Start containers 
+        #  run: docker-compose -f "docker-compose.yml" up -d --build
+          
+        - name: Stop containers
 
         - name: Use Node.js ${{ matrix.node-version }}
           uses: actions/setup-node@v3
