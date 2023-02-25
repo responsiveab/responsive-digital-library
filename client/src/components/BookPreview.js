@@ -3,11 +3,7 @@ import React, {useEffect, useState} from 'react'
 import './css/BookPreview.css';
 import Tag from './Tag'
 
-import {
-    Link
-} from "react-router-dom";
-
-import axios, * as others from 'axios';
+import axios from 'axios';
 import DetailedBookPreview from './DetailedBookPreview';
 
 function trimString(string){
@@ -21,6 +17,7 @@ function trimString(string){
 
 function BookPreview(props) {
     const [img, setImg] = useState(undefined);
+    // eslint-disable-next-line
     const [tags, setTags] = useState([]);
     const [active, setActive] = useState(false);
 
@@ -28,21 +25,21 @@ function BookPreview(props) {
     useEffect(() => {
         var isbn = require('node-isbn');
         isbn.resolve(props.id, function (err, book) {
-            if (err) {
-                console.log('Book not found', err);
-            } else {
+            if (!err) {
                 setImg(book.imageLinks.thumbnail);
             }
         });
 
         axios.get("http://localhost:8080/api/books/" + props.id)
         .then(res => {
-            for(var i = 0; i < res.data.data.tags.length; i++) {
-                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
-                .then(res => {
-                    tags.push(res.data.data.name)
-                })
-                .catch(err => console.log(err))
+            if(res.data.data) {
+                for(var i = 0; i < res.data.data.tags.length; i++) {
+                    axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
+                    .then(res => {
+                        tags.push(res.data.data.name)
+                    })
+                    .catch(err => console.log(err))
+                }
             }
         })
         .catch(err => console.log(err))
@@ -78,7 +75,7 @@ function BookPreview(props) {
             }
         </div>
     </div>
-    {active && <DetailedBookPreview id={props.id} title={props.title} body={props.body} author={props.author}/>}
+    {active && <DetailedBookPreview id={props.id} title={props.title} body={props.body} author={props.author} place={"H1"}/>}
     </>);
 }
 

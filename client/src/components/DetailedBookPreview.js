@@ -3,16 +3,17 @@ import React, {useEffect, useState} from 'react'
 import './css/DetailedBookPreview.css';
 import Tag from './Tag'
 
-import {BiPencil, BiFullscreen, BiX} from "react-icons/bi";
+import {BiFullscreen, BiX} from "react-icons/bi";
 
 import {
     Link
 } from "react-router-dom";
 
-import axios, * as others from 'axios';
+import axios from 'axios';
 
 function DetailedBookPreview(props) {
     const [img, setImg] = useState(undefined);
+    // eslint-disable-next-line
     const [tags, setTags] = useState([]);
 
     useEffect(() => {
@@ -52,7 +53,7 @@ function DetailedBookPreview(props) {
                     <Link to={"/books/" + props.id}><BiFullscreen></BiFullscreen></Link>
                     <a href="/"><BiX></BiX></a>
                 </div>
-                <h3><b>{props.title}</b></h3>
+                <h3><b>{props.title + " [" + props.place + "]"}</b></h3>
                 {
                     props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
                 }

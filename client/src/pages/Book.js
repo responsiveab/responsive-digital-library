@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
-import axios, * as others from 'axios';
+import axios from 'axios';
 
 function Book(props) {
     let { id } = useParams();
@@ -20,7 +20,7 @@ function Book(props) {
     const [category, setCategory] = useState(undefined);
     const [img, setImg] = useState(undefined);
 
-    // TODO: fetch tags from our database
+    // eslint-disable-next-line
     const [tags, setTags] = useState([]);
 
     useEffect(() => {

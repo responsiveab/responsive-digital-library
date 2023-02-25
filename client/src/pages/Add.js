@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import axios, * as others from 'axios';
+import React, {useState} from 'react'
+import axios from 'axios';
 
 import {BiPlusCircle} from "react-icons/bi";
 
@@ -25,7 +25,12 @@ function Add() {
                     id:isbnNr,
                     title:fetched_book.title,
                     body:fetched_book.description,
-                    author:fetched_book.authors[0]
+                    author:fetched_book.authors[0],
+                    category:fetched_book.categories[0],
+                    img:fetched_book.imageLinks.thumbnail,
+                    language:fetched_book.language,
+                    publisher:fetched_book.publisher,
+                    date:fetched_book.publishedDate
                 }
                 setBook(newBook);
             }
