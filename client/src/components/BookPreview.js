@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import axios, * as others from 'axios';
+import DetailedBookPreview from './DetailedBookPreview';
 
 function trimString(string){
     var textLength = 200;
@@ -21,6 +22,7 @@ function trimString(string){
 function BookPreview(props) {
     const [img, setImg] = useState(undefined);
     const [tags, setTags] = useState([]);
+    const [active, setActive] = useState(false);
 
     // TODO: Fetch image from database
     useEffect(() => {
@@ -47,7 +49,12 @@ function BookPreview(props) {
     // eslint-disable-next-line
     }, [])
 
+    function toggleActive() {
+        setActive(!active)
+    }
+
     return (
+    <>
     <div className="BookPreview-Wrapper">
         <div className="CoverImage-Wrapper">
             {
@@ -55,7 +62,8 @@ function BookPreview(props) {
             }
         </div>
         <div className="MetaData-Wrapper">
-            <h3><b><Link to={"/books/" + props.id}>{props.title}</Link></b></h3>
+            {/*<Link to={"/books/" + props.id}>{props.title}</Link>*/}
+            <h3><b><a onClick={toggleActive}>{props.title}</a></b></h3>
             {
                 props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
             }
@@ -69,7 +77,9 @@ function BookPreview(props) {
                 // TODO: Hide some tags if there are too many
             }
         </div>
-    </div>);
+    </div>
+    {active && <DetailedBookPreview id={props.id} title={props.title} body={props.body} author={props.author}/>}
+    </>);
 }
 
 export default BookPreview;
