@@ -54,9 +54,11 @@ jobs:
         #  run: npm run build --if-present
         #  working-directory: ./server
           
+        - name: Start containers 
+          run: docker-compose -f "docker-compose.yml" up -d --build
+          
         - name: Runs automated unit tests in client side
           run: npm test
           working-directory: ./client
           
-        - name: Start containers 
-          run: docker-compose -f "docker-compose.yml" up -d --build
+       
