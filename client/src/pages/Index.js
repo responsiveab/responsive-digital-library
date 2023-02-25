@@ -1,14 +1,23 @@
 import BookPreview from "../components/BookPreview"
+import axios, * as others from 'axios';
+import React, {useEffect, useState} from 'react'
 
 function Index() {
+  const [books, setBooks] = useState(undefined)
+
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/books/")
+    .then(res => setBooks(res.data.data))
+    .then(console.log(books))
+  // eslint-disable-next-line
+  }, [])
+
     return (
     <main className="App-content">
-        <h1>Welcome to Responsive Digital Library</h1>
-        <p>
-          Here you will be able to keep track of your books.
-        </p>
-        <BookPreview title={"Study Manual for the Test of Essential Academic Skills"} desc={"This book is written by Assessment Technologies Inc. Staff"} id={9781933107981}/>
-        <BookPreview title={"Preparing for the Biology AP* Exam"} desc={"Good for students"} id={9780133458145}/>
+          {
+            books ? books.map((book) => <span key={book._id}><BookPreview id={book._id} title={book.title} body={book.body} author={book.author}/></span>) : <></>
+          }
     </main>);
 }
 

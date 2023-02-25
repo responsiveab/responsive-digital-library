@@ -1,0 +1,13 @@
+.Tag-Wrapper {
+    border-radius: 8px;
+    padding: 4px;
+    margin: 2px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.Tag-Wrapper a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}

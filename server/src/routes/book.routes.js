@@ -34,10 +34,10 @@ bookRouter.get("/:book_id", (req, res, next) => {
      });
 });
 
-
 // Add Single Book
 bookRouter.post("/", (req, res, next) => {
   let newBook = {
+    _id: req.body.id,
     title: req.body.title,
     body: req.body.body,
     author: req.body.author
