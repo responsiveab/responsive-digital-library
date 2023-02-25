@@ -16,7 +16,16 @@ function Index() {
     return (
     <main className="App-content">
           {
-            books ? books.map((book) => <span key={book._id}><BookPreview id={book._id} title={book.title} body={book.body} author={book.author}/></span>) : <></>
+            books ? books.map((book) => <span key={book._id}><BookPreview id={book._id} 
+                                                                          title={book.title} 
+                                                                          body={book.body} 
+                                                                          author={book.author}
+                                                                          shelf={book.shelf}
+                                                                          category={book.category}
+                                                                          language={book.language}
+                                                                          publisher={book.publisher}
+                                                                          date={book.published}
+                                                                          img={book.imgstr}/></span>) : <></>
           }
     </main>);
 }

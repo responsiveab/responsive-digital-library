@@ -17,21 +17,12 @@ function DetailedBookPreview(props) {
     const [tags, setTags] = useState([]);
 
     useEffect(() => {
-        var isbn = require('node-isbn');
-        isbn.resolve(props.id, function (err, book) {
-            if (err) {
-                console.log('Book not found', err);
-            } else {
-                setImg(book.imageLinks.thumbnail);
-            }
-        });
-
         axios.get("http://localhost:8080/api/books/" + props.id)
         .then(res => {
             for(var i = 0; i < res.data.data.tags.length; i++) {
                 axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
                 .then(res => {
-                    tags.push(res.data.data.name)
+                    setTags(tags.concat([res.data.data.name]))
                 })
                 .catch(err => console.log(err))
             }
@@ -45,7 +36,7 @@ function DetailedBookPreview(props) {
         <div className="DetailedBookPreview-Wrapper">
             <div className="DetailedCoverImage-Wrapper">
                 {
-                    <img src={img} width="128px" alt="cover"></img>
+                    <img src={props.img} width="128px" alt="cover"></img>
                 }
             </div>
             <div className="DetailedMetaData-Wrapper">
