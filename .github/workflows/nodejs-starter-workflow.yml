@@ -21,11 +21,6 @@ jobs:
           with: 
             ref: 'PUM03-021' 
 
-        #- name: Start containers 
-        #  run: docker-compose -f "docker-compose.yml" up -d --build
-          
-        - name: Stop containers
-
         - name: Use Node.js ${{ matrix.node-version }}
           uses: actions/setup-node@v3
           with:
@@ -54,3 +49,6 @@ jobs:
         - name: Runs automated unit tests in client side
           run: npm test
           working-directory: ./client
+          
+        - name: Start containers 
+          run: docker-compose -f "docker-compose.yml" up -d --build
