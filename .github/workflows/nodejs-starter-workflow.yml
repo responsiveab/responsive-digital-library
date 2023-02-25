@@ -33,14 +33,6 @@ jobs:
           run: ls
           working-directory: ./client
           
-        - name: Install npm in client
-          run: npm install
-          working-directory: ./client
-        
-        - name: Install npm in server
-          run: npm install
-          working-directory: ./server   
-          
         - name: Install npm ci in client
           run: npm ci
           working-directory: ./client
