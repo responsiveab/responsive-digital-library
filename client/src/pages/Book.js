@@ -3,11 +3,12 @@ import './css/Book.css'
 import Tag from '../components/Tag'
 
 import {
-    useParams
+    useParams,Routes,Route,useNavigate
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
+
 
 function Book(props) {
     let { id } = useParams();
@@ -22,6 +23,31 @@ function Book(props) {
 
     // TODO: fetch tags from our database
     const [tags, setTags] = useState([]);
+
+
+    let navigate = useNavigate();
+    const routeToIndex = () =>{
+        navigate('/');
+    }
+
+    function removeBook(){
+        //"http://localhost:8080/api/books/"
+        axios.delete("http://localhost:8080/api/books/" + id)
+        .then(res =>{
+            console.log(res)
+            if(!res.data.data){
+                console.log("ingen resdata");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    function removeFunc(){
+        removeBook();
+        routeToIndex();
+    }
 
     useEffect(() => {
         // COMMENT: This should be fetched from our database in the future 
@@ -79,6 +105,12 @@ function Book(props) {
                 {tags.map((tag) => <Tag key={tag} content={tag} />)}
             </div>
         </div>
+       
+        <div className ='Remove-Book'>
+            <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
+        </div>
+    
+        
 
     </main>);
 }
