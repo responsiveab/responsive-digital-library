@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, setState} from 'react'
 
 import './css/BookPreview.css';
 import Tag from './Tag'
@@ -21,19 +21,22 @@ function BookPreview(props) {
     const [active, setActive] = useState(false);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/books/" + props.id)
-        .then(res => {
-            if(res.data.data) {
-                for(var i = 0; i < res.data.data.tags.length; i++) {
-                    axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
-                    .then(res => {
-                        setTags(tags.concat([res.data.data.name]))
-                    })
-                    .catch(err => console.log(err))
+        async function getData() {
+            axios.get("http://localhost:8080/api/tags/")
+            .then(res => {
+                // TODO: Implement smarter way to fetch tags from database
+                // for example name is id so you dont even have to fetch
+                let lis = []
+                for(var i = 0; i < res.data.data.length; i++) {
+                    if(props.taglis.includes(res.data.data[i]._id)) {
+                        lis.push(res.data.data[i].name)
+                    }
                 }
-            }
-        })
-        .catch(err => console.log(err))
+                setTags(tags.concat(lis))
+            })
+            .catch(err => console.log(err))
+        }
+        getData()
     // eslint-disable-next-line
     }, [])
 
@@ -72,7 +75,8 @@ function BookPreview(props) {
                                     language={props.language}
                                     publisher={props.publisher}
                                     date={props.date}
-                                    img={props.img}/>}
+                                    img={props.img}
+                                    tags={tags}/>}
     </>);
 }
 

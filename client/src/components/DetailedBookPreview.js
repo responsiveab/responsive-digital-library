@@ -9,28 +9,7 @@ import {
     Link
 } from "react-router-dom";
 
-import axios from 'axios';
-
 function DetailedBookPreview(props) {
-    const [img, setImg] = useState(undefined);
-    // eslint-disable-next-line
-    const [tags, setTags] = useState([]);
-
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/books/" + props.id)
-        .then(res => {
-            for(var i = 0; i < res.data.data.tags.length; i++) {
-                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
-                .then(res => {
-                    setTags(tags.concat([res.data.data.name]))
-                })
-                .catch(err => console.log(err))
-            }
-        })
-        .catch(err => console.log(err))
-    // eslint-disable-next-line
-    }, [])
-
     return (
     <div className='Overlay'>
         <div className="DetailedBookPreview-Wrapper">
@@ -52,7 +31,7 @@ function DetailedBookPreview(props) {
                     props.body ? <div className='metatext'><p><i>{props.body}</i></p></div> : <></>
                 }
                 {
-                    tags ? <div className='tags-wrapper'>{tags.map((tag) => <Tag key={tag} content={tag} />)}</div> : <></>
+                    props.tags ? <div className='tags-wrapper'>{props.tags.map((tag) => <Tag key={tag} content={tag} />)}</div> : <></>
                 }
             </div>
         </div>

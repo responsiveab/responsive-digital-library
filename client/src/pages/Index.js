@@ -25,7 +25,8 @@ function Index() {
                                                                           language={book.language}
                                                                           publisher={book.publisher}
                                                                           date={book.published}
-                                                                          img={book.imgstr}/></span>) : <></>
+                                                                          img={book.imgstr}
+                                                                          taglis={book.tags}/></span>) : <></>
           }
     </main>);
 }

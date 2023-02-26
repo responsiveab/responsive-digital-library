@@ -16,6 +16,7 @@ function Book(props) {
     const [tags, setTags] = useState([]);
 
     useEffect(() => {
+        // TODO: Make something simular to BookPreview's useEffect
         axios.get("http://localhost:8080/api/books/" + id)
         .then(res => {
             setBook(res.data.data)
