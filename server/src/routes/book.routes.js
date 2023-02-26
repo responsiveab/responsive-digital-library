@@ -40,7 +40,16 @@ bookRouter.post("/", (req, res, next) => {
     _id: req.body.id,
     title: req.body.title,
     body: req.body.body,
-    author: req.body.author
+    author: req.body.author,
+    shelf: 'H1',      // COMMENT: Hardcoded for now, since this
+                      // behaviour isnt implemented yet
+    category: req.body.category,
+    language: req.body.language,
+    publisher: req.body.publisher,
+    published: req.body.date,
+    imgstr: req.body.img,
+    borrowed: false,  // COMMENT: Hardcoded for now, since this
+    digital: false,   // behaviour isnt implemented yet
   };
    Book.create(newBook, function(err, result) {
     if(err){

@@ -14,6 +14,7 @@ function Tag(props) {
         }
 
         var color = '#';
+        // eslint-disable-next-line
         for (var i = 0; i < 3; i++) {
           var value = (hash >> (i * 8)) & 0xFF;
           color += ('00' + value.toString(16)).substr(-2);
