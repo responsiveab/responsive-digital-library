@@ -1,7 +1,7 @@
 .Overlay {
     z-index: 1;
     background-color: rgba(100, 100, 100, 0.9);
-    position: absolute;
+    position:fixed;
     top: 0;
     width: 100%;
     height: 100%;
@@ -18,8 +18,8 @@
 
     margin-left: auto;
     margin-right: auto;
+
     margin-top: 128px;
-    margin-bottom: 8px;
 
     background-color: white;
 }
