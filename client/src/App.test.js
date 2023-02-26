@@ -11,7 +11,6 @@ import App from './App';
 
 /* This is a test that is testing the App component. */
 describe("App", () => {
-
   /* Tests if heading is correct. */
   it("should have exact heading", () => {
     /* Rendering the App component. */

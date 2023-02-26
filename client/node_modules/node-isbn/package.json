@@ -1,0 +1,32 @@
+{
+  "name": "node-isbn",
+  "version": "1.6.1",
+  "description": "Find books by ISBN",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/spec",
+    "testDebug": "mocha --inspect-brk test/spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palmerabollo/node-isbn.git"
+  },
+  "keywords": [
+    "isbn",
+    "book",
+    "google",
+    "openlibrary",
+    "api",
+    "worldcat",
+    "isbndb"
+  ],
+  "author": "Guido García <@palmerabollo>",
+  "license": "AGPL",
+  "devDependencies": {
+    "mocha": "^8.3.2",
+    "nock": "^9.0.13"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
