@@ -4,7 +4,7 @@ First, arrange all preconditions for your test to run.
 Next, Act or execute your code. 
 Lastly, assert the correct things happened.
 
-## Using Jest
+## Using Jest for Client Testing
 
 ### 1. Install Jest using <code>npm</code>:
 <code>npm install --save-dev jest</code>
@@ -42,3 +42,6 @@ const sum = require('./sum');
 PASS  ./sum.test.js
   ✓ adds 1 + 2 to equal 3 (5ms)
 ```
+
+### Server testing coming soon!
+
