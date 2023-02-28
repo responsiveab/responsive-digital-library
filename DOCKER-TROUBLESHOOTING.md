@@ -64,14 +64,6 @@ This error usually occurs when the Docker container hasn't been updated with the
 
 **Solution:** First remove the Docker volumes using the command `docker-compose down -v` and then rebuild the Docker containers using the command `docker-compose up --build`.
 
-#### Error: `http://localhost:3000/` is showing up blank in the browser.
-
-Using the webpage inspector tool and then looking at the console you can usually understand what's wrong. 
-
-If you see the error message `Module not found: Can't resolve 'axios' in '/usr/app/src/pages'` or similar error messages here, this is likely due to missing dependencies. 
-
-**Solution:** First remove the Docker volumes using the command `docker-compose down -v` and then rebuild the Docker containers using the command `docker-compose up --build`.
-
 ##
 
 <br>By following these troubleshooting steps, you should be able to identify and resolve most issues with Docker Compose :smile:.
