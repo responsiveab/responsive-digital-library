@@ -1,3 +1,4 @@
 .eslintcache
 .DS_Store
 client/.eslintcache
+*/node_modules
