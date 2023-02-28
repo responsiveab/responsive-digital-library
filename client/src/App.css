@@ -10,27 +10,7 @@
   padding-bottom: 20px;
 }
 
-.App-header {
-  text-align: center;
-  position: relative;
-  width: 100%;
-  padding: 8px;
-  background-color: black;
-  color: white;
-}
-
-.App-footer {
-  text-align: center;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  padding: 8px;
-  background-color: black;
-  color: white;
-}
-
 .App-content {
   text-align: center;
   position: relative;
-  margin-top: 32px;
 }

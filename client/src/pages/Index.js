@@ -1,9 +1,10 @@
 import BookPreview from "../components/BookPreview"
-import axios, * as others from 'axios';
+import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 
 function Index() {
   const [books, setBooks] = useState(undefined)
+
 
   useEffect(() => {
     axios.get("http://localhost:8080/api/books/")
@@ -14,15 +15,19 @@ function Index() {
 
     return (
     <main className="App-content">
-        <h1>Welcome to Responsive Digital Library</h1>
-        <p>
-          Here you will be able to keep track of your books.
-        </p>
-        <div>
           {
-            books ? books.map((book) => <span key={book._id}><BookPreview id={book._id} title={book.title} body={book.body} author={book.author}/></span>) : <></>
+            books ? books.map((book) => <span key={book._id}><BookPreview id={book._id} 
+                                                                          title={book.title} 
+                                                                          body={book.body} 
+                                                                          author={book.author}
+                                                                          shelf={book.shelf}
+                                                                          category={book.category}
+                                                                          language={book.language}
+                                                                          publisher={book.publisher}
+                                                                          date={book.published}
+                                                                          img={book.imgstr}
+                                                                          taglis={book.tags}/></span>) : <></>
           }
-        </div>
     </main>);
 }
 

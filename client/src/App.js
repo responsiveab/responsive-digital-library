@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 
 import Header from './components/Header';
-import Footer from './components/Footer';
 
 import Index from './pages/Index';
 import Error from './pages/Error';
@@ -27,8 +26,6 @@ function App() {
           <Route path="/books/add" element={<Add/>}/>
         </Routes>
       </BrowserRouter>
-
-      <Footer/>
     </div>
   );
 }
