@@ -4,18 +4,18 @@ const bookRouter = express.Router();
 
 // Get all Books
 bookRouter.get('/', (req, res, next) => {
-    Book.find({} , function(err, result){
-        if(err){
-            res.status(400).send({
-                'success': false,
-                'error': err.message
-            });
-        }
-        res.status(200).send({
-            'success': true,
-            'data': result
-        });
-    });
+  Book.find({} , function(err, result){
+      if(err){
+          res.status(400).send({
+              'success': false,
+              'error': err.message
+          });
+      }
+      res.status(200).send({
+          'success': true,
+          'data': result
+      });
+  });
 });
 
 // Get Single Book
@@ -48,6 +48,7 @@ bookRouter.post("/", (req, res, next) => {
     publisher: req.body.publisher,
     published: req.body.date,
     imgstr: req.body.img,
+    borrower: "Ingen", //COMMENT: Hardcoded for now.
     borrowed: false,  // COMMENT: Hardcoded for now, since this
     digital: false,   // behaviour isnt implemented yet
   };

@@ -2,6 +2,22 @@ import express from 'express';
 import User from '../models/user.model';
 const userRouter = express.Router();
 
+//TODO: Ta bort detta, använder det för testning  nu.
+userRouter.get("/", (req,res,next) => {
+    User.find({}, function(err,result){
+        if(err){
+            res.status(400).send({
+                'success' : false,
+                'error': err.message
+            });
+        }
+        res.status(200).send({
+            'success': true,
+            'data' : result
+        });
+    });
+});
+
 userRouter.post("/login", (req, res) => {
     const {email, password} = req.body;
     User.findOne({email:email}, (err, user) => {
