@@ -35,3 +35,13 @@
 .Tags-Wrapper {
     margin-top: 8px;
 }
+
+#edit-book {
+    width: 20%;
+    float: left;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid black;
+}

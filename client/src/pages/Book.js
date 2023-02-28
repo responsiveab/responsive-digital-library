@@ -20,6 +20,8 @@ function Book(props) {
     const [category, setCategory] = useState(undefined);
     const [img, setImg] = useState(undefined);
 
+    const [showResults, setShowResults] = useState(undefined);
+
     // TODO: fetch tags from our database
     const [tags, setTags] = useState([]);
 
@@ -57,6 +59,31 @@ function Book(props) {
     // eslint-disable-next-line
     }, [])
 
+    const editBook = () => {
+        setShowResults(true)
+        axios.patch("http://localhost:8080/api/books/" + id)
+        .then(res=> {
+            console.log(res)
+        })
+        .catch(err=>console.log(err))
+
+    }
+
+    const saveBook = () => {
+    }
+
+    const cancelBook = () => {
+        setShowResults(false)
+        console.log(showResults)
+    }
+
+    const handleChange = (e) => {
+        this.setState({ text: e.target.value });
+        console.log(e.target.value)
+
+    }
+    
+
     return (
     <main className='Book-Wrapper'>
         <div className='Book-Header'>
@@ -64,23 +91,35 @@ function Book(props) {
                 <img src={img} height='256px' alt="thumbnail"></img>
             </div>
             <div className='Book-Text'>
-                <h1 className='Book-Title'>{title}</h1>
-                <h2 className='Book-Sub-Title'>{subtitle}</h2>
-                <p className='Book-Desc'>{desc}</p>
+                <h1 className='Book-Title'>{showResults ? <p className='test' contentEditable = "true" onBlur={handleChange}> {title}</p> : title}</h1>
+                <h2 className='Book-Sub-Title'>{showResults ? <p className='test' contentEditable = "true"> {subtitle}</p> : subtitle}</h2>
+                <p className='Book-Desc'>{showResults ?  <p className='test' contentEditable = "true"> {desc}</p> : desc}</p>
             </div>
         </div>
         <br/>
-        <div className='Book-Meta'>
-            <p className='Book-Date'><b>Published: </b>{date}</p>
-            <p className='Book-Author'><b>Author: </b>{author}</p>
-            <p className='Book-Category'><b>Category: </b>{category}</p>
-            <p className='Book-Id'><b>ISBN: </b>{id}</p>
-            <div className='Tags-Wrapper'>
-                {tags.map((tag) => <Tag key={tag} content={tag} />)}
+        { 
+            <div className='Book-Meta'>
+                <p className='Book-Date'><b>Published: </b>{showResults ?  <p className='test' contentEditable = "true"> {date}</p> : date}</p> 
+                <p className='Book-Author'><b>Author: </b>{showResults ?  <p className='test' contentEditable = "true"> {author}</p> : author}</p>
+                <p className='Book-Category'><b>Category: </b>{showResults ? <p className='test' contentEditable = "true"> {category}</p> : category}</p>
+                <p className='Book-Id'><b>ISBN: </b>{showResults ? <p className='test' contentEditable = "true"> {id}</p> : id}</p>
+                <div className='Tags-Wrapper'>
+                    {tags.map((tag) => <Tag key={tag} content={tag} />)}
+                </div>
             </div>
-        </div>
-
-    </main>);
+        }   
+        {
+        }
+        { !showResults && (
+            <button type='button' id="edit-book" onClick={editBook}>Edit</button>
+        )}
+        { showResults ? (
+            <div>
+                <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
+                <button type='button' id="edit-book" onClick={saveBook}>Spara</button>
+            </div>
+        ) : null }
+    </main>); 
 }
 
 export default Book;
