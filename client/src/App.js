@@ -16,8 +16,9 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header/>
+        {/* <Header/> */}
         <Routes>
+          {/* <Route path="/" element={<Index/>}/> */}
           <Route path="/" element={<Index/>}/>
           <Route path="/*" element={<Error/>}/>
           <Route path="/login" element={<Login/>}/>
