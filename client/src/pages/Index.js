@@ -11,11 +11,10 @@ import {BiPlusCircle, BiUserCircle, BiHome, BiSearch, BiFilter} from "react-icon
 function Header() {
   const [inputText, setInputText] = useState("");
   let inputHandler = (e) => {
-    //convert input text to lower case
     var lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
   };
-  // console.log(inputText);
+  
     return (
       <main className="App-content">
         <header className="App-header">
@@ -62,26 +61,37 @@ function Index(props) {
     .then(console.log(books))
   // eslint-disable-next-line
   }, [])
-  console.log(props.input)
-  // const filteredData = data.filter((el) => {
-  //   //if no input the return the original
-  //   if (props.input === '') {
-  //       return el;
-  //   }
-  //   //return the item which contains the user input
-  //   else {
-  //       return el.text.toLowerCase().includes(props.input)
-  //   }
-  // })
-  // if (inputText !== "") {
-
-  // {
-  
+  let booksToShow = books;
+  if ((props.input)) {
+    for (let key in books) {
+      var book = books[key]
+      if(!book['title'].toLowerCase().includes(props.input)) {
+        delete booksToShow[key];
+      }
+      // else if (!book['body'].toLowerCase().includes(props.input)){
+      //   delete booksToShow[key];
+      // }
+      // else if (!book['author'].toLowerCase().includes(props.input)){
+      //   delete booksToShow[key];
+      // }
+      // else if (!book['taglis'].toLowerCase().includes(props.input)){
+      //   delete booksToShow[key];
+      // }
+    }
+  }
     return (
     <main className="App-content">
-        {/* <Header/> */}
-          {
-            books ? books.map((book) => <span key={book._id}><BookPreview id={book._id} 
+      <Results booksToShow={booksToShow}/>
+    </main>);
+}
+
+export default Header;
+
+function Results(props) {
+  return (
+    <main className="App-content">
+      {
+            props.booksToShow ? props.booksToShow.map((book) => <span key={book._id}><BookPreview id={book._id} 
                                                                           title={book.title} 
                                                                           body={book.body} 
                                                                           author={book.author}
@@ -93,7 +103,6 @@ function Index(props) {
                                                                           img={book.imgstr}
                                                                           taglis={book.tags}/></span>) : <></>
           }
-    </main>);
+    </main>
+  );
 }
-
-export default Header;
