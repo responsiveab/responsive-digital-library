@@ -38,8 +38,7 @@ tagRouter.get("/:tag_id", (req, res, next) => {
 // Add Single Tag
 tagRouter.post("/", (req, res, next) => {
     let newTag = {
-      name: req.body.name,
-      slug: req.body.slug
+      _id: req.body.name
     };
      Tag.create(newTag, function(err, result) {
       if(err){
