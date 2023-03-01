@@ -3,7 +3,7 @@ import './css/Book.css'
 import Tag from '../components/Tag'
 
 import {
-    useParams,Routes,Route,useNavigate
+    useParams, useNavigate
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
@@ -14,8 +14,6 @@ function Book(props) {
     let { id } = useParams();
 
     const [book, setBook] = useState({});
-    const [tags, setTags] = useState([]);
-
 
     let navigate = useNavigate();
     const routeToIndex = () =>{
@@ -23,7 +21,6 @@ function Book(props) {
     }
 
     function removeBook(){
-        //"http://localhost:8080/api/books/"
         axios.delete("http://localhost:8080/api/books/" + id)
         .then(res =>{
             console.log(res)
@@ -42,17 +39,9 @@ function Book(props) {
     }
 
     useEffect(() => {
-        // TODO: Make something simular to BookPreview's useEffect
         axios.get("http://localhost:8080/api/books/" + id)
         .then(res => {
             setBook(res.data.data)
-            for(var i = 0; i < res.data.data.tags.length; i++) {
-                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
-                .then(res => {
-                    setTags(tags.concat([res.data.data.name]))
-                })
-                .catch(err => console.log(err))
-            }
         })
         .catch(err => console.log(err))
     // eslint-disable-next-line
@@ -76,7 +65,7 @@ function Book(props) {
             <p className='Book-Category'><b>Category: </b>{book.category}</p>
             <p className='Book-Id'><b>ISBN: </b>{book._id}</p>
             <div className='Tags-Wrapper'>
-                {tags.map((tag) => <Tag key={tag} content={tag} />)}
+                {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} />)}
             </div>
         </div>
        

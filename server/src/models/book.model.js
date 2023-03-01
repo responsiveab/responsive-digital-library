@@ -34,7 +34,7 @@ const bookSchema = new mongoose.Schema({
    digital: Boolean,
    tags: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: "Tag"
         }
    ]

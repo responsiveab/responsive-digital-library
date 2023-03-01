@@ -40,7 +40,6 @@ function Add() {
     const addBook = () => {
         axios.get("http://localhost:8080/api/books/" + isbnNr)
         .then(res => {
-            console.log(res)
             if(!res.data.data) {
                 if (book) {
                     axios.post("http://localhost:8080/api/books/", book)
@@ -70,12 +69,10 @@ function Add() {
 
     const addTag = (t) => {
         let newTag = {
-            name: t,
-            slug: t.toLowerCase()
+            name: t
         }
         axios.post("http://localhost:8080/api/tags/", newTag)
         .then(res=> {
-            console.log(res)
             let modifiedFields = {
                 tag: res.data.data
             }
