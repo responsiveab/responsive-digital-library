@@ -29,8 +29,9 @@ app.get('/', function(req, res){
   res.send('Server: Hello!');
 });
 
-app.listen(PORT, function () {
+const server = app.listen(PORT, function () {
     console.log(`Server Listening on ${PORT}`);
 });
 
 export default app;
+module.export = server
