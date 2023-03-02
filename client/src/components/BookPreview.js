@@ -19,6 +19,8 @@ function BookPreview(props) {
     const [tags, setTags] = useState([]);
     const [active, setActive] = useState(false);
 
+    const [count, setCount] = useState(5);
+
     useEffect(() => {
         setTags(props.taglis)
     // eslint-disable-next-line
@@ -26,6 +28,10 @@ function BookPreview(props) {
 
     function toggleActive() {
         setActive(!active)
+    }
+
+    function increaseCount() {
+        setCount(count + 5)
     }
 
     return (
@@ -45,7 +51,9 @@ function BookPreview(props) {
                 props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
             }
             {
-                tags ? <div className='tags-wrapper'>{tags.map((tag) => <Tag key={tag} content={tag} />)}</div> : <></>
+                tags ? <div className='tags-wrapper'>
+                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} />)}
+                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}</div> : <></>
                 // TODO: Hide some tags if there are too many
             }
         </div>
