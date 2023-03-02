@@ -65,7 +65,7 @@ function Book(props) {
             <p className='Book-Category'><b>Category: </b>{book.category}</p>
             <p className='Book-Id'><b>ISBN: </b>{book._id}</p>
             <div className='Tags-Wrapper'>
-                {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} />)}
+                {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
             </div>
         </div>
        
