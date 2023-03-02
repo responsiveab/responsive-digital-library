@@ -8,10 +8,12 @@ import {
 
 import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
+import ContentEditable from 'react-contenteditable'
 
 function Book(props) {
     let { id } = useParams();
 
+    const [book, setBook] = useState(undefined);
     const [title, setTitle] = useState(undefined);
     const [subtitle, setSubtitle] = useState(undefined);
     const [desc, setDesc] = useState(undefined);
@@ -21,68 +23,63 @@ function Book(props) {
     const [img, setImg] = useState(undefined);
 
     const [showResults, setShowResults] = useState(undefined);
+    const [titleContent, setTitleContent] = useState(undefined);
 
     // TODO: fetch tags from our database
     const [tags, setTags] = useState([]);
-
+   
     useEffect(() => {
-        // COMMENT: This should be fetched from our database in the future 
-        // because if it has a page someone have put the book into our database.
-        // The same goes for BookPreview component.
+
+        // TODO: Fetch image from database
         var isbn = require('node-isbn');
         isbn.resolve(id, function (err, book) {
             if (err) {
                 console.log('Book not found', err);
             } else {
-                setTitle(book.title);
-                setSubtitle(book.subtitle);
-                setDesc(book.description);
-                setDate(book.publishedDate);
-                setAuthor(book.authors[0]); // TODO: Traverse whole list
-                setCategory(book.categories[0]); // TODO: Traverse whole list
                 setImg(book.imageLinks.thumbnail);
             }
         });
 
-        // TODO: This will make the server crash if there is no tags on a book
-        axios.get("http://localhost:8080/api/books/" + id)
+       axios.get("http://localhost:8080/api/books/" + id) 
         .then(res => {
-            for(var i = 0; i < res.data.data.tags.length; i++) {
-                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
-                .then(res => {
-                    tags.push(res.data.data.name)
-                })
-                .catch(err => console.log(err))
-            }
-        })
-        .catch(err => console.log(err))
-    // eslint-disable-next-line
-    }, [])
+            setBook(res)
+            setTitle(res.data.data.title) 
+            setTitleContent(title)
+            setSubtitle(res.data.data.subtitle)
+            setDesc(res.data.data.body)
 
+        })
+       .then(console.log(book))
+    }, [title])
+        
     const editBook = () => {
         setShowResults(true)
-        axios.patch("http://localhost:8080/api/books/" + id)
-        .then(res=> {
-            console.log(res)
-        })
-        .catch(err=>console.log(err))
-
     }
 
     const saveBook = () => {
+        let patchedBook = {
+            id:id,
+            title:titleContent,
+            body:desc,
+            author:author
+        }
+        axios.patch("http://localhost:8080/api/books/" + id, patchedBook)
+        .then(res=> {
+            console.log(res)
+        })
+        .catch(err=>console.log(err))   
+        
+        setShowResults(false);
     }
 
     const cancelBook = () => {
         setShowResults(false)
-        console.log(showResults)
     }
 
-    const handleChange = (e) => {
-        this.setState({ text: e.target.value });
-        console.log(e.target.value)
-
-    }
-    
+    const onTitleChange = React.useCallback(e => {
+       setTitleContent(e.currentTarget.innerText)
+       console.log(e.target.value);
+       }, [])
 
     return (
     <main className='Book-Wrapper'>
@@ -91,9 +88,9 @@ function Book(props) {
                 <img src={img} height='256px' alt="thumbnail"></img>
             </div>
             <div className='Book-Text'>
-                <h1 className='Book-Title'>{showResults ? <p className='test' contentEditable = "true" onBlur={handleChange}> {title}</p> : title}</h1>
-                <h2 className='Book-Sub-Title'>{showResults ? <p className='test' contentEditable = "true"> {subtitle}</p> : subtitle}</h2>
-                <p className='Book-Desc'>{showResults ?  <p className='test' contentEditable = "true"> {desc}</p> : desc}</p>
+                <h1 className='Book-Title'>{showResults ?  <ContentEditable onChange={onTitleChange} onBlur={onTitleChange} html={titleContent} /> : titleContent} </h1>
+                <h2 className='Book-Sub-Title'>{showResults ? <p className='test' contentEditable='true'> {subtitle} </p> : subtitle}</h2>
+                <p className='Book-Desc'>{showResults ?  <p className='test' contentEditable='true'> {desc} </p> : desc}</p>
             </div>
         </div>
         <br/>
