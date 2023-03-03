@@ -2,4 +2,4 @@
 .DS_Store
 client/.eslintcache
 */node_modules
-
+*/package-lock.json
