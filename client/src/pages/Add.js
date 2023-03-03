@@ -7,6 +7,10 @@ import Tag from '../components/Tag'
 
 import './css/Add.css'
 
+import {
+    useNavigate
+} from "react-router-dom";
+
 function Add() {
     const [book, setBook] = useState(undefined)
 
@@ -14,6 +18,11 @@ function Add() {
     const [tag, setTag] = useState(undefined);
 
     const [tags, setTags] = useState([]);
+
+    let navigate = useNavigate();
+    const routeToIndex = () =>{
+        navigate('/');
+    }
 
     function fetchBook() {
         var isbn = require('node-isbn');
@@ -49,6 +58,7 @@ function Add() {
                             addTag(tags[i])
                         }
                         setTags([])
+                        routeToIndex()
                     })
                     .catch(err=>console.log(err))
                 }
