@@ -75,6 +75,7 @@ function Add() {
     const appendTag = () => {
         tags.push(tag)
         setTag('')
+        document.getElementById('tag-input').value = ''
     }
 
     const addTag = (t) => {
