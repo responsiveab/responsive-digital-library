@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import {BiPlusCircle, BiUserCircle, BiHome, BiSearch, BiFilter} from "react-icons/bi";
+import {BiPlusCircle, BiUserCircle, BiSearch, BiFilter} from "react-icons/bi";
 import './css/Header.css'
 
 function Header() {
@@ -16,7 +16,7 @@ function Header() {
                 </Link>
                 <Link to="/">
                     {/* Placeholder for Responsive logo */}
-                    <BiHome className="icon"/>
+                    <img src={process.env.PUBLIC_URL + "/logo-rdl.png"} className="img-icon"/>
                 </Link>
             </div>
             <div className='searchbar'>
