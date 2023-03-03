@@ -3,7 +3,6 @@ import React, {useEffect, useState, setState} from 'react'
 import './css/BookPreview.css';
 import Tag from './Tag'
 
-import axios from 'axios';
 import DetailedBookPreview from './DetailedBookPreview';
 
 function trimString(string){
@@ -20,28 +19,19 @@ function BookPreview(props) {
     const [tags, setTags] = useState([]);
     const [active, setActive] = useState(false);
 
+    const [count, setCount] = useState(5);
+
     useEffect(() => {
-        async function getData() {
-            axios.get("http://localhost:8080/api/tags/")
-            .then(res => {
-                // TODO: Implement smarter way to fetch tags from database
-                // for example name is id so you dont even have to fetch
-                let lis = []
-                for(var i = 0; i < res.data.data.length; i++) {
-                    if(props.taglis.includes(res.data.data[i]._id)) {
-                        lis.push(res.data.data[i].name)
-                    }
-                }
-                setTags(tags.concat(lis))
-            })
-            .catch(err => console.log(err))
-        }
-        getData()
+        setTags(props.taglis)
     // eslint-disable-next-line
     }, [])
 
     function toggleActive() {
         setActive(!active)
+    }
+
+    function increaseCount() {
+        setCount(count + 5)
     }
 
     return (
@@ -61,7 +51,9 @@ function BookPreview(props) {
                 props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
             }
             {
-                tags ? <div className='tags-wrapper'>{tags.map((tag) => <Tag key={tag} content={tag} />)}</div> : <></>
+                tags ? <div className='tags-wrapper'>
+                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} />)}
+                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}</div> : <></>
                 // TODO: Hide some tags if there are too many
             }
         </div>
