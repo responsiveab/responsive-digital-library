@@ -30,6 +30,7 @@ const bookSchema = new mongoose.Schema({
    imgstr: {
     type: String
    },
+   borrower: String,
    borrowed: Boolean,
    digital: Boolean,
    tags: [
