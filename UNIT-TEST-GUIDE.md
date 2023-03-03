@@ -45,7 +45,7 @@ PASS  ./sum.test.js
 
 ## Using Jest and Supertest for Server Testing
 
-### 1. Install <code>jest</code> as was instructed abovee. Install Supertest using <code>npm</code>
+### 1. Install <code>jest</code> as instructed above. Install Supertest using <code>npm</code>
 <code>npm install --save-dev supertest</code>
 
 ### 2. Create a test file under <code>server/src/tests</code>
