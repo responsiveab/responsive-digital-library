@@ -38,6 +38,14 @@ function Book(props) {
     useEffect(() => {
        axios.get("http://localhost:8080/api/books/" + id) 
         .then(res => {
+            for(var i = 0; i < res.data.data.tags.length; i++) {
+                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
+                .then(res => {
+                    tags.push(res.data.data.name)
+                })
+                .catch(err => console.log(err))
+            }
+
             setTitle(res.data.data.title) 
             setSubtitle(res.data.data.subtitle)
             setDesc(res.data.data.body)
@@ -56,7 +64,7 @@ function Book(props) {
                 category:res.data.data.category
             })
         })
-       .then(console.log(book))
+        .catch(err => console.log(err))
     }, [])
         
     const editBook = () => {
