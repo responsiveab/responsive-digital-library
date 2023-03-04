@@ -7,6 +7,7 @@ import Index from './pages/Index';
 import Error from './pages/Error';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Account from './pages/Account';
 import Book from './pages/Book';
 import Add from './pages/Add';
 
@@ -16,7 +17,7 @@ function App() {
   const [account, setAccount] = useState();
 
   useEffect(() => {
-    setAccount(window.localStorage.getItem('account'));
+    setAccount(JSON.parse(window.localStorage.getItem('account')));
   }, []);
 
   return (
@@ -28,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Index/>}/>
             <Route path="/*" element={<Error/>}/>
+            <Route path="/account" element={<Account user={account}/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/books/:id" element={<Book/>}/>
             <Route path="/books/add" element={<Add/>}/>

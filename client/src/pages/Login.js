@@ -20,7 +20,7 @@ function Login({setAccount}) {
         axios.post("http://localhost:8080/api/users/login", user)
         .then(res => {
             setAccount(res.data.user)
-            window.localStorage.setItem('account', res.data.user)
+            window.localStorage.setItem('account', JSON.stringify(res.data.user))
         })
         .catch(err => console.log(err))
     }
