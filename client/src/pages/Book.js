@@ -13,7 +13,6 @@ import ContentEditable from 'react-contenteditable'
 function Book(props) {
     let { id } = useParams();
 
-    const [book, setBook] = useState(undefined);
     const [title, setTitle] = useState(undefined);
     const [subtitle, setSubtitle] = useState(undefined);
     const [desc, setDesc] = useState(undefined);
@@ -21,54 +20,64 @@ function Book(props) {
     const [author, setAuthor] = useState(undefined);
     const [category, setCategory] = useState(undefined);
     const [img, setImg] = useState(undefined);
-
     const [showResults, setShowResults] = useState(undefined);
-    const [titleContent, setTitleContent] = useState(undefined);
 
     // TODO: fetch tags from our database
     const [tags, setTags] = useState([]);
+ 
+    const [book, setBook] = useState({
+        id:id,
+        title:"",
+        subtitle:"",
+        body:"",
+        published:"",
+        author:"",
+        category:""
+    })
    
     useEffect(() => {
-
-        // TODO: Fetch image from database
-        var isbn = require('node-isbn');
-        isbn.resolve(id, function (err, book) {
-            if (err) {
-                console.log('Book not found', err);
-            } else {
-                setImg(book.imageLinks.thumbnail);
-            }
-        });
-
        axios.get("http://localhost:8080/api/books/" + id) 
         .then(res => {
-            setBook(res)
             setTitle(res.data.data.title) 
-            setTitleContent(title)
             setSubtitle(res.data.data.subtitle)
             setDesc(res.data.data.body)
+            setDate(res.data.data.published) 
+            setAuthor(res.data.data.author)
+            setCategory(res.data.data.category)
+            setImg(res.data.data.imgstr)
 
+            setBook({
+                id:id,
+                title:res.data.data.title,
+                subtitle:res.data.data.subtitle,
+                body:res.data.data.body,
+                published:res.data.data.published,
+                author:res.data.data.author,
+                category:res.data.data.category
+            })
         })
        .then(console.log(book))
-    }, [title])
+    }, [])
         
     const editBook = () => {
         setShowResults(true)
     }
 
     const saveBook = () => {
-        let patchedBook = {
-            id:id,
-            title:titleContent,
-            body:desc,
-            author:author
-        }
-        axios.patch("http://localhost:8080/api/books/" + id, patchedBook)
+        console.log(book)
+        axios.patch("http://localhost:8080/api/books/" + id, book)
         .then(res=> {
             console.log(res)
         })
         .catch(err=>console.log(err))   
-        
+
+        setTitle(book.title)
+        setSubtitle(book.subtitle)
+        setDesc(book.body)
+        setDate(book.published) 
+        setAuthor(book.author)
+        setCategory(book.category)
+
         setShowResults(false);
     }
 
@@ -76,11 +85,14 @@ function Book(props) {
         setShowResults(false)
     }
 
-    const onTitleChange = React.useCallback(e => {
-       setTitleContent(e.currentTarget.innerText)
-       console.log(e.target.value);
-       }, [])
-
+    const handleChange = e => {
+        const {title,textContent} = e.currentTarget
+        setBook({
+            ...book,
+            [title]:textContent
+        })
+    }
+    
     return (
     <main className='Book-Wrapper'>
         <div className='Book-Header'>
@@ -88,25 +100,23 @@ function Book(props) {
                 <img src={img} height='256px' alt="thumbnail"></img>
             </div>
             <div className='Book-Text'>
-                <h1 className='Book-Title'>{showResults ?  <ContentEditable onChange={onTitleChange} onBlur={onTitleChange} html={titleContent} /> : titleContent} </h1>
-                <h2 className='Book-Sub-Title'>{showResults ? <p className='test' contentEditable='true'> {subtitle} </p> : subtitle}</h2>
-                <p className='Book-Desc'>{showResults ?  <p className='test' contentEditable='true'> {desc} </p> : desc}</p>
+                <h1 className='Book-Title'>{showResults ?  <ContentEditable title="title" onChange={handleChange} onBlur={handleChange} html={book.title} /> : title} </h1>
+                <h2 className='Book-Sub-Title'>{showResults ? <ContentEditable title="subtitle" onChange={handleChange} onBlur={handleChange} html={book.subtitle} /> : subtitle}</h2>
+                <span className='Book-Desc'>{showResults ?  <ContentEditable title="body" onChange={handleChange} onBlur={handleChange} html={book.body} /> : desc}</span>
             </div>
         </div>
         <br/>
         { 
             <div className='Book-Meta'>
-                <p className='Book-Date'><b>Published: </b>{showResults ?  <p className='test' contentEditable = "true"> {date}</p> : date}</p> 
-                <p className='Book-Author'><b>Author: </b>{showResults ?  <p className='test' contentEditable = "true"> {author}</p> : author}</p>
-                <p className='Book-Category'><b>Category: </b>{showResults ? <p className='test' contentEditable = "true"> {category}</p> : category}</p>
-                <p className='Book-Id'><b>ISBN: </b>{showResults ? <p className='test' contentEditable = "true"> {id}</p> : id}</p>
+                <span className='Book-Date'><b>Published: </b>{showResults ?  <ContentEditable title="published" onChange={handleChange} onBlur={handleChange} html={book.published} /> : date}</span> 
+                <span className='Book-Author'><b>Author: </b>{showResults ?  <ContentEditable title="author" onChange={handleChange} onBlur={handleChange} html={book.author} /> : author}</span>
+                <span className='Book-Category'><b>Category: </b>{showResults ? <ContentEditable title="category" onChange={handleChange} onBlur={handleChange} html={book.category} /> : category}</span>
+                <p className='Book-Id'><b>ISBN: </b>{id}</p>
                 <div className='Tags-Wrapper'>
                     {tags.map((tag) => <Tag key={tag} content={tag} />)}
                 </div>
             </div>
         }   
-        {
-        }
         { !showResults && (
             <button type='button' id="edit-book" onClick={editBook}>Edit</button>
         )}
