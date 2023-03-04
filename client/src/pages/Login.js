@@ -18,7 +18,10 @@ function Login({setAccount}) {
 
     const login = () => {
         axios.post("http://localhost:8080/api/users/login", user)
-        .then(res => {setAccount(res.data.user)})
+        .then(res => {
+            setAccount(res.data.user)
+            window.localStorage.setItem('account', res.data.user)
+        })
         .catch(err => console.log(err))
     }
 
