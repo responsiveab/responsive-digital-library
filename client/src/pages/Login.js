@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import axios from 'axios';
 import './css/Login.css'
 
-function Login() {
+function Login({setAccount}) {
     const [user, setUser] = useState({
         name: "",
         password: ""
@@ -18,7 +18,7 @@ function Login() {
 
     const login = () => {
         axios.post("http://localhost:8080/api/users/login", user)
-        .then(res => console.log(res))
+        .then(res => {setAccount(res.data.user)})
         .catch(err => console.log(err))
     }
 

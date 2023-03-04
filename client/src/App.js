@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 
 import Header from './components/Header';
@@ -13,19 +13,25 @@ import Add from './pages/Add';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
+  const [account, setAccount] = useState();
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <Header/>
-        <Routes>
-          <Route path="/" element={<Index/>}/>
-          <Route path="/*" element={<Error/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/register" element={<Register/>}/>
-          <Route path="/books/:id" element={<Book/>}/>
-          <Route path="/books/add" element={<Add/>}/>
-        </Routes>
-      </BrowserRouter>
+      {
+        account ? 
+        <BrowserRouter>
+          <Header/>
+          <Routes>
+            <Route path="/" element={<Index/>}/>
+            <Route path="/*" element={<Error/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/books/:id" element={<Book/>}/>
+            <Route path="/books/add" element={<Add/>}/>
+          </Routes>
+        </BrowserRouter>
+        :
+        <><Login setAccount={setAccount}/></>
+      }
     </div>
   );
 }
