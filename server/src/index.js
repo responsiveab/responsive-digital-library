@@ -9,7 +9,8 @@ import './config/mongodb.config';
 var cors = require('cors')
 
 const app = express();
-const PORT = 8080;
+// Use port 8081 for test environment
+const PORT = process.env.NODE_ENV === 'test' ? 8081 : 8080;
 
 app.use(cors())
 app.use(
