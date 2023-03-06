@@ -58,7 +58,7 @@ describe ..
     it ..
 ```
 
-### 3. Install Babel using <code>npm</code>
+### 3. Install Babel using <code>npm</code>. This to ensure that we do not get any parsing errors.
 <code>npm install babel-jest @babel/preset-env --save-dev</code>
 
 ### 4. Create babel.config.json in server/
@@ -68,14 +68,5 @@ describe ..
 }
 ```
 
-### 5. Insert following under <code>"scripts"</code>
-```
-  "jest": {
-    "transform": {
-        "^.+\\.js$": "babel-jest"
-    }
-  },
-```
-
-### 6. Run test with <code>npm test</code>
+### 5. Run test with <code>npm test</code>
 
