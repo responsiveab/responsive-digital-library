@@ -7,7 +7,7 @@
     "build": "webpack-cli --config webpack/webpack.dev.js",
     "start": "npm run build && nodemon dist/main.js",
     "dev": "webpack-dev-server --open --config webpack/webpack.dev.js",
-    "test": "NODE_ENV=test jest --runInBand"
+    "test": "jest"
   },
   "author": "PUM03",
   "repository": "https://github.com/PUM03-2023/responsive-digital-library",
