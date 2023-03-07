@@ -36,8 +36,7 @@ const sum = require('./sum');
   }
 }
 ```
-
-### 5. Finally, run yarn test or npm test and Jest will print this message:
+### 5. Run the test in your terminal using: <code>docker-compose -f docker-compose-test.yml up --build</code> and Jest will print this message:
 ```
 PASS  ./sum.test.js
   ✓ adds 1 + 2 to equal 3 (5ms)
@@ -68,5 +67,4 @@ describe ..
 }
 ```
 
-### 5. Run test with <code>npm test</code>
-
+### 5. Run the test in your terminal using: <code>docker-compose -f docker-compose-test.yml up --build</code>.
