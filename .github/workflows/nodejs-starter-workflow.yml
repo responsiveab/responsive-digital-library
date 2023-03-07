@@ -18,7 +18,3 @@ jobs:
 
        - name: Start containers 
           run: docker-compose -f "docker-compose-test.yml" up -d --build
-
-       - name: Stop containers
-          run: docker-compose down     
-      
