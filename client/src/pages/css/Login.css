@@ -1,0 +1,23 @@
+#sign-in-email, #sign-in-pass {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+#sign-in-button {
+    width: 100%;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid black;
+    margin-top: 8px;
+}
+
+.Login-Wrapper {
+    width: 50%;
+    margin: auto;
+    margin-top: 32px;
+}

@@ -5,11 +5,13 @@ import React, {useEffect, useState} from 'react'
 function Index() {
   const [books, setBooks] = useState(undefined)
 
-
   useEffect(() => {
     axios.get("http://localhost:8080/api/books/")
-    .then(res => setBooks(res.data.data))
-    .then(console.log(books))
+    .then(res => {
+      setBooks(res.data.data)
+      console.log(res.data.data)
+    })
+    .catch(err => console.log(err))
   // eslint-disable-next-line
   }, [])
 
