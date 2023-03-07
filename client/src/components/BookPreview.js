@@ -1,4 +1,4 @@
-import React, {useEffect, useState, setState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import './css/BookPreview.css';
 import Tag from './Tag'

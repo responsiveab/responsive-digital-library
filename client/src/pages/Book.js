@@ -14,6 +14,8 @@ function Book(props) {
     let { id } = useParams();
 
     const [book, setBook] = useState({});
+    const [tags, setTags] = useState([]);
+    const [user, setUser] = useState(undefined);
 
     let navigate = useNavigate();
     const routeToIndex = () =>{
@@ -32,11 +34,50 @@ function Book(props) {
             console.log(err);
         })
     }
+    function borrowBook(){
+        // TODO: Add authentication, waiting for logged in user implementation
+        let borrow = {
+            borrower:user,
+            borrowed:true
+        }
+        axios.patch("http://localhost:8080/api/books/" + id, borrow)        
+        .then(res =>{
+            console.log(res)
+            if(!res.data.data){
+                console.log("fel?");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+       console.log(user)    
+    }
+
+    function returnBook(){
+        // TODO: Add authentication, waiting for logged in user implementation
+        let returner = {
+            borrower:'',
+            borrowed:false
+        }
+        axios.patch("http://localhost:8080/api/books/" + id, returner)        
+        .then(res =>{
+            console.log(res)
+            if(!res.data.data){
+                console.log("fel?");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+       console.log(user)
+    }
+
 
     function removeFunc(){
         removeBook();
         routeToIndex();
     }
+
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/books/" + id)
@@ -54,7 +95,7 @@ function Book(props) {
                 <img src={book.imgstr} height='256px' alt="thumbnail"></img>
             </div>
             <div className='Book-Text'>
-                <h1 className='Book-Title'>{book.title}</h1>
+                <h1 className='Book-Title'>{book.title} [{book.borrower}]</h1>
                 <p className='Book-Desc'>{book.body}</p>
             </div>
         </div>
@@ -71,6 +112,18 @@ function Book(props) {
        
         <div className ='Remove-Book'>
             <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
+        </div>
+
+        {/* TODO: Only show if book isn't borrowed?*/}
+        <div className ='Borrow-Book'>
+            <input type='text' id="borrow" placeholder="Namn" onInput={e => setUser(e.target.value)}/>
+            <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
+        </div>
+        
+        {/* TODO: Only let user who borrowed book se this*/}
+        <div className='Return-Book'>
+            <input type='text' id='borrow' placeholder="Namn" onInput={e => setUser(e.target.value)}/>
+            <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
         </div>
     
         
