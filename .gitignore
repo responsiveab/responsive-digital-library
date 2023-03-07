@@ -3,3 +3,4 @@
 client/.eslintcache
 client/node_modules/*
 server/node_modules/*
+server/dist/main.js
