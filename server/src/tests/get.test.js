@@ -10,6 +10,7 @@ describe('GET /', () => {
 
   afterAll((done) => {
     server.close(done);
+    done();
   });
 
   it('should return 200 OK', async () => {
