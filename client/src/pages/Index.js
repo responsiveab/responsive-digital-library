@@ -8,11 +8,11 @@ import {Link} from 'react-router-dom';
 import {BiPlusCircle, BiUserCircle, BiHome, BiSearch, BiFilter} from "react-icons/bi";
 //import './css/Header.css'
 
+
 function Header() {
   const [inputText, setInputText] = useState("");
   let inputHandler = (e) => {
-    var lowerCase = e.target.value.toLowerCase();
-    setInputText(lowerCase);
+    setInputText(e.target.value);
   };
   
     return (
@@ -51,39 +51,36 @@ function Header() {
         );
 }
 
-// export default Header;
 function Index(props) {
-  const [books, setBooks] = useState(undefined)
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:8080/api/books/")
-    .then(res => setBooks(res.data.data))
-    .then(console.log(books))
-  // eslint-disable-next-line
-  }, [])
-  let booksToShow = books;
-  if ((props.input)) {
-    for (let key in books) {
-      var book = books[key]
-      if(!book['title'].toLowerCase().includes(props.input)) {
-        delete booksToShow[key];
-      }
-      // else if (!book['body'].toLowerCase().includes(props.input)){
-      //   delete booksToShow[key];
-      // }
-      // else if (!book['author'].toLowerCase().includes(props.input)){
-      //   delete booksToShow[key];
-      // }
-      // else if (!book['taglis'].toLowerCase().includes(props.input)){
-      //   delete booksToShow[key];
-      // }
+      .then(res => setBooks(res.data.data))
+      .catch(error => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    if (books) {
+      setFilteredBooks(books.filter(book => 
+        book.title.toLowerCase().includes(props.input.toLowerCase()) || 
+        (book.taglis && book.taglis.toLowerCase().includes(props.input.toLowerCase())) ||
+        (book.body && book.body.toLowerCase().includes(props.input.toLowerCase())) || 
+        (book.author && book.author.toLowerCase().includes(props.input.toLowerCase())) ||
+        (book.category && book.category.toLowerCase().includes(props.input.toLowerCase()))
+      ));
     }
-  }
-    return (
+  }, [books, props.input]);
+
+  console.log(books);
+  return (
     <main className="App-content">
-      <Results booksToShow={booksToShow}/>
-    </main>);
+      <Results booksToShow={filteredBooks}/>
+    </main>
+  );
 }
+
 
 export default Header;
 
