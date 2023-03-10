@@ -59,6 +59,7 @@ function Index(props) {
     axios.get("http://localhost:8080/api/books/")
       .then(res => setBooks(res.data.data))
       .catch(error => console.error(error));
+      // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -73,7 +74,6 @@ function Index(props) {
     }
   }, [books, props.input]);
 
-  console.log(books);
   return (
     <main className="App-content">
       <Results booksToShow={filteredBooks}/>
