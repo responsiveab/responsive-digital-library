@@ -6,6 +6,7 @@ import {BiPlusCircle} from "react-icons/bi";
 import Tag from '../components/Tag'
 
 import './css/Add.css'
+import HeaderWithoutSearch from '../components/HeaderWithoutSearch';
 
 function Add() {
     const [book, setBook] = useState(undefined)
@@ -92,6 +93,7 @@ function Add() {
 
     return (
     <>
+        <HeaderWithoutSearch/>
         <form action='#' className='add-book-form'>
             <input type="text" id="isbn-input" name="isbn" placeholder='ISBN' onInput={e => setIsbnNr(e.target.value)}/>
             {

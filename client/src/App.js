@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 
-import Header from './components/Header';
+import HeaderWithoutSearch from './components/HeaderWithoutSearch';
 
-import Index from './pages/Index';
+import HeaderIndex from './pages/HeaderIndex';
 import Error from './pages/Error';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -16,10 +16,8 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {/* <Header/> */}
         <Routes>
-          {/* <Route path="/" element={<Index/>}/> */}
-          <Route path="/" element={<Index/>}/>
+          <Route path="/" element={<HeaderIndex/>}/>
           <Route path="/*" element={<Error/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>

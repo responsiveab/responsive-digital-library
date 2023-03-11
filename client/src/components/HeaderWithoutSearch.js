@@ -1,8 +1,8 @@
 import {Link} from 'react-router-dom';
-import {BiPlusCircle, BiUserCircle, BiHome, BiSearch, BiFilter} from "react-icons/bi";
+import {BiPlusCircle, BiUserCircle, BiHome} from "react-icons/bi";
 import './css/Header.css'
 
-function Header() {
+function HeaderWithoutSearch() {
     return (
         <header className="App-header">
             <div style={{ float: 'left' }}>
@@ -19,13 +19,8 @@ function Header() {
                     <BiHome className="icon"/>
                 </Link>
             </div>
-            <div className='searchbar'>
-                <BiSearch className="icon" id="search-left"/>
-                <input type="text" id="search" name="search"/>
-                <BiFilter className="icon" id="search-right"/>
-            </div>
             <hr/>
         </header>);
 }
 
-export default Header;
+export default HeaderWithoutSearch;

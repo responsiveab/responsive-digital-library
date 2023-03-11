@@ -1,12 +1,9 @@
 import BookPreview from "../components/BookPreview"
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-//import Header from './../components/Header';
 
 import {Link} from 'react-router-dom';
 import {BiPlusCircle, BiUserCircle, BiHome, BiSearch, BiFilter} from "react-icons/bi";
-//import './css/Header.css'
 
 
 function Header() {
@@ -81,9 +78,6 @@ function Index(props) {
   );
 }
 
-
-export default Header;
-
 function Results(props) {
   return (
     <main className="App-content">
@@ -103,3 +97,5 @@ function Results(props) {
     </main>
   );
 }
+
+export default Header;
