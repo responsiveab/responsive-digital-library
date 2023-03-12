@@ -91,7 +91,7 @@ function Book(props) {
         axios.get("http://localhost:8080/api/books/" + id)
         .then(res => {
             setBook(res.data.data)
-            setBookMod(book) // might not work
+            setBookMod(res.data.data) // copy for modification
         })
         .catch(err => console.log(err))
     }, [])
@@ -130,7 +130,6 @@ function Book(props) {
                 <img src={book.imgstr} height='256px' alt="thumbnail"></img>
             </div>
             <div className='Book-Text'>
-                /** BEGIN */
                 <h1 className='Book-Title'>{showResults ?  <ContentEditable title="title" onChange={handleChange} onBlur={handleChange} html={bookMod.title} /> : book.title} [{book.borrower}]</h1>
                 <h2 className='Book-Sub-Title'>{showResults ? <ContentEditable title="subtitle" onChange={handleChange} onBlur={handleChange} html={bookMod.subtitle} /> : book.subtitle}</h2>
                 <span className='Book-Desc'>{showResults ?  <ContentEditable title="body" onChange={handleChange} onBlur={handleChange} html={bookMod.body} /> : book.body}</span>

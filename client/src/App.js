@@ -14,11 +14,13 @@ import Add from './pages/Add';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
-  const [account, setAccount] = useState();
+  const [account, setAccount] = useState({});
 
   useEffect(() => {
-    setAccount(JSON.parse(window.localStorage.getItem('account')));
-  }, []);
+    if(!window.localStorage.getItem('account')){
+      setAccount(JSON.parse(window.localStorage.getItem('account')));
+    }
+    }, []);
 
   return (
     <div className="App">
