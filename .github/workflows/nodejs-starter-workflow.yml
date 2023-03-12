@@ -1,0 +1,64 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ PUM03-043 ]
+  pull_request:
+    branches: [ PUM03-043 ]
+
+jobs:
+    build:
+      runs-on: ubuntu-latest # change this later to docker containers
+      env: 
+        working-directory: ./client
+
+      strategy:
+        matrix:
+          node-version: [19.x]
+
+      steps:
+        - uses: actions/checkout@v3
+          with: 
+            ref: 'PUM03-021' 
+
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v3
+          with:
+            node-version: ${{ matrix.node-version }}
+          
+        - name: Install npm ci in client
+          run: npm ci
+          working-directory: ./client
+          
+        - name: List client files
+          run: ls
+          working-directory: ./client
+        
+        - name: List server files
+          run: ls
+          working-directory: ./server
+        
+        - name: Install npm in server
+          run: npm install
+          working-directory: ./server
+        
+        - name: Install npm ci in server
+          run: npm ci
+          working-directory: ./server
+          
+        #- name: Builds client, if client exists
+        #  run: npm run build --if-present
+        #  working-directory: ./client
+          
+        #- name: Builds server, if client exists
+        #  run: npm run build --if-present
+        #  working-directory: ./server
+          
+        - name: Start containers 
+          run: docker-compose -f "docker-compose.yml" up -d --build
+          
+        - name: Runs automated unit tests in client side
+          run: npm test
+          working-directory: ./client
+          
+       

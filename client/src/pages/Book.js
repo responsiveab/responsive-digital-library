@@ -3,7 +3,7 @@ import './css/Book.css'
 import Tag from '../components/Tag'
 
 import {
-    useParams
+    useParams, useNavigate
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
@@ -13,19 +13,11 @@ import ContentEditable from 'react-contenteditable'
 function Book(props) {
     let { id } = useParams();
 
-    const [title, setTitle] = useState(undefined);
-    const [subtitle, setSubtitle] = useState(undefined);
-    const [desc, setDesc] = useState(undefined);
-    const [date, setDate] = useState(undefined);
-    const [author, setAuthor] = useState(undefined);
-    const [category, setCategory] = useState(undefined);
-    const [img, setImg] = useState(undefined);
     const [showResults, setShowResults] = useState(undefined);
-
-    // TODO: fetch tags from our database
-    const [tags, setTags] = useState([]);
+    const [book, setBook] = useState({});
+    const [user, setUser] = useState(undefined);
  
-    const [book, setBook] = useState({
+    const [bookMod, setBookMod] = useState({
         id:id,
         title:"",
         subtitle:"",
@@ -34,35 +26,72 @@ function Book(props) {
         author:"",
         category:""
     })
-   
-    useEffect(() => {
-       axios.get("http://localhost:8080/api/books/" + id) 
-        .then(res => {
-            for(var i = 0; i < res.data.data.tags.length; i++) {
-                axios.get("http://localhost:8080/api/tags/" + res.data.data.tags[i])
-                .then(res => {
-                    tags.push(res.data.data.name)
-                })
-                .catch(err => console.log(err))
+
+    let navigate = useNavigate();
+    const routeToIndex = () =>{
+        navigate('/');
+    }
+
+    function removeBook(){
+        axios.delete("http://localhost:8080/api/books/" + id)
+        .then(res =>{
+            console.log(res)
+            if(!res.data.data){
+                console.log("ingen resdata");
             }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+    function borrowBook(){
+        // TODO: Add authentication, waiting for logged in user implementation
+        let borrow = {
+            borrower:user,
+            borrowed:true
+        }
+        axios.patch("http://localhost:8080/api/books/" + id, borrow)        
+        .then(res =>{
+            console.log(res)
+            if(!res.data.data){
+                console.log("fel?");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+       console.log(user)    
+    }
 
-            setTitle(res.data.data.title) 
-            setSubtitle(res.data.data.subtitle)
-            setDesc(res.data.data.body)
-            setDate(res.data.data.published) 
-            setAuthor(res.data.data.author)
-            setCategory(res.data.data.category)
-            setImg(res.data.data.imgstr)
+    function returnBook(){
+        // TODO: Add authentication, waiting for logged in user implementation
+        let returner = {
+            borrower:'',
+            borrowed:false
+        }
+        axios.patch("http://localhost:8080/api/books/" + id, returner)        
+        .then(res =>{
+            console.log(res)
+            if(!res.data.data){
+                console.log("fel?");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+       console.log(user)
+    }
 
-            setBook({
-                id:id,
-                title:res.data.data.title,
-                subtitle:res.data.data.subtitle,
-                body:res.data.data.body,
-                published:res.data.data.published,
-                author:res.data.data.author,
-                category:res.data.data.category
-            })
+    function removeFunc(){
+        removeBook();
+        routeToIndex();
+    }
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/books/" + id)
+        .then(res => {
+            setBook(res.data.data)
+            setBookMod(book) // might not work
         })
         .catch(err => console.log(err))
     }, [])
@@ -72,20 +101,13 @@ function Book(props) {
     }
 
     const saveBook = () => {
-        console.log(book)
-        axios.patch("http://localhost:8080/api/books/" + id, book)
+        console.log(bookMod)
+        axios.patch("http://localhost:8080/api/books/" + id, bookMod)
         .then(res=> {
             console.log(res)
         })
         .catch(err=>console.log(err))   
-
-        setTitle(book.title)
-        setSubtitle(book.subtitle)
-        setDesc(book.body)
-        setDate(book.published) 
-        setAuthor(book.author)
-        setCategory(book.category)
-
+        setBook(bookMod)
         setShowResults(false);
     }
 
@@ -95,8 +117,8 @@ function Book(props) {
 
     const handleChange = e => {
         const {title,textContent} = e.currentTarget
-        setBook({
-            ...book,
+        setBookMod({
+            ...bookMod,
             [title]:textContent
         })
     }
@@ -105,26 +127,44 @@ function Book(props) {
     <main className='Book-Wrapper'>
         <div className='Book-Header'>
             <div className='Book-Thumbnail'>
-                <img src={img} height='256px' alt="thumbnail"></img>
+                <img src={book.imgstr} height='256px' alt="thumbnail"></img>
             </div>
             <div className='Book-Text'>
-                <h1 className='Book-Title'>{showResults ?  <ContentEditable title="title" onChange={handleChange} onBlur={handleChange} html={book.title} /> : title} </h1>
-                <h2 className='Book-Sub-Title'>{showResults ? <ContentEditable title="subtitle" onChange={handleChange} onBlur={handleChange} html={book.subtitle} /> : subtitle}</h2>
-                <span className='Book-Desc'>{showResults ?  <ContentEditable title="body" onChange={handleChange} onBlur={handleChange} html={book.body} /> : desc}</span>
+                /** BEGIN */
+                <h1 className='Book-Title'>{showResults ?  <ContentEditable title="title" onChange={handleChange} onBlur={handleChange} html={bookMod.title} /> : book.title} [{book.borrower}]</h1>
+                <h2 className='Book-Sub-Title'>{showResults ? <ContentEditable title="subtitle" onChange={handleChange} onBlur={handleChange} html={bookMod.subtitle} /> : book.subtitle}</h2>
+                <span className='Book-Desc'>{showResults ?  <ContentEditable title="body" onChange={handleChange} onBlur={handleChange} html={bookMod.body} /> : book.body}</span>
             </div>
         </div>
         <br/>
         { 
             <div className='Book-Meta'>
-                <span className='Book-Date'><b>Published: </b>{showResults ?  <ContentEditable title="published" onChange={handleChange} onBlur={handleChange} html={book.published} /> : date}</span> 
-                <span className='Book-Author'><b>Author: </b>{showResults ?  <ContentEditable title="author" onChange={handleChange} onBlur={handleChange} html={book.author} /> : author}</span>
-                <span className='Book-Category'><b>Category: </b>{showResults ? <ContentEditable title="category" onChange={handleChange} onBlur={handleChange} html={book.category} /> : category}</span>
-                <p className='Book-Id'><b>ISBN: </b>{id}</p>
+                <span className='Book-Date'><b>Published: </b>{showResults ?  <ContentEditable title="published" onChange={handleChange} onBlur={handleChange} html={bookMod.published} /> : book.date}</span> 
+                <span className='Book-Author'><b>Author: </b>{showResults ?  <ContentEditable title="author" onChange={handleChange} onBlur={handleChange} html={bookMod.author} /> : book.author}</span>
+                <span className='Book-Category'><b>Category: </b>{showResults ? <ContentEditable title="category" onChange={handleChange} onBlur={handleChange} html={bookMod.category} /> : book.category}</span>
+                <p className='Book-Id'><b>ISBN: </b>{book.id}</p>
                 <div className='Tags-Wrapper'>
-                    {tags.map((tag) => <Tag key={tag} content={tag} />)}
+                    {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
                 </div>
             </div>
-        }   
+        }  
+
+        <div className ='Remove-Book'>
+            <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
+        </div>
+
+        {/* TODO: Only show if book isn't borrowed?*/}
+        <div className ='Borrow-Book'>
+            <input type='text' id="borrow" placeholder="Namn" onInput={e => setUser(e.target.value)}/>
+            <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
+        </div>
+        
+        {/* TODO: Only let user who borrowed book se this*/}
+        <div className='Return-Book'>
+            <input type='text' id='borrow' placeholder="Namn" onInput={e => setUser(e.target.value)}/>
+            <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
+        </div>
+
         { !showResults && (
             <button type='button' id="edit-book" onClick={editBook}>Edit</button>
         )}

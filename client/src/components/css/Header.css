@@ -2,9 +2,17 @@
     text-align: center;
     position: relative;
     width: 100%;
-    padding: 8px;
+    padding-top: 8px;
     background-color: white;
     color: white;
+}
+
+.img-icon {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 .icon {
@@ -28,4 +36,11 @@
 
 hr {
     margin-top: 8px;
+}
+
+.Tag-Search-Area {
+    width: 50%;
+    height: 28px;
+    margin: auto;
+    overflow: auto;
 }

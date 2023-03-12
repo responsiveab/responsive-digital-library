@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from 'react'
-import axios, * as others from 'axios';
+import React, {useState} from 'react'
+import axios from 'axios';
 
 import {BiPlusCircle} from "react-icons/bi";
 
 import Tag from '../components/Tag'
 
 import './css/Add.css'
+
+import {
+    useNavigate
+} from "react-router-dom";
 
 function Add() {
     const [book, setBook] = useState(undefined)
@@ -14,6 +18,11 @@ function Add() {
     const [tag, setTag] = useState(undefined);
 
     const [tags, setTags] = useState([]);
+
+    let navigate = useNavigate();
+    const routeToIndex = () =>{
+        navigate('/');
+    }
 
     function fetchBook() {
         var isbn = require('node-isbn');
@@ -25,7 +34,12 @@ function Add() {
                     id:isbnNr,
                     title:fetched_book.title,
                     body:fetched_book.description,
-                    author:fetched_book.authors[0]
+                    author:fetched_book.authors[0],
+                    category:fetched_book.categories[0],
+                    img:fetched_book.imageLinks.thumbnail,
+                    language:fetched_book.language,
+                    publisher:fetched_book.publisher,
+                    date:fetched_book.publishedDate
                 }
                 setBook(newBook);
             }
@@ -35,7 +49,6 @@ function Add() {
     const addBook = () => {
         axios.get("http://localhost:8080/api/books/" + isbnNr)
         .then(res => {
-            console.log(res)
             if(!res.data.data) {
                 if (book) {
                     axios.post("http://localhost:8080/api/books/", book)
@@ -45,6 +58,7 @@ function Add() {
                             addTag(tags[i])
                         }
                         setTags([])
+                        routeToIndex()
                     })
                     .catch(err=>console.log(err))
                 }
@@ -61,16 +75,15 @@ function Add() {
     const appendTag = () => {
         tags.push(tag)
         setTag('')
+        document.getElementById('tag-input').value = ''
     }
 
     const addTag = (t) => {
         let newTag = {
-            name: t,
-            slug: t.toLowerCase()
+            name: t
         }
         axios.post("http://localhost:8080/api/tags/", newTag)
         .then(res=> {
-            console.log(res)
             let modifiedFields = {
                 tag: res.data.data
             }

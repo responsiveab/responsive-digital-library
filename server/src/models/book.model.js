@@ -12,9 +12,30 @@ const bookSchema = new mongoose.Schema({
    author: {
        type: String
    },
+   shelf: {
+       type: String
+   },
+   category: {
+       type: String
+   },
+   language: {
+       type: String
+   },
+   publisher: {
+       type: String
+   },
+   published: {
+    type: String
+   },
+   imgstr: {
+    type: String
+   },
+   borrower: String,
+   borrowed: Boolean,
+   digital: Boolean,
    tags: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: "Tag"
         }
    ]

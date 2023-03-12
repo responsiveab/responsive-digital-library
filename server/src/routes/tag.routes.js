@@ -38,8 +38,7 @@ tagRouter.get("/:tag_id", (req, res, next) => {
 // Add Single Tag
 tagRouter.post("/", (req, res, next) => {
     let newTag = {
-      name: req.body.name,
-      slug: req.body.slug
+      _id: req.body.name
     };
      Tag.create(newTag, function(err, result) {
       if(err){
@@ -72,5 +71,38 @@ tagRouter.patch("/:book_id", (req, res, next) => {
           });
     });
   });
+
+// Delete Single Tag
+tagRouter.delete("/:book_id/:tag_id", (req, res, next) => {
+  Book.findByIdAndUpdate(req.params.book_id, { $pull: { tags: req.params.tag_id } }, { new: true, useFindAndModify: false },  function (err, result) {
+    if(err){
+        res.status(400).send({
+           success: false,
+           error: err.message
+          });
+    }
+    res.status(200).send({
+      success: true,
+      data: result,
+      message: "Tag removed from book successfully"
+      });
+  });
+  /*
+  TODO: Below code causing error. Resolve
+  Tag.findByIdAndDelete(req.params.tag_id, function(err, result){
+      if(err){
+        res.status(400).send({
+          success: false,
+          error: err.message
+        });
+      }
+    res.status(200).send({
+      success: true,
+      data: result,
+      message: "Tag deleted successfully"
+    });
+  });
+  */
+});
 
 export default tagRouter;

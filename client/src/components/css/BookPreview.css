@@ -14,8 +14,8 @@ TODO: Adapt styling for smaller screens (for example phones)
 
     margin-left: auto;
     margin-right: auto;
-    margin-top: 8px;
     margin-bottom: 8px;
+    margin-top: 8px;
 }
 
 .CoverImage-Wrapper {
@@ -54,4 +54,13 @@ TODO: Adapt styling for smaller screens (for example phones)
 
 .MetaData-Wrapper a {
     text-decoration: none;
+}
+
+.Expander {
+    background-color: lightgray;
+    margin-left: 2px;
+    border-radius: 8px;
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 }

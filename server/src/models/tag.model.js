@@ -1,13 +1,7 @@
 import mongoose from 'mongoose';
 
 const tagSchema = new mongoose.Schema({
-   name: {
-       type: String,
-       required: true
-   },
-   slug: {
-       type: String
-   }
+   _id: String
 });
 
 const Tag = mongoose.model("Tag", tagSchema);
