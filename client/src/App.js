@@ -17,10 +17,15 @@ function App() {
   const [account, setAccount] = useState({});
 
   useEffect(() => {
-    if(!window.localStorage.getItem('account')){
-      setAccount(JSON.parse(window.localStorage.getItem('account')));
+    try {
+      const accountData = window.localStorage.getItem('account');
+      if (accountData) {
+        setAccount(JSON.parse(accountData));
+      }
+    } catch (e) {
+      console.error('Error parsing account data:', e);
     }
-    }, []);
+  }, [account]);
 
   return (
     <div className="App">
