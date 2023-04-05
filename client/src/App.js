@@ -11,7 +11,7 @@ import Account from './pages/Account';
 import Book from './pages/Book';
 import Add from './pages/Add';
 
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
   const [account, setAccount] = useState();
@@ -24,17 +24,17 @@ function App() {
     <div className="App">
       {
         account ? 
-        <BrowserRouter>
+        <Router basename="/">
           <Header/>
           <Routes>
             <Route path="/" element={<Index/>}/>
-            <Route path="/*" element={<Error/>}/>
             <Route path="/account" element={<Account user={account}/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/books/:id" element={<Book/>}/>
             <Route path="/books/add" element={<Add/>}/>
+            <Route path="/*" element={<Error/>}/>
           </Routes>
-        </BrowserRouter>
+        </Router>
         :
         <><Login setAccount={setAccount}/></>
       }

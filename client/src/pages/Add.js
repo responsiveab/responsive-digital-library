@@ -19,9 +19,9 @@ function Add() {
 
     const [tags, setTags] = useState([]);
 
-    let navigate = useNavigate();
+    //let navigate = useNavigate();
     const routeToIndex = () =>{
-        navigate('/');
+        //navigate('/');
     }
 
     function fetchBook() {
