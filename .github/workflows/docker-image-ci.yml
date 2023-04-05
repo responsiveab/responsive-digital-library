@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "PUM03-079" ]
   pull_request:
     branches: [ "main" ]
 
