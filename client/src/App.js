@@ -14,7 +14,7 @@ import Add from './pages/Add';
 import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
-  const [account, setAccount] = useState();
+  const [account, setAccount] = useState(undefined);
 
   useEffect(() => {
     setAccount(JSON.parse(window.localStorage.getItem('account')));

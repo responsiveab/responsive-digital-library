@@ -6,7 +6,7 @@ function Index() {
   const [books, setBooks] = useState(undefined)
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/books/")
+    axios.get("http://localhost:8080/api/books/") // TODO: Add env variable for backend domain
     .then(res => {
       setBooks(res.data.data)
       console.log(res.data.data)
