@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 
-import Header from './components/Header';
+// import Header from './components/headers/Header';
 
 import Index from './pages/Index';
 import Error from './pages/Error';
@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import Account from './pages/Account';
 import Book from './pages/Book';
 import Add from './pages/Add';
+import HeaderIndex from './components/headers/HeaderIndex';
 
 import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 
@@ -25,9 +26,8 @@ function App() {
       {
         account ? 
         <Router basename="/">
-          <Header/>
           <Routes>
-            <Route path="/" element={<Index/>}/>
+            <Route path="/" element={<HeaderIndex/>}/>
             <Route path="/account" element={<Account user={account}/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/books/:id" element={<Book/>}/>
