@@ -3,8 +3,8 @@
     position: relative;
     width: 100%;
     padding-top: 8px;
-    background-color: rgb(255, 255, 255);
-    color: rgb(255, 255, 255);
+    background-color: white;
+    color: white;
 }
 
 .img-icon {
@@ -23,24 +23,10 @@
 
 .App-header input {
     width: 85%;
-    padding: px;
+    padding: 8px;
     border: none;
 }
 
-.searchbar {
-    width: 50%;
-    margin: auto;
-    border: 1px solid black;
-    border-radius: 8px;
-}
-
-hr{
-    margin-top: 8px;
-}
-
-.Tag-Search-Area {
-    width: 50%;
-    height: 28px;
-    margin: auto;
-    overflow: auto;
+.hr-without-search {
+    margin-top: 42px;
 }
