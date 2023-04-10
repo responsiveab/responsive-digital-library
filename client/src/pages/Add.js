@@ -10,6 +10,7 @@ import './css/Add.css'
 import {
     useNavigate
 } from "react-router-dom";
+import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 
 function Add() {
     const [book, setBook] = useState(undefined)
@@ -19,9 +20,9 @@ function Add() {
 
     const [tags, setTags] = useState([]);
 
-    let navigate = useNavigate();
+    //let navigate = useNavigate();
     const routeToIndex = () =>{
-        navigate('/');
+        //navigate('/');
     }
 
     function fetchBook() {
@@ -100,6 +101,7 @@ function Add() {
 
     return (
     <>
+        <HeaderWithoutSearch/>
         <form action='#' className='add-book-form'>
             <input type="text" id="isbn-input" name="isbn" placeholder='ISBN' onInput={e => setIsbnNr(e.target.value)}/>
             {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 
-import Header from './components/Header';
+// import Header from './components/headers/Header';
 
 import Index from './pages/Index';
 import Error from './pages/Error';
@@ -10,8 +10,9 @@ import Register from './pages/Register';
 import Account from './pages/Account';
 import Book from './pages/Book';
 import Add from './pages/Add';
+import HeaderIndex from './components/headers/HeaderIndex';
 
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
   const [account, setAccount] = useState({});
@@ -31,17 +32,16 @@ function App() {
     <div className="App">
       {
         account ? 
-        <BrowserRouter>
-          <Header/>
+        <Router basename="/">
           <Routes>
-            <Route path="/" element={<Index/>}/>
-            <Route path="/*" element={<Error/>}/>
+            <Route path="/" element={<HeaderIndex/>}/>
             <Route path="/account" element={<Account user={account}/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/books/:id" element={<Book/>}/>
             <Route path="/books/add" element={<Add/>}/>
+            <Route path="/*" element={<Error/>}/>
           </Routes>
-        </BrowserRouter>
+        </Router>
         :
         <><Login setAccount={setAccount}/></>
       }

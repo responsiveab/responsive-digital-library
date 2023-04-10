@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  web:
+    # image: responsiveab/responsive-digital-library:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file: ./server/.env
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - mongo
+    networks:
+      - responsive-library-network
+  mongo:
+    image: mongo
+    volumes:
+      - data-volume:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - responsive-library-network
+
+networks:
+    responsive-library-network:
+        driver: bridge
+
+volumes:
+    data-volume:
+    node_modules:
+    web-root:
+      driver: local
