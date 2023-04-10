@@ -15,11 +15,18 @@ import HeaderIndex from './components/headers/HeaderIndex';
 import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
-  const [account, setAccount] = useState(undefined);
+  const [account, setAccount] = useState({});
 
   useEffect(() => {
-    setAccount(JSON.parse(window.localStorage.getItem('account')));
-  }, []);
+    try {
+      const accountData = window.localStorage.getItem('account');
+      if (accountData) {
+        setAccount(JSON.parse(accountData));
+      }
+    } catch (e) {
+      console.error('Error parsing account data:', e);
+    }
+  }, [account]);
 
   return (
     <div className="App">
