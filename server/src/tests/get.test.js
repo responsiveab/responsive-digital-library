@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '../../src/index.js';
+import db from '../../src/config/mongodb.config';
 
 describe('GET /', () => {
   let server;
@@ -10,6 +11,7 @@ describe('GET /', () => {
 
   afterAll((done) => {
     server.close(done);
+    db.close(done);
     done();
   });
 
