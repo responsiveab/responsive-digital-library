@@ -21,6 +21,7 @@ function Login({setAccount}) {
         .then(res => {
             setAccount(res.data.user)
             window.localStorage.setItem('account', JSON.stringify(res.data.user))
+            window.localStorage.setItem('token', res.data.token)
         })
         .catch(err => console.log(err))
     }

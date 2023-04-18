@@ -15,10 +15,12 @@ import HeaderIndex from './components/headers/HeaderIndex';
 import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
-  const [account, setAccount] = useState({});
+  const [account, setAccount] = useState(); //TODO: Remove this
 
   useEffect(() => {
-    try {
+    try { //TODO: This should be removed, instead check for valid token
+          //or cache if logged in
+       
       const accountData = window.localStorage.getItem('account');
       if (accountData) {
         setAccount(JSON.parse(accountData));
@@ -26,12 +28,14 @@ function App() {
     } catch (e) {
       console.error('Error parsing account data:', e);
     }
-  }, [account]);
+  }, []);
 
   return (
     <div className="App">
       {
-        account ? 
+        account ? // TODO: This type of thing should not happen anymore. 
+                  // you could for example make function call check_token
+                  // (you would of course need to implement this)
         <Router basename="/">
           <Routes>
             <Route path="/" element={<HeaderIndex/>}/>
