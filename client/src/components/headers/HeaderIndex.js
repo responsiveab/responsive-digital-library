@@ -5,11 +5,14 @@ import { useState } from 'react';
 import Tag from '../Tag'
 import Index from '../../pages/Index';
 
-
-function HeaderIndex() {
+function HeaderIndex(props) {
     const [tags, setTags] = useState(undefined);
     const [inputText, setInputText] = useState("");
-    const [hover,onHover] = useState(undefined);
+    const [hover,setHover] = useState(true);
+    const [hoverMenu,setHoverMenu] = useState(true);
+
+    
+
 
     let inputHandler = (e) => {
       setInputText(e.target.value);
@@ -22,10 +25,6 @@ function HeaderIndex() {
         else {
             setTags([tag])
         }
-    }
-
-    function showMenu() {
-        
     }
 
     const handleChange = e => {
@@ -47,19 +46,17 @@ function HeaderIndex() {
                 </Link>
             </div>
             <div style={{ float: 'right' }}>
-                <div class="dropdown">
-                    <Link to="/account">
-                        <button class="dropbtn"><BiUserCircle className="icon"></BiUserCircle></button>
-                        <div class="item-list-wrapper">
-                            <div class="dropdown-content">
-                                <p class="dropdown-header">Hej Thomas</p>
+                <div className="dropdown">
+                        <button className="dropbtn"><BiUserCircle className="icon"></BiUserCircle></button>
+                        <div className="item-list-wrapper">
+                            <div className="dropdown-content">
+                                <p className="dropdown-header">Hej {props.user.name}</p>
                                 <Link to="/account">Profil</Link>
                                 <a href="#">Mina Böcker</a>
                                 <a href="#">Logga ut</a>
                             </div>
                         </div>
-                   </Link>
-                </div>                
+                    </div>                
                 <Link to="/">
                     {/* Placeholder for Responsive logo */}
                     <img src={process.env.PUBLIC_URL + "/logo-rdl.png"} className="img-icon"/>

@@ -34,7 +34,7 @@ function App() {
         account ? 
         <Router basename="/">
           <Routes>
-            <Route path="/" element={<HeaderIndex/>}/>
+            <Route path="/" element={<HeaderIndex user={account}/>}/>
             <Route path="/account" element={<Account user={account}/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/books/:id" element={<Book/>}/>
