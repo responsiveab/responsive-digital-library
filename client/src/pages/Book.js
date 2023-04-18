@@ -112,6 +112,9 @@ function Book(props) {
     }
 
     const cancelBook = () => {
+        // reset input fields
+        setBookMod(book)
+
         setShowResults(false)
     }
 
@@ -141,41 +144,45 @@ function Book(props) {
                 <br/>
                 { 
                     <div className='Book-Meta'>
-                        <span className='Book-Date'><b>Published: </b>{showResults ?  <ContentEditable title="published" onChange={handleChange} onBlur={handleChange} html={bookMod.published} /> : book.date}</span> 
-                        <span className='Book-Author'><b>Author: </b>{showResults ?  <ContentEditable title="author" onChange={handleChange} onBlur={handleChange} html={bookMod.author} /> : book.author}</span>
-                        <span className='Book-Category'><b>Category: </b>{showResults ? <ContentEditable title="category" onChange={handleChange} onBlur={handleChange} html={bookMod.category} /> : book.category}</span>
-                        <p className='Book-Id'><b>ISBN: </b>{book.id}</p>
+                        <p className='Book-Date'><b>Published: </b>{showResults ?  <ContentEditable title="published" onChange={handleChange} onBlur={handleChange} html={bookMod.published} /> : book.published}</p> 
+                        <p className='Book-Author'><b>Author: </b>{showResults ?  <ContentEditable title="author" onChange={handleChange} onBlur={handleChange} html={bookMod.author} /> : book.author}</p>
+                        <p className='Book-Category'><b>Category: </b>{showResults ? <ContentEditable title="category" onChange={handleChange} onBlur={handleChange} html={bookMod.category} /> : book.category}</p>
+                        <p className='Book-Id'><b>ISBN: </b>{book._id}</p>
                         <div className='Tags-Wrapper'>
                             {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
                         </div>
                     </div>
                 }  
 
-                <div className ='Remove-Book'>
-                    <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
-                </div>
-
-                {/* TODO: Only show if book isn't borrowed?*/}
-                <div className ='Borrow-Book'>
-                    <input type='text' id="borrow" placeholder="Namn" onInput={e => setUser(e.target.value)}/>
-                    <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
-                </div>
-                
-                {/* TODO: Only let user who borrowed book se this*/}
-                <div className='Return-Book'>
-                    <input type='text' id='borrow' placeholder="Namn" onInput={e => setUser(e.target.value)}/>
-                    <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
-                </div>
-
-                { !showResults && (
-                    <button type='button' id="edit-book" onClick={editBook}>Edit</button>
-                )}
-                { showResults ? (
-                    <div>
-                        <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
-                        <button type='button' id="edit-book" onClick={saveBook}>Spara</button>
+                <div className ='Book-buttons'>
+                    {/* TODO: Only show if book isn't borrowed?*/}
+                    <div className ='Borrow-Book'>
+                        <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
                     </div>
-                ) : null }
+
+                     {/* TODO: Only let user who borrowed book se this*/}
+                    {/*
+                    <div className='Return-Book'>
+                        <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
+                </div>*/}
+
+                    <div className ='Remove-Book'>
+                        <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
+                    </div>
+
+                    
+                   { !showResults && (
+                        <button type='button' id="edit-book" onClick={editBook}>Ändra metadata</button>
+                    )}
+                    { showResults ? (
+                        <div>
+                            <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
+                            <button type='button' id="edit-book" onClick={saveBook}>Spara</button>
+                        </div>
+                    ) : null }
+                    
+                 
+                </div>
             </main>
         }
     </>
