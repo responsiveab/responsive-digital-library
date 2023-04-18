@@ -59,6 +59,13 @@ function Add() {
                             addTag(tags[i])
                         }
                         setTags([])
+                        
+                        // reset state and input fields
+                        setBook(undefined);
+                        setIsbnNr(undefined);
+                        setTag(undefined);
+                        document.getElementById('isbn-input').value = '';
+
                         routeToIndex()
                     })
                     .catch(err=>console.log(err))
