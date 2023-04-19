@@ -1,16 +1,61 @@
-.Information {
-    padding-top: 10px;
-    width: 70%;
-    border: 2px solid;
-    float:left;
+.Photo {
+    border-radius: 10px;
+    border: 1px solid;
+    width: 15%;
+    height: 120px;
+    margin: 10px;
+    
 }
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+  }
+  
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    height: 80%;
 
-.Readling-list {
-    padding-top: 10px;
-    border: 2px solid;
-}
+  }
+  
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    width: 70%; /* Updated width */
+    height: 100%;
+    background-color: white;
+  }
+  
+  .loan-list {
+    margin-left: 10px;
+    padding-left: 10px;
+    width: 30%; /* Updated width */
+    height: 100%;
+    justify-content:stretch;
+    border: 1px solid black;
+    border-radius: 8px;
 
-.Loan-list {
-    float: right;
-    border: 2px solid;
-}
+  }
+
+  .information {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    border-radius: 8px;
+  }
+
+   .reading-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding-left: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+  }
+ 
