@@ -20,6 +20,7 @@ function App() {
   useEffect(() => {
     try { //TODO: This should be removed, instead check for valid token
           //or cache if logged in
+       
       const accountData = window.localStorage.getItem('account');
       if (accountData) {
         setAccount(JSON.parse(accountData));

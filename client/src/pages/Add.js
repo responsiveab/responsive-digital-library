@@ -54,6 +54,7 @@ function Add() {
         .then(res => {
             if(!res.data.data) {
                 if (book) {
+                    book.token = window.localStorage.getItem('token')
                     axios.post("http://localhost:8080/api/books/", book)
                     .then(res=> {
                         console.log(res)
