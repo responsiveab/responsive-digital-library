@@ -43,6 +43,8 @@ function Add() {
                     date:(fetched_book.publishedDate ? fetched_book.publishedDate : "Okänt publiceringsdatum")
                 }
                 setBook(newBook);
+                // Hide input field
+                document.getElementById('isbn-input').style.display = 'none';
             }
         })
     }
@@ -60,11 +62,16 @@ function Add() {
                         }
                         setTags([])
                         
-                        // reset state and input fields
-                        setBook(undefined);
-                        setIsbnNr(undefined);
-                        setTag(undefined);
-                        document.getElementById('isbn-input').value = '';
+                        // make submit button green and wait 0.5s before resetting state and input fields
+                        document.getElementById('isbn-submit').style.backgroundColor = '#77DD77';
+                        setTimeout(() => {
+                            setBook(undefined);
+                            setIsbnNr(undefined);
+                            setTag(undefined);
+                            document.getElementById('isbn-input').value = '';
+                            document.getElementById('isbn-input').style.display = 'block';
+                            document.getElementById('isbn-input').focus();
+                        }, 500);
 
                         routeToIndex()
                     })
@@ -74,10 +81,23 @@ function Add() {
                     alert("invalid input")
                 }
             }
+            else {
+                alert("Boken finns redan i databasen")
+            }
         })
         .catch(err => {
             console.log(err)
         })
+    }
+
+    const cancelBook = () => {
+        // reset state and input fields
+        setBook(undefined);
+        setIsbnNr(undefined);
+        setTag(undefined);
+        document.getElementById('isbn-input').value = '';
+        document.getElementById('isbn-input').style.display = 'block';
+        document.getElementById('isbn-input').focus();
     }
 
     const appendTag = () => {
@@ -126,6 +146,8 @@ function Add() {
                         <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
                         <button type='button' id="tag-submit" onClick={appendTag}><BiPlusCircle/></button>
                     <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button>
+                    <button type='button' id="isbn-cancel" onClick={cancelBook}>Avbryt</button>
+
                 </div> : <button type='button' id="isbn-submit" onClick={fetchBook}>Hämta bok</button>)
             }
         </form>
