@@ -134,6 +134,11 @@ function Add() {
             {
                 isbnNr && (isbnNr.length > 8) &&
                 (book ? <div className='outline'>
+                        { (book.img !== "Bild saknas") ? <div className="CoverImage-Wrapper">
+                        {
+                            <img src={book.img} width="128px" alt="cover"></img>
+                        }
+                        </div> : <></>}
                         <h3>{book.title}</h3>
                         <p>{book.author}</p>
                         <p><i>{book.body}</i></p>
