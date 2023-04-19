@@ -34,3 +34,9 @@
     border-radius: 8px;
     padding: 8px;
 }
+
+.CoverImage-Wrapper {
+    width: 9em;
+    margin-top: 0.4em;
+    float: left;
+}
