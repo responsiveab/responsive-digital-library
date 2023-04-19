@@ -27,7 +27,7 @@ function App() {
     } catch (e) {
       console.error('Error parsing account data:', e);
     }
-  }, [account]);
+  }, []);
 
   return (
     <div className="App">
