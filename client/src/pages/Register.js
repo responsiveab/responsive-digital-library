@@ -1,6 +1,7 @@
 import React , {useState} from 'react'
 
 import axios from 'axios';
+import './css/Register.css'
 
 import {
     Link
@@ -42,7 +43,7 @@ function Register() {
                 <input type="text" id="create-account-name" name="name" value={user.name} onChange={handleChange} placeholder="name"/>
                 <input type="text" id="create-account-email" name="email" value={user.email} onChange={handleChange} placeholder="email"/>
                 <input type="password" id="create-account-pass" name="password" value={user.password} onChange={handleChange} placeholder="password"/>
-                <button type="button" onClick={register}>
+                <button type="button" id ="register-button" onClick={register}>
                     Register
                 </button>
             </form>
