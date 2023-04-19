@@ -3,7 +3,7 @@ import User from '../models/user.model';
 const userRouter = express.Router();
 
 //TODO: Ta bort detta, använder det för testning  nu.
-userRouter.get("/", (req,res,next) => {
+userRouter.get("/", (req, res, next) => {
     User.find({}, function(err,result){
         if(err){
             res.status(400).send({
@@ -18,12 +18,18 @@ userRouter.get("/", (req,res,next) => {
     });
 });
 
+const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 userRouter.post("/login", (req, res) => {
     const {email, password} = req.body;
-    User.findOne({email:email}, (err, user) => {
+    User.findOne({email:email}, async (err, user) => {
         if(user) {
-           if(password === user.password) {
-               res.send({message: "login successful", user:user})
+           if(await bcrypt.compare(password, user.encrypted_password)) {
+                const token = jwt.sign(
+                    { user_id: user._id, email },
+                    process.env.TOKEN_KEY
+                );
+               res.send({message: "login successful", user:user, token:token})
            } else {
                res.send({message: "login unsuccessful"})
            }
@@ -35,16 +41,23 @@ userRouter.post("/login", (req, res) => {
 
 userRouter.post("/register", (req, res) => {
     const {name, email, password} = req.body;
-    User.findOne({email:email}, (err, user) => {
+    User.findOne({email:email}, async (err, user) => {
         if(user) {
             res.send({message: "user already exist"})
         } else {
-            const user = new User({name, email, password})
+            const encrypted_password = await bcrypt.hash(password, 10);
+            const user = new User({name, email, encrypted_password});
+
+            const token = jwt.sign(
+                { user_id: user._id, email },
+                process.env.TOKEN_KEY
+            );
+
             user.save(err => {
                 if(err) {
                     res.send(err)
                 } else {
-                    res.send({message: "register successful"})
+                    res.send({message: "register successful", token:token})
                 }
             })
         }
