@@ -175,9 +175,9 @@ function Book(props) {
                         <button type='button' id="edit-book" onClick={editBook}>Ändra metadata</button>
                     )}
                     { showResults ? (
-                        <div>
-                            <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
+                        <div className='Align-h'>
                             <button type='button' id="edit-book" onClick={saveBook}>Spara</button>
+                            <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
                         </div>
                     ) : null }
                     
