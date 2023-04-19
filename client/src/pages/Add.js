@@ -33,14 +33,14 @@ function Add() {
             } else {
                 let newBook = {
                     id:isbnNr,
-                    title:fetched_book.title,
-                    body:fetched_book.description,
-                    author:fetched_book.authors[0],
-                    category:fetched_book.categories[0],
-                    img:fetched_book.imageLinks.thumbnail,
-                    language:fetched_book.language,
-                    publisher:fetched_book.publisher,
-                    date:fetched_book.publishedDate
+                    title:(fetched_book.title ? fetched_book.title : "Titel saknas"),
+                    body:(fetched_book.description ? fetched_book.description : "Beskrivning saknas"),
+                    author:(fetched_book.authors ? fetched_book.authors[0] : "Okänd författare"), 
+                    category:(fetched_book.categories ? fetched_book.categories[0] : "Okategoriserad"),
+                    img:(fetched_book.imageLinks ? fetched_book.imageLinks.thumbnail : "Bild saknas"),
+                    language:(fetched_book.language ? fetched_book.language : "Okänt språk"),
+                    publisher:(fetched_book.publisher ? fetched_book.publisher : "Okänt förlag"),
+                    date:(fetched_book.publishedDate ? fetched_book.publishedDate : "Okänt publiceringsdatum")
                 }
                 setBook(newBook);
             }
@@ -59,6 +59,13 @@ function Add() {
                             addTag(tags[i])
                         }
                         setTags([])
+                        
+                        // reset state and input fields
+                        setBook(undefined);
+                        setIsbnNr(undefined);
+                        setTag(undefined);
+                        document.getElementById('isbn-input').value = '';
+
                         routeToIndex()
                     })
                     .catch(err=>console.log(err))
