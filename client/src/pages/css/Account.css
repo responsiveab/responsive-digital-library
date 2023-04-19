@@ -1,0 +1,16 @@
+.Information {
+    padding-top: 10px;
+    width: 70%;
+    border: 2px solid;
+    float:left;
+}
+
+.Readling-list {
+    padding-top: 10px;
+    border: 2px solid;
+}
+
+.Loan-list {
+    float: right;
+    border: 2px solid;
+}
