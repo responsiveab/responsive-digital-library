@@ -38,7 +38,7 @@ function App() {
             <Route path="/account" element={<Account user={account}/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/books/:id" element={<Book/>}/>
-            <Route path="/books/add" element={<Add/>}/>
+            <Route path="/books/add" element={<Add user={account}/>}/>
             <Route path="/*" element={<Error/>}/>
           </Routes>
         </Router>

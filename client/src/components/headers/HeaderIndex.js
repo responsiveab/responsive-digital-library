@@ -8,11 +8,6 @@ import Index from '../../pages/Index';
 function HeaderIndex(props) {
     const [tags, setTags] = useState(undefined);
     const [inputText, setInputText] = useState("");
-    const [hover,setHover] = useState(true);
-    const [hoverMenu,setHoverMenu] = useState(true);
-
-    
-
 
     let inputHandler = (e) => {
       setInputText(e.target.value);
@@ -47,16 +42,16 @@ function HeaderIndex(props) {
             </div>
             <div style={{ float: 'right' }}>
                 <div className="dropdown">
-                        <button className="dropbtn"><BiUserCircle className="icon"></BiUserCircle></button>
-                        <div className="item-list-wrapper">
-                            <div className="dropdown-content">
-                                <p className="dropdown-header">Hej {props.user.name}</p>
-                                <Link to="/account">Profil</Link>
-                                <a href="#">Mina Böcker</a>
-                                <a href="#">Logga ut</a>
-                            </div>
+                    <button className="dropbtn"><BiUserCircle className="icon"></BiUserCircle></button>
+                    <div className="item-list-wrapper">
+                        <div className="dropdown-content">
+                            <p className="dropdown-header">Hej {props.user.name}</p>
+                            <Link to="/account">Profil</Link>
+                            <a href="#">Mina Böcker</a>
+                            <a href="#">Logga ut</a>
                         </div>
-                    </div>                
+                    </div>
+                </div>                
                 <Link to="/">
                     {/* Placeholder for Responsive logo */}
                     <img src={process.env.PUBLIC_URL + "/logo-rdl.png"} className="img-icon"/>
