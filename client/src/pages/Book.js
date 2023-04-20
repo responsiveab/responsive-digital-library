@@ -7,8 +7,9 @@ import {
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
-import axios, * as others from 'axios';
+import axios, * as others from 'axios'
 import ContentEditable from 'react-contenteditable'
+// import { API_URL } from '../utils/constants';
 
 function Book(props) {
     let { id } = useParams();
@@ -24,9 +25,19 @@ function Book(props) {
         body:"",
         published:"",
         author:"",
-        category:""
+        category:"",
+        filename:""
     })
 
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/books/" + id)
+        .then(res => {
+            setBook(res.data.data)
+            setBookMod(res.data.data) // copy for modification
+        })
+        .catch(err => console.log(err))
+    }, [])
+        
     let navigate = useNavigate();
     const routeToIndex = () =>{
         navigate('/');
@@ -44,6 +55,7 @@ function Book(props) {
             console.log(err);
         })
     }
+    
     function borrowBook(){
         // TODO: Add authentication, waiting for logged in user implementation
         let borrow = {
@@ -87,15 +99,7 @@ function Book(props) {
         routeToIndex();
     }
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/books/" + id)
-        .then(res => {
-            setBook(res.data.data)
-            setBookMod(res.data.data) // copy for modification
-        })
-        .catch(err => console.log(err))
-    }, [])
-        
+
     const editBook = () => {
         setShowResults(true)
     }
@@ -114,6 +118,61 @@ function Book(props) {
     const cancelBook = () => {
         setShowResults(false)
     }
+
+    // TODO: Async, wait until file is uploaded to volume before editing
+    function uploadBook(e) {
+        handleOnSubmit(e);
+        // e.preventDefault();
+
+        // const fileContent = e.target.files[0];
+        // let blobPDF = new Blob([e.target.files], {type: "pdf"});
+        // let formData = new FormData ();
+        // formData.append(fileContent.name, blobPDF);
+        // bookMod.filename = fileContent.name;
+        // // setBookMod({
+        // //     ...bookMod,
+        // //     ["filename"]:fileContent.name
+        // // })
+        // saveBook();
+        // alert("File submitted")
+    }
+
+    const downloadBook = () => {
+
+    }
+
+    const handleOnSubmit = async (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];
+        try {
+          //const { title, description } = event.target.value;
+          const description = event.target.files[0].name;
+          const title = event.target.files[0].name;
+          //if (title.trim() !== '' && description.trim() !== '') {
+            if (file) {
+              console.log(file)
+              const formData = new FormData();
+              formData.append('file', file); // lagra i databasen
+              formData.append('title', title); // skicka till book model
+              formData.append('description', description);
+      
+            //   setErrorMsg('');
+              await axios.post(`http://localhost:8080/api/files/upload`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              });
+            } else {
+            //   setErrorMsg('Please select a file to add.');
+            }
+          //} else {
+            // setErrorMsg('Please enter all the field values.');
+          //}
+        } catch (error) {
+            console.log(error); //   error.response && setErrorMsg(error.response.data);
+        }
+      };
+      
 
     const handleChange = e => {
         const {title,textContent} = e.currentTarget
@@ -147,6 +206,14 @@ function Book(props) {
                 </div>
             </div>
         }  
+
+        <div className ='Upload-Book'>
+            <input type="file" onChange={handleOnSubmit}/>
+        </div>
+
+        <div className ='Remove-Book'>
+            <button type='button' id="upload book" onClick={downloadBook}>Ladda ned bok</button>
+        </div>
 
         <div className ='Remove-Book'>
             <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
