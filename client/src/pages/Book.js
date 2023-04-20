@@ -11,12 +11,13 @@ import axios, * as others from 'axios';
 import ContentEditable from 'react-contenteditable'
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 function Book(props) {
-    let { id } = useParams();
+    let {id, type} = useParams();
 
     const [showResults, setShowResults] = useState(undefined);
+    const [newBook, setNewBook] = useState(undefined);
     const [book, setBook] = useState({});
     const [user, setUser] = useState(undefined);
- 
+    
     const [bookMod, setBookMod] = useState({
         id:id,
         title:"",
@@ -26,6 +27,13 @@ function Book(props) {
         author:"",
         category:""
     })
+
+    useEffect(() => {
+        if(type === "add"){
+            setShowResults(true);
+            setNewBook(true);
+        }
+    }, [type])
 
     let navigate = useNavigate();
     const routeToIndex = () =>{
@@ -113,6 +121,10 @@ function Book(props) {
         .catch(err=>console.log(err))   
         setBook(bookMod)
         setShowResults(false);
+
+        if (newBook) {
+            setNewBook(false);
+        }
     }
 
     const cancelBook = () => {
@@ -120,6 +132,11 @@ function Book(props) {
         setBookMod(book)
 
         setShowResults(false)
+
+        if (newBook) {
+            setNewBook(false);
+            removeFunc()
+        }
     }
 
     const handleChange = e => {
@@ -160,19 +177,23 @@ function Book(props) {
 
                 <div className ='Book-buttons'>
                     {/* TODO: Only show if book isn't borrowed?*/}
-                    <div className ='Borrow-Book'>
-                        <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
-                    </div>
+
+                    { !newBook && (
+                        <div className ='Borrow-Book'>
+                            <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
+                        </div>
+                    )}
 
                      {/* TODO: Only let user who borrowed book se this*/}
                     {/*
                     <div className='Return-Book'>
                         <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
                 </div>*/}
-
-                    <div className ='Remove-Book'>
-                        <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
-                    </div>
+                    { !newBook && (
+                        <div className ='Remove-Book'>
+                            <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
+                        </div>
+                    )}
 
                     
                    { !showResults && (
@@ -181,7 +202,7 @@ function Book(props) {
                     { showResults ? (
                         <div className='Align-h'>
                             <button type='button' id="edit-book" onClick={saveBook}>Spara</button>
-                            <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
+                            <button type='button' id="edit-book" onClick={cancelBook}>{!newBook ? <p>Avbryt</p> : <p>Avbryt & ta bort</p>}</button>
                         </div>
                     ) : null }
                     
