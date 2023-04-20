@@ -54,7 +54,7 @@ function Add() {
         .then(res => {
             if(!res.data.data) {
                 if (book) {
-                    book.token = window.localStorage.getItem('token')
+                    axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
                     axios.post("http://localhost:8080/api/books/", book)
                     .then(res=> {
                         console.log(res)
@@ -111,11 +111,13 @@ function Add() {
         let newTag = {
             name: t
         }
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.post("http://localhost:8080/api/tags/", newTag)
         .then(res=> {
             let modifiedFields = {
                 tag: res.data.data
             }
+            axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
             axios.patch("http://localhost:8080/api/tags/" + isbnNr, modifiedFields)
             .then(res => {
                 console.log(res)

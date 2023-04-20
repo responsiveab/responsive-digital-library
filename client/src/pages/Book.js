@@ -33,6 +33,7 @@ function Book(props) {
     }
 
     function removeBook(){
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.delete("http://localhost:8080/api/books/" + id)
         .then(res =>{
             console.log(res)
@@ -50,6 +51,7 @@ function Book(props) {
             borrower:user,
             borrowed:true
         }
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.patch("http://localhost:8080/api/books/" + id, borrow)        
         .then(res =>{
             console.log(res)
@@ -69,6 +71,7 @@ function Book(props) {
             borrower:'',
             borrowed:false
         }
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.patch("http://localhost:8080/api/books/" + id, returner)        
         .then(res =>{
             console.log(res)
@@ -102,6 +105,7 @@ function Book(props) {
 
     const saveBook = () => {
         console.log(bookMod)
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.patch("http://localhost:8080/api/books/" + id, bookMod)
         .then(res=> {
             console.log(res)
