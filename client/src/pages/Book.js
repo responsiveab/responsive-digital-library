@@ -124,6 +124,7 @@ function Book(props) {
 
         if (newBook) {
             setNewBook(false);
+            routeToIndex();
         }
     }
 
