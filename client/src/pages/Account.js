@@ -6,7 +6,7 @@ import BookPreview from "../components/BookPreview"
 
 
 function Account(props) {
-    const [books, setBooks] = useState(undefined)
+    const [books, setBooks] = useState()
     useEffect(() => {
         axios.get("http://localhost:8080/api/books/")
           .then(res => {

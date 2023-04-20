@@ -10,6 +10,7 @@ import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
 import ContentEditable from 'react-contenteditable'
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
+
 function Book(props) {
     let { id } = useParams();
 
@@ -80,6 +81,26 @@ function Book(props) {
             console.log(err);
         })
        console.log(user)
+    }
+
+    function addToReadList(){
+        let account = JSON.parse(window.localStorage.getItem('account'))
+        let account_id = account._id
+        let add_to_readlist = {
+            name: id
+        }
+        let token = window.localStorage.getItem('token')
+        axios.patch("http://localhost:8080/api/user/" + account_id, token, add_to_readlist)
+        .then(res =>{
+            console.log(res)
+            if(!res.data.data){
+                console.log("fel?");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        
     }
 
     function removeFunc(){
@@ -158,6 +179,10 @@ function Book(props) {
                     {/* TODO: Only show if book isn't borrowed?*/}
                     <div className ='Borrow-Book'>
                         <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
+                    </div>
+
+                    <div className ='ReadList-Book'>
+                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till</button>
                     </div>
 
                      {/* TODO: Only let user who borrowed book se this*/}
