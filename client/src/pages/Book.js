@@ -87,13 +87,17 @@ function Book(props) {
         let account = JSON.parse(window.localStorage.getItem('account'))
         let account_id = account._id
         let add_to_readlist = {
-            name: id
+            book: {
+                _id: id
+            }
         }
-        let token = window.localStorage.getItem('token')
-        axios.patch("http://localhost:8080/api/user/" + account_id, token, add_to_readlist)
+
+        console.log(add_to_readlist)
+        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
+        axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
         .then(res =>{
             console.log(res)
-            if(!res.data.data){
+            if(!res.data){
                 console.log("fel?");
             }
         })
