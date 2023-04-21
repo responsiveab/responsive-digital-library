@@ -149,17 +149,17 @@ function Add(props) {
                             <img src={book.img} width="128px" alt="cover"></img>
                         }
                         </div> : <></>}
-                        <EditText id="book-title" name="title" defaultValue={book.title} inline onSave={handleSave}/>
+                        <EditText id="book-title" name="title" defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
                         <br></br>
-                        <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave}/>
+                        <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave} placeholder={"Författare"}/>
                         <br></br>
-                        <EditText id="book-date" name='date' defaultValue={book.date} inline onSave={handleSave}/>
+                        <EditText id="book-date" name='date' defaultValue={book.date} inline onSave={handleSave} placeholder={"Publiceringsdatum"}/>
                         <br></br>
-                        <EditText id="book-category" name='category' defaultValue={book.category} inline onSave={handleSave}/>
+                        <EditText id="book-category" name='category' defaultValue={book.category} inline onSave={handleSave} placeholder={"Kategori"}/>
                         <br></br>
-                        <EditText id="book-publisher" name='publisher' defaultValue={book.publisher} inline onSave={handleSave}/>
+                        <EditText id="book-publisher" name='publisher' defaultValue={book.publisher} inline onSave={handleSave} placeholder={"Förlag"}/>
                         <br></br>
-                        <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave}/>
+                        <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave} placeholder={"Beskrivning"}/>
                         <p><b>{book.id}</b></p>
 
                         {
