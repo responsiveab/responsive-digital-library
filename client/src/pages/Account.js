@@ -1,8 +1,10 @@
 import React, {useEffect} from 'react';
+import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 
 function Account(props) {
     return (
     <>
+        <HeaderWithoutSearch/>
         {
         props.user && 
         <>
