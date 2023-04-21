@@ -19,7 +19,7 @@ function Account(props) {
 
     return (
     <>
-        <HeaderWithoutSearch/>
+        <HeaderWithoutSearch user={props.user}/>
         {
         props.user && 
         <>

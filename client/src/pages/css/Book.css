@@ -1,35 +1,28 @@
 
 .Book-Wrapper {
+    float: middle;
     width: 50%;
     height: 100%;
     margin: auto;
     margin-top: 32px;
 }
 
-.Book-Header {
-    width: 100%;
-    height: 256px;
-}
-
 .Book-Thumbnail {
-    width: 30%;
+    width: 12em;
+    margin-top: 0.4em;
     float: left;
 }
 
 .Book-Sub-Title {
-    margin-top: 16px;
+    margin-top: 8px;
 }
 
 .Book-Desc {
     margin-top: 16px;
 }
 
-.Book-Text {
-    width: 70%;
-    float: right;
-}
-
 .Book-Meta {
+    display: inline-block;
     text-align: left;
 }
 
@@ -41,9 +34,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10vh;
-    
-
+    height: fit-content;
+    width: fit-content;
+    margin: auto;
+    flex-wrap: wrap;
 }
 
 #edit-book, #borrow-submit, #isbn-remove,#readlist-submit{
@@ -54,39 +48,6 @@
     border: 1px solid black;
     text-align: center;
     max-width: 192px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
     justify-content: center;
     align-items: center;
 }
-
-/* #edit-book{
-    width: 20%;
-    margin-left: 10px;
-    padding: 8px;
-    margin-top: 8px;
-    border-radius: 8px;
-    font-size: 16px;
-    border: 1px solid black;
-}
-#borrow-submit{
-    width: 20%;
-    margin-left: 10px;
-    padding: 8px;
-    margin-top: 8px;
-    border-radius: 8px;
-    font-size: 16px;
-    border: 1px solid black;
-}
-
-#isbn-remove {
-    width: 20%;
-    margin-left: 10px;
-    padding: 8px;
-    margin-top: 8px;
-    border-radius: 8px;
-    font-size: 16px;
-    border: 1px solid black;
-} */
