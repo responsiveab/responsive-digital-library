@@ -18,6 +18,22 @@ userRouter.get("/", (req, res, next) => {
     });
 });
 
+// Get Single User
+userRouter.get("/:user_id", (req, res, next) => {
+    User.findById(req.params.user_id, function (err, result) {
+        if(err){
+             res.status(400).send({
+               success: false,
+               error: err.message
+             });
+        }
+        res.status(200).send({
+            success: true,
+            data: result
+        });
+     });
+});
+
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 userRouter.post("/login", (req, res) => {
