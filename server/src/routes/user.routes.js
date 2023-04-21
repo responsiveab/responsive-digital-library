@@ -37,26 +37,6 @@ userRouter.get('/', (req, res, next) => {
 });
 
 
-// Add single book to user reading list
-userRouter.patch("/:user_id",auth, (req, res, next) => {
-    User.findByIdAndUpdate(req.params.user_id, { $push: { reading_list_books: req.body.book._id } }, { new: true, useFindAndModify: false },  function (err, result) {
-        if(err){
-            res.status(400).send({
-               success: false,
-               error: err.message
-              });
-        }
-        res.status(200).send({
-          success: true,
-          data: result,
-          message: "Book successfully added to reading list"
-          });
-    });
-  });
-
-
-
-
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 userRouter.post("/login", (req, res) => {
