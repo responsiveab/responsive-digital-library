@@ -31,7 +31,8 @@ userRouter.get("/:user_id", auth,(req, res, next) => {
         }
         res.status(200).send({
             success: true,
-            data: result
+            data: result,
+            message:'User successfully fetched'
         });
      });
 });

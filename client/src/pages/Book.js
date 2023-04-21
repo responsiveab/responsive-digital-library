@@ -95,23 +95,17 @@ function Book(props) {
     }
 
     async function getUser(account_id) {
-        let user_ = await axios.get("http://localhost:8080/api/users/" + account_id)
-    
-        .then(res =>{
-            if(!res.data){
-                console.log(res);
-            }
-            let user_object = res.data
-            //console.log(user_object.data.name)
-            return user_object   
-        })
-        .catch(err => {
+        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
+        try {
+            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
+            console.log('res', response.data);
+            return response.data;
+        } catch (err) {
             console.log(err);
-        })
-       
+        }
     }
 
-    function addToReadList(){
+    async function addToReadList(){
         let account = props.user
         let account_id = account._id
         let add_to_readlist = {
@@ -119,19 +113,35 @@ function Book(props) {
                 _id: id
             }
         }
-        let user_ = getUser(account_id)
-        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-        axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
-        .then(res =>{
-            if(!res.data){
-                console.log(res);
+        try{
+            let user_ = await getUser(account_id)
+            if (user_.data.reading_list_books.includes(id)){
+                console.log("Boken finns redan")
             }
-            console.log(res)
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            else{
+                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
+                axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
+                .then(res =>{
+                    if(!res.data){
+                        console.log(res);
+                    }
+                    console.log("Boken tillagd")
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+
+        }catch(err){
+            console.log(err)
+        }
         
+        
+    }
+    //TODO: Add functionality to remove book from reading list.
+    function delBookReadingList(){
+
     }
 
 
