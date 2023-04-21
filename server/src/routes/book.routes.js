@@ -1,5 +1,8 @@
 import express from 'express';
 import Book from '../models/book.model';
+
+const auth = require("../middleware/auth");
+
 const bookRouter = express.Router();
 
 // Get all Books
@@ -35,7 +38,7 @@ bookRouter.get("/:book_id", (req, res, next) => {
 });
 
 // Add Single Book
-bookRouter.post("/", (req, res, next) => {
+bookRouter.post("/", auth, (req, res, next) => {
   let newBook = {
     _id: req.body.id,
     title: req.body.title,
@@ -68,7 +71,7 @@ bookRouter.post("/", (req, res, next) => {
 });
 
 // Edit Single Book
-bookRouter.patch("/:book_id", (req, res, next) => {
+bookRouter.patch("/:book_id", auth, (req, res, next) => {
   let fieldsToUpdate = req.body;
   Book.findByIdAndUpdate(req.params.book_id,{ $set: fieldsToUpdate }, { new: true },  function (err, result) {
       if(err){
@@ -86,7 +89,7 @@ bookRouter.patch("/:book_id", (req, res, next) => {
 });
 
 // Delete Single Book
-bookRouter.delete("/:book_id", (req, res, next) => {
+bookRouter.delete("/:book_id", auth, (req, res, next) => {
   Book.findByIdAndDelete(req.params.book_id, function(err, result){
       if(err){
         res.status(400).send({
