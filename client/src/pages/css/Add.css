@@ -23,6 +23,28 @@
     border: 1px solid black;
 }
 
+#book-title{
+    font-size: 1.17em;
+    margin: 0;
+    margin-bottom: 0.4em;
+    font-weight: bold;
+    width: fit-content;
+}
+
+#book-author, #book-category, #book-date, #book-publisher, #book-language, #book-isbn {
+    font-size: 1em;
+    margin: 0;
+    margin-bottom: 0.4em;
+    width: fit-content;
+}
+
+#book-body {
+    font-size: 1em;
+    margin: 0;
+    margin-bottom: 0.4em;
+    font-style: italic;
+}
+
 .add-book-form {
     width: 50%;
     margin: auto;
@@ -36,7 +58,6 @@
 }
 
 .CoverImage-Wrapper {
-    width: 9em;
-    margin-top: 0.4em;
+    width: 8.5em;
     float: left;
 }

@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import axios from 'axios';
 
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
 import {BiPlusCircle} from "react-icons/bi";
 
 import Tag from '../components/Tag'
@@ -127,6 +129,13 @@ function Add(props) {
         .catch(err=>console.log(err))
     }
 
+    const handleSave = ({ name, value, previousValue }) => {
+        setBook({
+            ...book,
+            [name]:value
+        })
+    };
+
     return (
     <>
         <HeaderWithoutSearch user={props.user}/>
@@ -140,9 +149,17 @@ function Add(props) {
                             <img src={book.img} width="128px" alt="cover"></img>
                         }
                         </div> : <></>}
-                        <h3>{book.title}</h3>
-                        <p>{book.author}</p>
-                        <p><i>{book.body}</i></p>
+                        <EditText id="book-title" name="title" defaultValue={book.title} inline onSave={handleSave}/>
+                        <br></br>
+                        <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave}/>
+                        <br></br>
+                        <EditText id="book-date" name='date' defaultValue={book.date} inline onSave={handleSave}/>
+                        <br></br>
+                        <EditText id="book-category" name='category' defaultValue={book.category} inline onSave={handleSave}/>
+                        <br></br>
+                        <EditText id="book-publisher" name='publisher' defaultValue={book.publisher} inline onSave={handleSave}/>
+                        <br></br>
+                        <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave}/>
                         <p><b>{book.id}</b></p>
 
                         {
