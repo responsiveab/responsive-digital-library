@@ -41,7 +41,7 @@ function App() {
             <Route path="/" element={<HeaderIndex user={account}/>}/>
             <Route path="/account" element={<Account user={account}/>}/>
             <Route path="/register" element={<Register/>}/>
-            <Route path="/books/:id/:type?" element={<Book user={account}/>}/>
+            <Route path="/books/:id" element={<Book user={account}/>}/>
             <Route path="/books/add" element={<Add user={account}/>}/>
             <Route path="/*" element={<Error/>}/>
           </Routes>
