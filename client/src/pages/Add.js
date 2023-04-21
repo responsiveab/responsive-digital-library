@@ -20,9 +20,13 @@ function Add() {
 
     const [tags, setTags] = useState([]);
 
-    //let navigate = useNavigate();
+    let navigate = useNavigate();
     const routeToIndex = () =>{
         //navigate('/');
+    }
+
+    const routeToBook = () =>{
+        navigate('/books/' + isbnNr + '/add');
     }
 
     function fetchBook() {
@@ -54,7 +58,7 @@ function Add() {
         .then(res => {
             if(!res.data.data) {
                 if (book) {
-                    book.token = window.localStorage.getItem('token')
+                    axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
                     axios.post("http://localhost:8080/api/books/", book)
                     .then(res=> {
                         console.log(res)
@@ -99,6 +103,37 @@ function Add() {
         document.getElementById('isbn-input').value = '';
         document.getElementById('isbn-input').style.display = 'block';
         document.getElementById('isbn-input').focus();
+    }
+
+    const editBook = () => {
+        axios.get("http://localhost:8080/api/books/" + isbnNr)
+        .then(res => {
+            if(!res.data.data) {
+                if (book) {
+                    axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
+                    axios.post("http://localhost:8080/api/books/", book)
+                    .then(res=> {
+                        console.log(res)
+                        for(var i = 0; i < tags.length; i++) {
+                            addTag(tags[i])
+                        }
+                        setTags([])
+
+                        routeToBook()
+                    })
+                    .catch(err=>console.log(err))
+                }
+                else {
+                    alert("invalid input")
+                }
+            }
+            else {
+                alert("Boken finns redan i databasen")
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     const appendTag = () => {
@@ -152,6 +187,7 @@ function Add() {
                         <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
                         <button type='button' id="tag-submit" onClick={appendTag}><BiPlusCircle/></button>
                     <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button>
+                    <button type='button' id="isbn-edit" onClick={editBook}>Redigera bok</button>
                     <button type='button' id="isbn-cancel" onClick={cancelBook}>Avbryt</button>
 
                 </div> : <button type='button' id="isbn-submit" onClick={fetchBook}>Hämta bok</button>)
