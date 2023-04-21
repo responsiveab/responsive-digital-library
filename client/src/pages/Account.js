@@ -4,12 +4,13 @@ import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 function Account(props) {
     return (
     <>
-        <HeaderWithoutSearch/>
+        <HeaderWithoutSearch user={props.user}/>
         {
         props.user && 
         <>
             <h1>Profilsida för {props.user.name}</h1>
             {
+
             /* 
             TODO:
             <h2>Lånade böcker</h2>

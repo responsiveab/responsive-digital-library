@@ -6,10 +6,8 @@ import { useState } from 'react';
 import Tag from '../Tag'
 
 
-function HeaderWithoutSearch() {
+function HeaderWithoutSearch(props) {
     const [tags, setTags] = useState(undefined);
-
-
 
     return (
         <header className="App-header">
@@ -19,9 +17,17 @@ function HeaderWithoutSearch() {
                 </Link>
             </div>
             <div style={{ float: 'right' }}>
-                <Link to="/account">
-                    <BiUserCircle className="icon"/>
-                </Link>
+                <div className="dropdown">
+                    <button className="dropbtn"><BiUserCircle className="icon"></BiUserCircle></button>
+                    <div className="item-list-wrapper">
+                        <div className="dropdown-content">
+                            <p className="dropdown-header">Hej {props.user.name}</p>
+                            <Link to="/account">Profil</Link>
+                            <a href="#">Mina Böcker</a>
+                            <a href="#">Logga ut</a>
+                        </div>
+                    </div>
+                </div>  
                 <Link to="/">
                     {/* Placeholder for Responsive logo */}
                     <img src={process.env.PUBLIC_URL + "/logo-rdl.png"} className="img-icon"/>

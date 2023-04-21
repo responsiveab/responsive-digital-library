@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 
-function Add() {
+function Add(props) {
     const [book, setBook] = useState(undefined)
 
     const [isbnNr, setIsbnNr] = useState(undefined);
@@ -164,7 +164,7 @@ function Add() {
 
     return (
     <>
-        <HeaderWithoutSearch/>
+        <HeaderWithoutSearch user={props.user}/>
         <form action='#' className='add-book-form'>
             <input type="text" id="isbn-input" name="isbn" placeholder='ISBN' onInput={e => setIsbnNr(e.target.value)}/>
             {
