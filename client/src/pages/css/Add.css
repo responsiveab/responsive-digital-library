@@ -1,4 +1,4 @@
-#isbn-input, #isbn-submit {
+#isbn-input, #isbn-submit, #isbn-edit ,#isbn-cancel {
     width: 100%;
     padding: 8px;
     margin-top: 8px;
@@ -33,4 +33,10 @@
     border: 1px solid black;
     border-radius: 8px;
     padding: 8px;
+}
+
+.CoverImage-Wrapper {
+    width: 9em;
+    margin-top: 0.4em;
+    float: left;
 }
