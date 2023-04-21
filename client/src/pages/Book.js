@@ -150,7 +150,7 @@ function Book(props) {
     
     return (
     <>
-        <HeaderWithoutSearch/>
+        <HeaderWithoutSearch user={props.user}/>
         {
             <main className='Book-Wrapper'>
                 <div className='Book-Header'>
