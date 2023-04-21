@@ -79,6 +79,7 @@ function Book(props) {
             borrower:'',
             borrowed:false
         }
+       
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.patch("http://localhost:8080/api/books/" + id, returner)        
         .then(res =>{
@@ -92,6 +93,47 @@ function Book(props) {
         })
        console.log(user)
     }
+
+    async function getUser(account_id) {
+        let user_ = await axios.get("http://localhost:8080/api/users/" + account_id)
+    
+        .then(res =>{
+            if(!res.data){
+                console.log(res);
+            }
+            let user_object = res.data
+            //console.log(user_object.data.name)
+            return user_object   
+        })
+        .catch(err => {
+            console.log(err);
+        })
+       
+    }
+
+    function addToReadList(){
+        let account = props.user
+        let account_id = account._id
+        let add_to_readlist = {
+            book: {
+                _id: id
+            }
+        }
+        let user_ = getUser(account_id)
+        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
+        axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
+        .then(res =>{
+            if(!res.data){
+                console.log(res);
+            }
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        
+    }
+
 
     function removeFunc(){
         removeBook();
@@ -184,6 +226,10 @@ function Book(props) {
                             <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
                         </div>
                     )}
+
+                    <div className ='ReadList-Book'>
+                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till</button>
+                    </div>
 
                      {/* TODO: Only let user who borrowed book se this*/}
                     {/*

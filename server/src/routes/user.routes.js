@@ -2,6 +2,8 @@ import express from 'express';
 import User from '../models/user.model';
 const userRouter = express.Router();
 
+const auth = require("../middleware/auth");
+
 //TODO: Ta bort detta, använder det för testning  nu.
 userRouter.get("/", (req, res, next) => {
     User.find({}, function(err,result){
@@ -19,7 +21,7 @@ userRouter.get("/", (req, res, next) => {
 });
 
 // Get Single User
-userRouter.get("/:user_id", (req, res, next) => {
+userRouter.get("/:user_id", auth,(req, res, next) => {
     User.findById(req.params.user_id, function (err, result) {
         if(err){
              res.status(400).send({
@@ -33,6 +35,25 @@ userRouter.get("/:user_id", (req, res, next) => {
         });
      });
 });
+
+// Add single book to user reading list
+userRouter.patch("/:user_id",auth, (req, res, next) => {
+    User.findByIdAndUpdate(req.params.user_id, { $push: { reading_list_books: req.body.book._id } }, { new: true, useFindAndModify: false },  function (err, result) {
+        if(err){
+            res.status(400).send({
+               success: false,
+               error: err.message
+              });
+            
+        }
+        res.status(200).send({
+          success: true,
+          data: result,
+          message: "Book successfully added to reading list"
+          });
+    });
+  });
+  
 
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
