@@ -40,7 +40,7 @@
     flex-wrap: wrap;
 }
 
-#edit-book, #borrow-submit, #isbn-remove,#readlist-submit{
+#edit-book, #borrow-submit, #isbn-remove{
     margin: 0 10px;
     padding: 10px 20px;
     font-size: 16px;

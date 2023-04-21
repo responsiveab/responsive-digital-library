@@ -5,13 +5,7 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: String,
     encrypted_password: String,
-    //relation till användare för att ha koll på lånade böcker 
-    reading_list_books: [
-        {
-            type: String,
-            ref: "Book"
-        }
-   ]
+  
 
 });
 

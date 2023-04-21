@@ -94,29 +94,7 @@ function Book(props) {
        console.log(user)
     }
 
-    function addToReadList(){
-        let account = JSON.parse(window.localStorage.getItem('account'))
-        let account_id = account._id
-        let add_to_readlist = {
-            book: {
-                _id: id
-            }
-        }
 
-        console.log(add_to_readlist)
-        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-        axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
-        .then(res =>{
-            console.log(res)
-            if(!res.data){
-                console.log("fel?");
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        
-    }
 
     function removeFunc(){
         removeBook();
@@ -210,9 +188,6 @@ function Book(props) {
                         </div>
                     )}
 
-                    <div className ='ReadList-Book'>
-                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till</button>
-                    </div>
 
                      {/* TODO: Only let user who borrowed book se this*/}
                     {/*
