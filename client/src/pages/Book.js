@@ -139,11 +139,45 @@ function Book(props) {
         
         
     }
-    //TODO: Add functionality to remove book from reading list.
-    function delBookReadingList(){
-
+    async function removeFromReadList(){
+        let account = props.user;
+        let account_id = account._id;
+        let remove_from_readlist = {
+            book: {
+                _id: id
+            }
+        };
+        try{
+            let user_ = await getUser(account_id);
+            if (!user_.data.reading_list_books.includes(id)){
+                console.log("Boken ligger inte i läslistan")
+            }
+            else{
+                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
+                axios.patch(
+                    "http://localhost:8080/api/users/" +
+                      account_id +
+                      "/reading-list-books/" +
+                      id,
+                    remove_from_readlist
+                  )
+                .then(res =>{
+                    console.log("Response:", res);
+                    if(!res.data){
+                        console.log("Error:", res);
+                    }
+                    console.log("Boken borttagen");
+                    console.log("Data:", res.data);
+                })
+                .catch(err => {
+                    console.log("Error:", err);
+                });
+            }
+    
+        }catch(err){
+            console.log("Error:", err);
+        }
     }
-
 
     function removeFunc(){
         removeBook();
@@ -238,7 +272,10 @@ function Book(props) {
                     )}
 
                     <div className ='ReadList-Book'>
-                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till</button>
+                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till i läslista</button>
+                    </div>
+                    <div className ='Remove-ReadList-Book'>
+                        <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
                     </div>
 
                      {/* TODO: Only let user who borrowed book se this*/}
