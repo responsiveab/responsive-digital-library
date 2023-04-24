@@ -4,6 +4,7 @@ const userRouter = express.Router();
 
 const auth = require("../middleware/auth");
 
+
 //TODO: Ta bort detta, använder det för testning  nu.
 userRouter.get("/", (req, res, next) => {
     User.find({}, function(err,result){
@@ -21,6 +22,9 @@ userRouter.get("/", (req, res, next) => {
 });
 
 // Get Single User
+
+
+//Get user by id
 userRouter.get("/:user_id", auth,(req, res, next) => {
     User.findById(req.params.user_id, function (err, result) {
         if(err){
@@ -36,6 +40,7 @@ userRouter.get("/:user_id", auth,(req, res, next) => {
         });
      });
 });
+
 
 // Add single book to user reading list
 userRouter.patch("/:user_id",auth, (req, res, next) => {
@@ -72,6 +77,22 @@ userRouter.patch("/:user_id/reading-list-books/:book_id",auth,(req,res,next)=> {
     });
 });
   
+// Get all users
+userRouter.get('/', (req, res, next) => {
+  User.find({} , function(err, result){
+      if(err){
+          res.status(400).send({
+              'success': false,
+              'error': err.message
+          });
+      }
+      res.status(200).send({
+          'success': true,
+          'data': result
+      });
+  });
+});
+
 
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");

@@ -10,6 +10,7 @@ import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
 import ContentEditable from 'react-contenteditable'
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
+
 function Book(props) {
     let {id, type} = useParams();
 
@@ -93,6 +94,7 @@ function Book(props) {
         })
        console.log(user)
     }
+
 
     async function getUser(account_id) {
         axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
@@ -178,6 +180,7 @@ function Book(props) {
             console.log("Error:", err);
         }
     }
+
 
     function removeFunc(){
         removeBook();
@@ -277,6 +280,7 @@ function Book(props) {
                     <div className ='Remove-ReadList-Book'>
                         <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
                     </div>
+
 
                      {/* TODO: Only let user who borrowed book se this*/}
                     {/*
