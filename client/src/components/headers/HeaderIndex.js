@@ -58,7 +58,6 @@ function HeaderIndex(props) {
                 <input 
                     id="searchInput"
                     type="text" 
-                    // id="search" 
                     name="search"
                     onChange={inputHandler}
                 />
