@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema({
             type: String,
             ref: "Book"
         }
+   ],
+   loan_list_books:[
+        {
+            type: String,
+            ref: "Book"
+        }
    ]
 
 });
