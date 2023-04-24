@@ -39,7 +39,13 @@ function Tag(props) {
 
     return (
     <div className='Tag-Wrapper' style={{ background: string_to_color(props.content) }}>
-        <Link to={"../search/tag/" + props.content}>{props.content}</Link>
+        {/* <Link to={"../search/tag/" + props.content}> */}
+
+        {/* <button  */}
+        {props.content && <a onClick={() => props.inputUpdate(props.content)}> {props.content} </a>}
+
+        {/* /> */}
+        {/* </Link> */}
         {props.show_rm && <a href="#" onClick={removeTag}><BiX/></a>}
     </div>);
 }
