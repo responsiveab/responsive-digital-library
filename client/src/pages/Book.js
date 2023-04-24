@@ -15,6 +15,7 @@ function Book(props) {
     let {id} = useParams();
 
     const [showResults, setShowResults] = useState(undefined);
+    const [showReadList, setShowReadList] = useState(undefined);
     const [book, setBook] = useState({});
     const [user, setUser] = useState(undefined);
     
@@ -28,13 +29,54 @@ function Book(props) {
         category:""
     })
 
+    useEffect(async () => {
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
+        
+        const account_id = props.user._id;
+        console.log("ACCOUNT ID::::::::::::::"+account_id)
+
+        const user_ = await getUser(account_id)
+        setUser(user_.data)
+
+    }, []);
+    
+    useEffect(() => {
+        // check if user is undefined
+        if (user !== undefined){
+            if (user.loan_list_books.includes(id)){
+                setShowReadList(false);
+            }
+            else{
+                setShowReadList(true);
+            }
+        }
+      }, [user]);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/books/" + id)
+        .then(res => {
+            setBook(res.data.data)
+            setBookMod(res.data.data) // copy for modification
+        })
+        .catch(err => console.log(err))
+    }, [])
+
     let navigate = useNavigate();
     const routeToIndex = () =>{
         navigate('/');
     }
+    async function getUser(account_id) {
+        try {
+            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
+            console.log('res', response.data);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     function removeBook(){
-        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.delete("http://localhost:8080/api/books/" + id)
         .then(res =>{
             console.log(res)
@@ -52,7 +94,6 @@ function Book(props) {
             borrower: account_name,
             borrowed: true
         }
-        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
         axios.patch("http://localhost:8080/api/books/" + id, add_to_borrower)
         .then(res =>{
             if(!res.data){
@@ -72,7 +113,6 @@ function Book(props) {
             borrower: "ingen",
             borrowed: false
         }
-        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
         axios.patch("http://localhost:8080/api/books/" + id, remove_from_borrower)
         .then(res =>{
             if(!res.data){
@@ -88,181 +128,112 @@ function Book(props) {
     }
 
     async function borrowBook(){
-        console.log("USER KOMMER HÄR")
-        console.log(user)
-        let account = props.user
-        let account_id = account._id
         let add_to_loanlist = {
             book: {
                 _id: id
             }
         }
-        try{
-            let user_ = await getUser(account_id)
-            if (user_.data.loan_list_books.includes(id)){
-                console.log("Boken finns redan i lånlistan")
-            }
-            else{
-                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-                axios.patch("http://localhost:8080/api/users/" + account_id+"/loan-list-books", add_to_loanlist)
-                .then(res =>{
-                    if(!res.data){
-                        console.log(res);
-                    }
-                    console.log("Boken tillagd i lånlistan")
-                    addBorrowerToBook(account.name)
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            }
-
-        }catch(err){
-            console.log(err)
+        if (user.loan_list_books.includes(id)){
+            console.log("Boken finns redan i lånlistan")
+        }
+        else{
+            axios.patch("http://localhost:8080/api/users/" + user._id+"/loan-list-books", add_to_loanlist)
+            .then(res =>{
+                if(!res.data){
+                    console.log(res);
+                }
+                console.log("Boken tillagd i lånlistan")
+                setUser(res.data.data)
+                addBorrowerToBook(user.name)
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            })
         }
         
     }
 
     async function returnBook(){
-        console.log("USER KOMMER HÄR")
-        console.log(user)
-        let account = props.user;
-        let account_id = account._id;
         let remove_from_loanlist = {
             book: {
                 _id: id
             }
         };
-        try{
-            let user_ = await getUser(account_id);
-            if (!user_.data.loan_list_books.includes(id)){
-                console.log("Boken ligger inte i lånlistan")
-            }
-            else{
-                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
-                axios.patch(
-                    "http://localhost:8080/api/users/" +
-                      account_id +
-                      "/loan-list-books/" +
-                      id,
-                    remove_from_loanlist
-                  )
-                .then(res =>{
-                    console.log("Response:", res);
-                    if(!res.data){
-                        console.log("Error:", res);
-                    }
-                    console.log("Boken borttagen från lånlistan");
-                    console.log("Data:", res.data);
-                    removeBorrowerFromBook()
-                })
-                .catch(err => {
-                    console.log("Error:", err);
-                });
-            }
-    
-        }catch(err){
-            console.log("Error:", err);
+        if (!user.loan_list_books.includes(id)){
+            console.log("Boken ligger inte i lånlistan")
         }
-    }
-
-
-    async function getUser(account_id) {
-        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-        try {
-            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
-            console.log('res', response.data);
-            return response.data;
-        } catch (err) {
-            console.log(err);
+        else{
+            axios.patch(
+                "http://localhost:8080/api/users/" +user._id +"/loan-list-books/" +id,remove_from_loanlist)
+            .then(res =>{
+                console.log("Response:", res);
+                if(!res.data){
+                    console.log("Error:", res);
+                }
+                console.log("Boken borttagen från lånlistan");
+                console.log("Data:", res.data);
+                setUser(res.data.data)
+                removeBorrowerFromBook()
+            })
+            .catch(err => {
+                console.log("Error:", err);
+            });
         }
     }
 
     async function addToReadList(){
-        let account = props.user
-        let account_id = account._id
         let add_to_readlist = {
             book: {
                 _id: id
             }
         }
-        try{
-            let user_ = await getUser(account_id)
-            if (user_.data.reading_list_books.includes(id)){
-                console.log("Boken finns redan i lästlistan")
-            }
-            else{
-                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-                axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
-                .then(res =>{
-                    if(!res.data){
-                        console.log(res);
-                    }
-                    console.log("Boken tillagd")
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            }
-
-        }catch(err){
-            console.log(err)
+        if (user.reading_list_books.includes(id)){
+            console.log("Boken finns redan i läslistan")
         }
-        
-        
+        else{
+            axios.patch("http://localhost:8080/api/users/" + user._id, add_to_readlist)
+            .then(res =>{
+                if(!res.data){
+                    console.log(res);
+                }
+                console.log("Boken tillagd")
+                console.log(res)
+                setUser(res.data.data)
+                setShowReadList(prevState => !prevState);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
     }
+
     async function removeFromReadList(){
-        let account = props.user;
-        let account_id = account._id;
         let remove_from_readlist = {
             book: {
                 _id: id
             }
         };
-        try{
-            let user_ = await getUser(account_id);
-            if (!user_.data.reading_list_books.includes(id)){
-                console.log("Boken ligger inte i läslistan")
-            }
-            else{
-                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
-                axios.patch(
-                    "http://localhost:8080/api/users/" +
-                      account_id +
-                      "/reading-list-books/" +
-                      id,
-                    remove_from_readlist
-                  )
-                .then(res =>{
-                    console.log("Response:", res);
-                    if(!res.data){
-                        console.log("Error:", res);
-                    }
-                    console.log("Boken borttagen");
-                    console.log("Data:", res.data);
-                })
-                .catch(err => {
-                    console.log("Error:", err);
-                });
-            }
+        if (!user.reading_list_books.includes(id)){
+            console.log("Boken ligger inte i läslistan")
+        }
+        else{
+            axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
+            axios.patch("http://localhost:8080/api/users/" + user._id +"/reading-list-books/" + id, remove_from_readlist)
+            .then(res =>{
+                console.log("Response:", res);
+                if(!res.data){
+                    console.log("Error:", res);
+                }
+                console.log("Boken borttagen");
+                setUser(res.data.data)
+                setShowReadList(prevState => !prevState);
+            })
+            .catch(err => {
+                console.log("Error:", err);
+            });
+        }
     
-        }catch(err){
-            console.log("Error:", err);
-        }
-    }
-
-    async function inReadingList(){
-        let account = props.user;
-        let account_id = account._id;
-        let user_ = await getUser(account_id);
-        if(user_.data.reading_list_books.includes(id)){
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 
 
@@ -271,14 +242,6 @@ function Book(props) {
         routeToIndex();
     }
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/books/" + id)
-        .then(res => {
-            setBook(res.data.data)
-            setBookMod(res.data.data) // copy for modification
-        })
-        .catch(err => console.log(err))
-    }, [])
         
     const editBook = () => {
         setShowResults(true)
@@ -286,7 +249,6 @@ function Book(props) {
 
     const saveBook = () => {
         console.log(bookMod)
-        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.patch("http://localhost:8080/api/books/" + id, bookMod)
         .then(res=> {
             console.log(res)
@@ -354,14 +316,16 @@ function Book(props) {
                              
                     )}
 
-                    <div className ='ReadList-Book'>
-                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till i läslista</button>
-                    </div>
-                
-                    <div className ='Remove-ReadList-Book'>
-                        <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
-                    </div>
-
+                    { showReadList ? (
+                        <div className ='ReadList-Book'>
+                            <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till i läslista</button>
+                        </div>
+                    ) : (
+                    
+                        <div className ='Remove-ReadList-Book'>
+                            <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
+                        </div>
+                    )}
                    
                      {/* TODO: Only let user who borrowed book se this*/}
                     
