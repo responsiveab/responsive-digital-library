@@ -10,6 +10,7 @@ import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
 import ContentEditable from 'react-contenteditable'
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
+
 function Book(props) {
     let {id, type} = useParams();
 
@@ -92,6 +93,8 @@ function Book(props) {
         })
        console.log(user)
     }
+
+
 
     function removeFunc(){
         removeBook();
@@ -184,6 +187,7 @@ function Book(props) {
                             <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
                         </div>
                     )}
+
 
                      {/* TODO: Only let user who borrowed book se this*/}
                     {/*

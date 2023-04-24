@@ -2,24 +2,10 @@ import express from 'express';
 import User from '../models/user.model';
 const userRouter = express.Router();
 
-//TODO: Ta bort detta, använder det för testning  nu.
-userRouter.get("/", (req, res, next) => {
-    User.find({}, function(err,result){
-        if(err){
-            res.status(400).send({
-                'success' : false,
-                'error': err.message
-            });
-        }
-        res.status(200).send({
-            'success': true,
-            'data' : result
-        });
-    });
-});
+const auth = require("../middleware/auth");
 
-// Get Single User
-userRouter.get("/:user_id", (req, res, next) => {
+//Get user by id
+userRouter.get("/:user_id", auth,(req, res, next) => {
     User.findById(req.params.user_id, function (err, result) {
         if(err){
              res.status(400).send({
@@ -33,6 +19,23 @@ userRouter.get("/:user_id", (req, res, next) => {
         });
      });
 });
+
+// Get all users
+userRouter.get('/', (req, res, next) => {
+  User.find({} , function(err, result){
+      if(err){
+          res.status(400).send({
+              'success': false,
+              'error': err.message
+          });
+      }
+      res.status(200).send({
+          'success': true,
+          'data': result
+      });
+  });
+});
+
 
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");

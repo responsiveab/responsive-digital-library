@@ -151,6 +151,7 @@ function Add(props) {
             let modifiedFields = {
                 tag: res.data.data
             }
+            console.log(modifiedFields)
             axios.patch("http://localhost:8080/api/tags/" + isbnNr, modifiedFields)
             .then(res => {
                 console.log(res)
