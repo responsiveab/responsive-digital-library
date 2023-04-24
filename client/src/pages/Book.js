@@ -72,6 +72,7 @@ function Book(props) {
             borrower:'',
             borrowed:false
         }
+       
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.patch("http://localhost:8080/api/books/" + id, returner)        
         .then(res =>{
@@ -86,6 +87,91 @@ function Book(props) {
        console.log(user)
     }
 
+
+    async function getUser(account_id) {
+        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
+        try {
+            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
+            console.log('res', response.data);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function addToReadList(){
+        let account = props.user
+        let account_id = account._id
+        let add_to_readlist = {
+            book: {
+                _id: id
+            }
+        }
+        try{
+            let user_ = await getUser(account_id)
+            if (user_.data.reading_list_books.includes(id)){
+                console.log("Boken finns redan")
+            }
+            else{
+                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
+                axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
+                .then(res =>{
+                    if(!res.data){
+                        console.log(res);
+                    }
+                    console.log("Boken tillagd")
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+
+        }catch(err){
+            console.log(err)
+        }
+        
+        
+    }
+    async function removeFromReadList(){
+        let account = props.user;
+        let account_id = account._id;
+        let remove_from_readlist = {
+            book: {
+                _id: id
+            }
+        };
+        try{
+            let user_ = await getUser(account_id);
+            if (!user_.data.reading_list_books.includes(id)){
+                console.log("Boken ligger inte i läslistan")
+            }
+            else{
+                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
+                axios.patch(
+                    "http://localhost:8080/api/users/" +
+                      account_id +
+                      "/reading-list-books/" +
+                      id,
+                    remove_from_readlist
+                  )
+                .then(res =>{
+                    console.log("Response:", res);
+                    if(!res.data){
+                        console.log("Error:", res);
+                    }
+                    console.log("Boken borttagen");
+                    console.log("Data:", res.data);
+                })
+                .catch(err => {
+                    console.log("Error:", err);
+                });
+            }
+    
+        }catch(err){
+            console.log("Error:", err);
+        }
+    }
 
 
     function removeFunc(){
@@ -165,6 +251,13 @@ function Book(props) {
                     {/* TODO: Only show if book isn't borrowed?*/}
                     <div className ='Borrow-Book'>
                         <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
+                    </div>
+
+                    <div className ='ReadList-Book'>
+                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till i läslista</button>
+                    </div>
+                    <div className ='Remove-ReadList-Book'>
+                        <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
                     </div>
 
 
