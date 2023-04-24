@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import axios from 'axios';
 
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
 import {BiPlusCircle} from "react-icons/bi";
 
 import Tag from '../components/Tag'
@@ -20,13 +22,9 @@ function Add(props) {
 
     const [tags, setTags] = useState([]);
 
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
     const routeToIndex = () =>{
         //navigate('/');
-    }
-
-    const routeToBook = () =>{
-        navigate('/books/' + isbnNr + '/add');
     }
 
     function fetchBook() {
@@ -105,37 +103,6 @@ function Add(props) {
         document.getElementById('isbn-input').focus();
     }
 
-    const editBook = () => {
-        axios.get("http://localhost:8080/api/books/" + isbnNr)
-        .then(res => {
-            if(!res.data.data) {
-                if (book) {
-                    axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-                    axios.post("http://localhost:8080/api/books/", book)
-                    .then(res=> {
-                        console.log(res)
-                        for(var i = 0; i < tags.length; i++) {
-                            addTag(tags[i])
-                        }
-                        setTags([])
-
-                        routeToBook()
-                    })
-                    .catch(err=>console.log(err))
-                }
-                else {
-                    alert("invalid input")
-                }
-            }
-            else {
-                alert("Boken finns redan i databasen")
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-
     const appendTag = () => {
         tags.push(tag)
         setTag('')
@@ -163,6 +130,13 @@ function Add(props) {
         .catch(err=>console.log(err))
     }
 
+    const handleSave = ({ name, value, previousValue }) => {
+        setBook({
+            ...book,
+            [name]:value
+        })
+    };
+
     return (
     <>
         <HeaderWithoutSearch user={props.user}/>
@@ -176,9 +150,17 @@ function Add(props) {
                             <img src={book.img} width="128px" alt="cover"></img>
                         }
                         </div> : <></>}
-                        <h3>{book.title}</h3>
-                        <p>{book.author}</p>
-                        <p><i>{book.body}</i></p>
+                        <EditText id="book-title" name="title" defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
+                        <br></br>
+                        <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave} placeholder={"Författare"}/>
+                        <br></br>
+                        <EditText id="book-date" name='date' defaultValue={book.date} inline onSave={handleSave} placeholder={"Publiceringsdatum"}/>
+                        <br></br>
+                        <EditText id="book-category" name='category' defaultValue={book.category} inline onSave={handleSave} placeholder={"Kategori"}/>
+                        <br></br>
+                        <EditText id="book-publisher" name='publisher' defaultValue={book.publisher} inline onSave={handleSave} placeholder={"Förlag"}/>
+                        <br></br>
+                        <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave} placeholder={"Beskrivning"}/>
                         <p><b>{book.id}</b></p>
 
                         {
@@ -188,7 +170,6 @@ function Add(props) {
                         <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
                         <button type='button' id="tag-submit" onClick={appendTag}><BiPlusCircle/></button>
                     <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button>
-                    <button type='button' id="isbn-edit" onClick={editBook}>Redigera bok</button>
                     <button type='button' id="isbn-cancel" onClick={cancelBook}>Avbryt</button>
 
                 </div> : <button type='button' id="isbn-submit" onClick={fetchBook}>Hämta bok</button>)
