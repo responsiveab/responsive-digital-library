@@ -2,7 +2,8 @@ import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 import './css/Account.css'
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import BookPreview from "../components/BookPreview"
+import ReadingListPreview from "../components/ReadingListPreview"
+import LoanListPreview from "../components/LoanListPreview"
 
 
 function Account(props) {
@@ -10,6 +11,7 @@ function Account(props) {
     const [user,setUser] = useState(undefined)
     const [loanBooks, setLoanBooks] = useState(undefined)
     const [readBooksId,setReadBooksId] = useState(undefined)
+    const [readBooks, setReadBooks] = useState(undefined)
 
     useEffect(async() => {
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
@@ -28,12 +30,15 @@ function Account(props) {
     },[user]);
     
     useEffect(async()=> {
-        const idList = readBooksId
-        axios.get(`http://localhost:8080/api/books/list?ids=${idList.join(',')}`)
-          .then(res => {
-            console.log(res.data.data);
-          })
+        if (readBooksId !== undefined) {
+            const idList = readBooksId
+            await axios.get(`http://localhost:8080/api/books/list?ids=${idList.join(',')}`)
+                .then(res => {
+                    console.log(res.data.data);
+                    setReadBooks(res.data.data);
+                })
           .catch(error => console.error(error));
+        }
     },[readBooksId])
 
 
@@ -82,8 +87,8 @@ function Account(props) {
                                </div>
                                 <div className="reading-list">
                                     <h1>Läslista</h1>
-                                    {books ? books.map((book) => <span key={book._id}>
-                                                            <BookPreview id={book._id} 
+                                    {readBooks ? readBooks.map((book) => <span key={book._id}>
+                                                            <ReadingListPreview id={book._id} 
                                                                           title={book.title} 
                                                                           author={book.author}
                                                                           body={book.body}
@@ -97,11 +102,12 @@ function Account(props) {
                             <div className="loan-list">
                                 <h1>Mina Lån</h1>
                                      {books ? books.map((book) => <span key={book._id}>
-                                                            <BookPreview id={book._id} 
-                                                                          img={book.imgstr}
-                                                                          
-                                                                          />
-                                                            </span>): <></>
+                                                            <LoanListPreview id={book._id} 
+                                                                          title={book.title} 
+                                                                          author={book.author}
+                                                                          body={book.body}
+                                                                          taglis={book.tags}/>
+                                                            </span>): <></>                                    
                                     }
                             </div>
                         </div>
