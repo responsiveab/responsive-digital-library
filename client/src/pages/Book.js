@@ -8,15 +8,16 @@ import {
 
 import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
-import ContentEditable from 'react-contenteditable'
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
 
 function Book(props) {
     let {id} = useParams();
 
-    const [showResults, setShowResults] = useState(undefined);
     const [book, setBook] = useState({});
     const [user, setUser] = useState(undefined);
+    const [editBookInfo, setEditBookInfo] = useState(false);
     
     const [bookMod, setBookMod] = useState({
         id:id,
@@ -27,6 +28,15 @@ function Book(props) {
         author:"",
         category:""
     })
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/books/" + id)
+        .then(res => {
+            setBook(res.data.data)
+            setBookMod(res.data.data) // copy for modification
+        })
+        .catch(err => console.log(err))
+    }, [])
 
     let navigate = useNavigate();
     const routeToIndex = () =>{
@@ -46,6 +56,7 @@ function Book(props) {
             console.log(err);
         })
     }
+    
     function borrowBook(){
         // TODO: Add authentication, waiting for logged in user implementation
         let borrow = {
@@ -86,7 +97,6 @@ function Book(props) {
         })
        console.log(user)
     }
-
 
     async function getUser(account_id) {
         axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
@@ -129,10 +139,9 @@ function Book(props) {
 
         }catch(err){
             console.log(err)
-        }
-        
-        
+        } 
     }
+
     async function removeFromReadList(){
         let account = props.user;
         let account_id = account._id;
@@ -173,27 +182,28 @@ function Book(props) {
         }
     }
 
-
     function removeFunc(){
         removeBook();
         routeToIndex();
     }
-
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/books/" + id)
-        .then(res => {
-            setBook(res.data.data)
-            setBookMod(res.data.data) // copy for modification
-        })
-        .catch(err => console.log(err))
-    }, [])
         
     const editBook = () => {
-        setShowResults(true)
+        setEditBookInfo(true)
     }
 
+    const cancelBook = () => {
+        setBookMod(book)
+        setEditBookInfo(false)
+    }
+
+    const handleSave = ({ name, value}) => {
+        setBookMod({
+            ...bookMod,
+            [name]:value
+        })
+    };
+
     const saveBook = () => {
-        console.log(bookMod)
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         axios.patch("http://localhost:8080/api/books/" + id, bookMod)
         .then(res=> {
@@ -201,51 +211,38 @@ function Book(props) {
         })
         .catch(err=>console.log(err))   
         setBook(bookMod)
-        setShowResults(false);
+        setEditBookInfo(false)
     }
 
-    const cancelBook = () => {
-        // reset input fields
-        setBookMod(book)
-
-        setShowResults(false)
-    }
-
-    const handleChange = e => {
-        const {title,textContent} = e.currentTarget
-        setBookMod({
-            ...bookMod,
-            [title]:textContent
-        })
-    }
-    
     return (
     <>
         <HeaderWithoutSearch user={props.user}/>
         {
             <main className='Book-Wrapper'>
                 <div className='Book-Header'>
+                    {book.imgstr !== "Bild saknas" && (
                     <div className='Book-Thumbnail'>
-                        <img src={book.imgstr} height='256px' alt="thumbnail"></img>
+                        <img src={book.imgstr} width='128px' alt="thumbnail"></img>
                     </div>
+                    )}
                     <div className='Book-Text'>
-                        <h1 className='Book-Title'>{showResults ?  <ContentEditable title="title" onChange={handleChange} onBlur={handleChange} html={bookMod.title} /> : book.title} [{book.borrower}]</h1>
-                        <h2 className='Book-Sub-Title'>{showResults ? <ContentEditable title="subtitle" onChange={handleChange} onBlur={handleChange} html={bookMod.subtitle} /> : book.subtitle}</h2>
-                        <span className='Book-Desc'>{showResults ?  <ContentEditable title="body" onChange={handleChange} onBlur={handleChange} html={bookMod.body} /> : book.body}</span>
-                    </div>
-                </div>
-                <br/>
-                { 
-                    <div className='Book-Meta'>
-                        <span className='Book-Date'><b>Published: </b>{showResults ?  <ContentEditable title="published" onChange={handleChange} onBlur={handleChange} html={bookMod.published} /> : book.published}</span>{!showResults ? <br></br> : <></>}
-                        <span className='Book-Author'><b>Author: </b>{showResults ?  <ContentEditable title="author" onChange={handleChange} onBlur={handleChange} html={bookMod.author} /> : book.author}</span>{!showResults ? <br></br> : <></>}
-                        <span className='Book-Category'><b>Category: </b>{showResults ? <ContentEditable title="category" onChange={handleChange} onBlur={handleChange} html={bookMod.category} /> : book.category}</span>{!showResults ? <br></br> : <></>}
-                        <span className='Book-Id'><b>ISBN: </b>{book._id}</span>{!showResults ? <br></br> : <></>}
+                        <EditText id="book-title" name="title" defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
+                        <br></br>
+                        <EditText id="book-author" name='author' defaultValue={bookMod.author} inline onSave={handleSave}readonly={!editBookInfo}  placeholder={"Författare"}/>
+                        <br></br>
+                        <EditText id="book-date" name='published' defaultValue={bookMod.published} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Publiceringsdatum"}/>
+                        <br></br>
+                        <EditText id="book-category" name='category' defaultValue={bookMod.category} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Kategori"}/>
+                        <br></br>
+                        <EditText id="book-publisher" name='publisher' defaultValue={bookMod.publisher} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Förlag"}/>
+                        <br></br>
+                        <EditTextarea id="book-body" name='body' defaultValue={bookMod.body} rows={'auto'} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Beskrivning"}/>
+                        <EditText id="book-id" defaultValue={bookMod._id} inline readonly={true} placeholder={"ISBN"}/>
                         <div className='Tags-Wrapper'>
                             {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
                         </div>
                     </div>
-                }  
+                </div>
 
                 <div className ='Book-buttons'>
                     {/* TODO: Only show if book isn't borrowed?*/}
@@ -261,27 +258,24 @@ function Book(props) {
                     </div>
 
 
-                     {/* TODO: Only let user who borrowed book se this*/}
+                    {/* TODO: Only let user who borrowed book se this*/}
                     {/*
                     <div className='Return-Book'>
                         <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
-                </div>*/}
+                    </div>*/}
                     <div className ='Remove-Book'>
                         <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
                     </div>
-
                     
-                   { !showResults && (
+                    {!editBookInfo && (
                         <button type='button' id="edit-book" onClick={editBook}>Ändra metadata</button>
                     )}
-                    { showResults ? (
+                    {editBookInfo ? (
                         <div className='Align-h'>
                             <button type='button' id="edit-book" onClick={saveBook}>Spara</button>
                             <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
                         </div>
-                    ) : null }
-                    
-                 
+                    ) : null}
                 </div>
             </main>
         }
