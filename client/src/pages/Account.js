@@ -7,6 +7,36 @@ import BookPreview from "../components/BookPreview"
 
 function Account(props) {
     const [books, setBooks] = useState()
+    const [user,setUser] = useState(undefined)
+    const [loanBooks, setLoanBooks] = useState(undefined)
+    const [readBooksId,setReadBooksId] = useState(undefined)
+
+    useEffect(async() => {
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
+        const account_id = props.user._id;
+        const user_ = await getUser(account_id)
+        setUser(user_.data)
+
+    },[]);
+
+    useEffect(()=>{
+        if(user !== undefined){
+            setReadBooksId(user.reading_list_books)
+            //setLoanBooks(user.loan_list_books) LOAN LIST FINNS INTE I DENNA BRANCHEN
+        }
+
+    },[user]);
+    
+    useEffect(async()=> {
+        const idList = readBooksId
+        axios.get(`http://localhost:8080/api/books/list?ids=${idList.join(',')}`)
+          .then(res => {
+            console.log(res.data.data);
+          })
+          .catch(error => console.error(error));
+    },[readBooksId])
+
+
     useEffect(() => {
         axios.get("http://localhost:8080/api/books/")
           .then(res => {
@@ -16,6 +46,18 @@ function Account(props) {
           .catch(error => console.error(error));
           // eslint-disable-next-line
       }, []);
+
+
+    async function getUser(account_id) {
+        try {
+            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
+            console.log('res', response.data);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     return (
     <>
