@@ -43,7 +43,7 @@ function Book(props) {
     useEffect(() => {
         // check if user is undefined
         if (user !== undefined){
-            if (user.loan_list_books.includes(id)){
+            if (user.reading_list_books.includes(id)){
                 setShowReadList(false);
             }
             else{
@@ -65,6 +65,7 @@ function Book(props) {
     const routeToIndex = () =>{
         navigate('/');
     }
+    
     async function getUser(account_id) {
         try {
             const response = await axios.get("http://localhost:8080/api/users/" + account_id)
@@ -200,7 +201,6 @@ function Book(props) {
                 console.log("Boken tillagd")
                 console.log(res)
                 setUser(res.data.data)
-                setShowReadList(prevState => !prevState);
             })
             .catch(err => {
                 console.log(err);
@@ -227,7 +227,6 @@ function Book(props) {
                 }
                 console.log("Boken borttagen");
                 setUser(res.data.data)
-                setShowReadList(prevState => !prevState);
             })
             .catch(err => {
                 console.log("Error:", err);
