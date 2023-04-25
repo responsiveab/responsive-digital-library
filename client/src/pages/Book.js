@@ -226,6 +226,7 @@ function Book(props) {
                     </div>
                     )}
                     <div className='Book-Text'>
+                        {/* TODO: Fix styling for longer book titles */}
                         <EditText id="Book-Title" name="title" defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
                         <EditText id="Book-Title" name="borrower" defaultValue={<>[{bookMod.borrower}]</>} onSave={handleSave} inline readonly={true} placeholder={"Lånad av"}/>
                         <br></br>
