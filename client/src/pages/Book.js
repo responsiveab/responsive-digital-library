@@ -163,12 +163,17 @@ function Book(props) {
                 }
               });
             } else {
-            //   setErrorMsg('Please select a file to add.');
+                alert('Please select a file to add.');
             }
-          //} else {
-            // setErrorMsg('Please enter all the field values.');
-          //}
-        } catch (error) {
+            const filename = "filename";
+            setBookMod({
+                ...bookMod,
+                [filename]:title
+            })
+            saveBook();
+            alert("Filen är uppladdad.")
+        } 
+        catch (error) {
             console.log(error); //   error.response && setErrorMsg(error.response.data);
         }
       };

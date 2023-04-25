@@ -1,34 +1,9 @@
 import path from 'path';
 import express from 'express';
-import multer from 'multer';
 import File from '../models/file.model';
-
 const fileRouter = express.Router();
+import upload from '../middleware/upload'
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, './files');
-      console.log("Multer crashed the site.");
-    },
-    filename(req, file, cb) {
-      cb(null, `${new Date().getTime()}_${file.originalname}`);
-    }
-  }),
-  limits: {
-    fileSize: 1000000 // max file size 1MB = 1000000 bytes
-  },
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpeg|jpg|png|pdf|txt|docx|xlsx|xls)$/)) {
-      return cb(
-        new Error(
-          'only upload files with jpg, jpeg, png, pdf, txt, docx, xslx, xls format.'
-        )
-      );
-    }
-    cb(undefined, true); // continue with upload
-  }
-});
 
 fileRouter.get('/', async (req, res) => {
   try {
@@ -42,21 +17,22 @@ fileRouter.get('/', async (req, res) => {
   }
 });
 
-
+// upload.single('file')
 fileRouter.post('/upload', upload.single('file'), async (req, res) => {
-    try {
+   try {
       const { title, description } = req.body;
       const { path, mimetype } = req.file;
       const file = new File({
-        title,
-        description,
-        file_path: path,
-        file_mimetype: mimetype
+        title: (title ? title : "no name"),
+        description: (description ? description : "no description"),
+        file_path: (path ? path : "no path"),
+        file_mimetype: (mimetype ? mimetype : "no mimetype")
       });
+      
       await file.save()
       res.send('file uploaded successfully.');
     } catch (error) {
-      res.status(400).send(req.file.toString());
+      res.status(400).send(":(");
     }
   },
   (error, req, res, next) => {
@@ -65,8 +41,6 @@ fileRouter.post('/upload', upload.single('file'), async (req, res) => {
     }
   }
 );
-
-
 
 fileRouter.get('/download/:id', async (req, res) => {
   try {
@@ -81,3 +55,4 @@ fileRouter.get('/download/:id', async (req, res) => {
 });
 
 export default fileRouter;
+
