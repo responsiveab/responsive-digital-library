@@ -15,18 +15,47 @@ function Index(props) {
       .catch(error => console.error(error));
       // eslint-disable-next-line
   }, []);
+  function splitTags(input) {
+    let tags = input.split("#");
 
+    return tags;
+  }
+  
+  function splitTags(input) {
+    let tags = input.split("#");
+    // Remove any empty tags resulting from consecutive "#" characters
+    // Did not work without, help by chatGPT with this
+    tags = tags.filter(tag => tag !== "");
+    return tags;
+  }
+  
   useEffect(() => {
     if (books) {
-      setFilteredBooks(books.filter(book => 
-        book.title.toLowerCase().includes(input) || 
-        (book.tags && book.tags.some(tag => tag.toLowerCase().includes(input))) ||
-        (book.body && book.body.toLowerCase().includes(input)) || 
-        (book.author && book.author.toLowerCase().includes(input)) ||
-        (book.category && book.category.toLowerCase().includes(input))
-      ));
+      if (input.startsWith("#")) {
+        const tags = splitTags(input);
+        setFilteredBooks(
+          // Filter the books that include all of the tags
+          // This filter function is by the help of chatGPT
+          books.filter(book => {
+            return tags.every(tag => {
+              return book.tags && book.tags.map(tag => tag.toLowerCase()).includes(tag);
+            });
+          })
+        );
+      } else {
+        setFilteredBooks(
+          books.filter(book =>
+            book.title.toLowerCase().includes(input) ||
+            (book.tags && book.tags.some(tag => tag.toLowerCase().includes(input))) ||
+            (book.body && book.body.toLowerCase().includes(input)) ||
+            (book.author && book.author.toLowerCase().includes(input)) ||
+            (book.category && book.category.toLowerCase().includes(input))
+          )
+        );
+      }
     }
-  }, [books, props.input]);
+  }, [books, input]);
+
   
 
     return (
@@ -42,7 +71,8 @@ function Index(props) {
                                                                           publisher={book.publisher}
                                                                           date={book.published}
                                                                           img={book.imgstr}
-                                                                          taglis={book.tags}/></span>) : <></>
+                                                                          taglis={book.tags}
+                                                                          inputUpdate={props.inputUpdate}/></span>) : <></>
           }
     </main>);
 }
