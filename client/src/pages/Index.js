@@ -71,7 +71,8 @@ function Index(props) {
                                                                           publisher={book.publisher}
                                                                           date={book.published}
                                                                           img={book.imgstr}
-                                                                          taglis={book.tags}/></span>) : <></>
+                                                                          taglis={book.tags}
+                                                                          inputUpdate={props.inputUpdate}/></span>) : <></>
           }
     </main>);
 }

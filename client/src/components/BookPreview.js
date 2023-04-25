@@ -52,7 +52,7 @@ function BookPreview(props) {
             }
             {
                 tags ? <div className='tags-wrapper'>
-                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} />)}
+                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} inputUpdate={props.inputUpdate}/>)}
                     {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}</div> : <></>
                 // TODO: Hide some tags if there are too many
             }
