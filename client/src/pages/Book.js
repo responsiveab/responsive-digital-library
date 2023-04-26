@@ -134,10 +134,13 @@ function Book(props) {
                 _id: id
             }
         }
+        console.log(add_to_loanlist.book._id)
+        console.log(user._id)
         if (user.loan_list_books.includes(id)){
             console.log("Boken finns redan i lånlistan")
         }
         else{
+            
             axios.patch("http://localhost:8080/api/users/" + user._id+"/loan-list-books", add_to_loanlist)
             .then(res =>{
                 if(!res.data){

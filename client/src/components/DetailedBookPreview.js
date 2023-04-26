@@ -23,7 +23,13 @@ function DetailedBookPreview(props) {
                     <Link to={"/books/" + props.id}><BiFullscreen></BiFullscreen></Link>
                     <a href="/"><BiX></BiX></a>
                 </div>
-                <h3><b>{props.title + " [" + props.shelf + "]"}</b></h3>
+                <h3>
+                    {console.log(props.borrowed)}
+                    {console.log("BORROWER: "+props.borrower)}
+                    <b>
+                        {props.title} [{props.borrowed ? props.borrower : props.shelf}]
+                    </b>
+                </h3>
                 {
                     props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
                 }

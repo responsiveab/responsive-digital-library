@@ -66,6 +66,8 @@ function BookPreview(props) {
                                     category={props.category}
                                     language={props.language}
                                     publisher={props.publisher}
+                                    borrower={props.borrower}
+                                    borrowed = {props.borrowed}
                                     date={props.date}
                                     img={props.img}
                                     tags={tags}/>}
