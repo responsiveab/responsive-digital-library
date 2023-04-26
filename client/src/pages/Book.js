@@ -35,7 +35,7 @@ function Book(props) {
 
     function removeBook(){
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.delete("http://localhost:8080/api/books/" + id)
+        axios.delete(process.env.REACT_APP_API_URL + "/api/books/" + id)
         .then(res =>{
             console.log(res)
             if(!res.data.data){
@@ -53,7 +53,7 @@ function Book(props) {
             borrowed:true
         }
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.patch("http://localhost:8080/api/books/" + id, borrow)        
+        axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, borrow)        
         .then(res =>{
             console.log(res)
             if(!res.data.data){
@@ -74,7 +74,7 @@ function Book(props) {
         }
        
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.patch("http://localhost:8080/api/books/" + id, returner)        
+        axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, returner)        
         .then(res =>{
             console.log(res)
             if(!res.data.data){
@@ -91,7 +91,7 @@ function Book(props) {
     async function getUser(account_id) {
         axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
         try {
-            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
+            const response = await axios.get(process.env.REACT_APP_API_URL + "/api/users/" + account_id)
             console.log('res', response.data);
             return response.data;
         } catch (err) {
@@ -114,7 +114,7 @@ function Book(props) {
             }
             else{
                 axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-                axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
+                axios.patch(process.env.REACT_APP_API_URL + "/api/users/" + account_id, add_to_readlist)
                 .then(res =>{
                     if(!res.data){
                         console.log(res);
@@ -180,7 +180,7 @@ function Book(props) {
     }
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/books/" + id)
+        axios.get(process.env.REACT_APP_API_URL + "/api/books/" + id)
         .then(res => {
             setBook(res.data.data)
             setBookMod(res.data.data) // copy for modification
@@ -195,7 +195,7 @@ function Book(props) {
     const saveBook = () => {
         console.log(bookMod)
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.patch("http://localhost:8080/api/books/" + id, bookMod)
+        axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, bookMod)
         .then(res=> {
             console.log(res)
         })

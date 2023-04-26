@@ -7,7 +7,7 @@ function Index(props) {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const input = props.input.toLowerCase();
   useEffect(() => {
-    axios.get("http://localhost:8080/api/books/")
+    axios.get(process.env.REACT_APP_API_URL + "/api/books/")
       .then(res => {
         setBooks(res.data.data)
         // console.log(res.data.data)

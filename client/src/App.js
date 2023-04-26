@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 
-// import Header from './components/headers/Header';
-
-import Index from './pages/Index';
 import Error from './pages/Error';
 import Login from './pages/Login';
 import Register from './pages/Register';
