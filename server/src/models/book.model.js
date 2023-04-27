@@ -38,7 +38,14 @@ const bookSchema = new mongoose.Schema({
             type: String,
             ref: "Tag"
         }
+   ],
+   comments:[
+        {
+            type:String,
+            ref:"User"
+        }
    ]
+
 });
 
 const Book = mongoose.model("Book", bookSchema);

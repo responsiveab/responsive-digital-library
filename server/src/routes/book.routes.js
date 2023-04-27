@@ -87,6 +87,25 @@ bookRouter.patch("/:book_id", auth, (req, res, next) => {
         });
   });
 });
+// Add Comment to Book
+bookRouter.patch("/:book_id", auth, (req, res, next) => {
+  Book.findByIdAndUpdate(req.params.book_id, { $push: { comments: req.body.tag._id } }, { new: true, useFindAndModify: false },  function (err, result) {
+      if(err){
+          res.status(400).send({
+             success: false,
+             error: err.message
+            });
+      }
+      res.status(200).send({
+        success: true,
+        data: result,
+        message: "Book updated with tag successfully"
+        });
+  });
+});
+
+
+
 
 // Delete Single Book
 bookRouter.delete("/:book_id", auth, (req, res, next) => {

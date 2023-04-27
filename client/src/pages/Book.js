@@ -173,6 +173,10 @@ function Book(props) {
         }
     }
 
+    function addComment(){
+        
+    }
+
 
     function removeFunc(){
         removeBook();
@@ -280,6 +284,10 @@ function Book(props) {
                             <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
                         </div>
                     ) : null }
+
+                    <div className ='Add-Comment'>
+                        <button type = 'button' id="comment-add" onClick={addComment}>Kommentera</button>
+                    </div>
                     
                  
                 </div>
