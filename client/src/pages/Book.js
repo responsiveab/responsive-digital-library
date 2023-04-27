@@ -234,25 +234,6 @@ function Book(props) {
     }
 
 
-      
-
-    // TODO: Async, wait until file is uploaded to volume before editing
-    function uploadBook(e) {
-        handleOnSubmit(e);
-        // e.preventDefault();
-
-        // const fileContent = e.target.files[0];
-        // let blobPDF = new Blob([e.target.files], {type: "pdf"});
-        // let formData = new FormData ();
-        // formData.append(fileContent.name, blobPDF);
-        // bookMod.filename = fileContent.name;
-        // // setBookMod({
-        // //     ...bookMod,
-        // //     ["filename"]:fileContent.name
-        // // })
-        // saveBook();
-        // alert("File submitted")
-    }
 
     const downloadBook = () => {
 
@@ -263,15 +244,14 @@ function Book(props) {
         const file = event.target.files[0];
         try {
           //const { title, description } = event.target.value;
-          const description = event.target.files[0].name;
           const title = event.target.files[0].name;
           //if (title.trim() !== '' && description.trim() !== '') {
             if (file) {
               console.log(file)
               const formData = new FormData();
+              formData.append('_id', id);
               formData.append('file', file); // lagra i databasen
               formData.append('title', title); // skicka till book model
-              formData.append('description', description);
       
             //   setErrorMsg('');
               await axios.post(`http://localhost:8080/api/files/upload`, formData, {
@@ -279,16 +259,16 @@ function Book(props) {
                   'Content-Type': 'multipart/form-data'
                 }
               });
+            alert("Filen är uppladdad.")
             } else {
                 alert('Please select a file to add.');
             }
-            const filename = "filename";
+            /*const filename = "filename";
             setBookMod({
                 ...bookMod,
                 [filename]:title
             })
-            saveBook();
-            alert("Filen är uppladdad.")
+            saveBook();*/
         } 
         catch (error) {
             console.log(error); //   error.response && setErrorMsg(error.response.data);

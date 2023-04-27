@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import { GridFSBucket } from 'mongoose';
 
 dotenv.config();
 
@@ -27,16 +28,23 @@ const dbConnectionURL = {
 mongoose.connect(dbConnectionURL.LOCAL_DB_URL, options);
 
 const db = mongoose.connection;
-//let gfs;
+let bucket;
 
 db.on('error', console.error.bind(console, 'Mongodb Connection Error:' + dbConnectionURL.LOCALURL));
-db.once('open', async() => {
-     console.log('Mongodb Connection Successful'); 
-     // initialize stream
-     /*gfs = await mongoose.mongo.GridFSBucket(dbName, {
-         bucketName: "uploads"
-     });*/
+db.on('connected', () => {
+     var db = mongoose.connections[0].db;
+     bucket = new mongoose.mongo.GridFSBucket(db, {
+       bucketName: "newBucket"
+     });
+     console.log(bucket);
 });
 
-export {db, dbConnectionURL};
-//export default db;
+db.once('open', async() => {
+     console.log('Mongodb Connection Successful');
+     //const bucket = new GridFSBucket(db.db());
+     // use the bucket object here
+
+});
+
+
+export { db, dbConnectionURL, bucket };

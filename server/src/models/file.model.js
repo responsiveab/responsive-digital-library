@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const fileSchema = new mongoose.Schema(
   {
+    _id: String,
     title: {
       type: String,
       required: true,

@@ -2,8 +2,8 @@ import path from 'path';
 import express from 'express';
 import File from '../models/file.model';
 const fileRouter = express.Router();
-import upload from '../middleware/upload'
-
+import { upload, bucket } from '../middleware/upload'
+import fs from 'fs'
 
 fileRouter.get('/', async (req, res) => {
   try {
@@ -17,19 +17,25 @@ fileRouter.get('/', async (req, res) => {
   }
 });
 
-// upload.single('file')
 fileRouter.post('/upload', upload.single('file'), async (req, res) => {
    try {
-      const { title, description } = req.body;
+      const { _id, title} = req.body;
       const { path, mimetype } = req.file;
-      const file = new File({
+      /*const file = new File({
+        _id : (_id ? _id : "no id"),
         title: (title ? title : "no name"),
-        description: (description ? description : "no description"),
         file_path: (path ? path : "no path"),
         file_mimetype: (mimetype ? mimetype : "no mimetype")
       });
+      await file.save()*
+
+    
+    /*
+     fs.createReadStream('/Users/mj/Downloads/frryd-se.txt').
+      pipe(bucket.openUploadStream(title, {
+          chunkSizeBytes: 1048576
+      }));*/
       
-      await file.save()
       res.send('file uploaded successfully.');
     } catch (error) {
       res.status(400).send(":(");
