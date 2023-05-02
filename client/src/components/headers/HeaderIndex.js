@@ -6,29 +6,25 @@ import Tag from '../Tag'
 import Index from '../../pages/Index';
 
 function HeaderIndex(props) {
-    const [tags, setTags] = useState(undefined);
     const [inputText, setInputText] = useState("");
 
     let inputHandler = (e) => {
       setInputText(e.target.value);
     };
 
-    function appendTag(tag) {
-        if(tags) {
-            setTags(tags.concat([tag]))
+    function updateInputText(text) {
+        let inputText = "";
+        if (document.getElementById("searchInput").value[0] == '#') {
+            //When we already are searching for tags
+            document.getElementById("searchInput").value = document.getElementById("searchInput").value + "#"+text;
         }
         else {
-            setTags([tag])
+            //When it's the first tag we are looking for, either by clicking on a tag or by typing.
+            //If there is something typed before, this would be removed.
+            document.getElementById("searchInput").value = "#"+text;
         }
-    }
-
-    const handleChange = e => {
-        if(e.key == "Enter") {
-            if(e.target.value[0] == '#') {
-                appendTag(e.target.value.substring(1, e.target.value.length))
-                document.getElementById('search').value = ''
-            }
-        }
+        inputText = document.getElementById("searchInput").value;
+        setInputText(inputText);
     }
 
     return (
@@ -37,7 +33,6 @@ function HeaderIndex(props) {
             <div style={{ float: 'left' }}>
                 <Link to="/books/add">
                     <BiPlusCircle className="icon"></BiPlusCircle> 
-                     
                 </Link>
             </div>
             <div style={{ float: 'right' }}>
@@ -61,25 +56,18 @@ function HeaderIndex(props) {
             <BiSearch className="icon" id="search-left"/>
             {/* <input type="text" id="search" name="search" onKeyPress={handleChange}/> */}
                 <input 
+                    id="searchInput"
                     type="text" 
-                    id="search" 
                     name="search"
                     onChange={inputHandler}
                 />
                 <BiFilter className="icon" id="search-right"/>
             </div>
-            
-            {tags &&
-            <div className='Tag-Search-Area'>
-                {tags.map((t) => <Tag key={t} content={t} />) }
-            </div>
-             }
-            
             <hr/>
             </header>
             
             <div className="Index">
-                <Index input={inputText}/>
+                <Index input={inputText} inputUpdate={updateInputText}/>
             </div>
         </main>
         );

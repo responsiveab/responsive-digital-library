@@ -28,7 +28,7 @@ function Tag(props) {
     }
 
     function removeTag() {
-        axios.delete("http://localhost:8080/api/tags/" + props.isbn + "/" + props.content)
+        axios.delete(process.env.REACT_APP_API_URL + "/api/tags/" + props.isbn + "/" + props.content)
         .then(res =>{
             console.log(res)
         })
@@ -39,7 +39,7 @@ function Tag(props) {
 
     return (
     <div className='Tag-Wrapper' style={{ background: string_to_color(props.content) }}>
-        <Link to={"../search/tag/" + props.content}>{props.content}</Link>
+        {props.content && <a onClick={() => props.inputUpdate(props.content)}> {props.content} </a>}
         {props.show_rm && <a href="#" onClick={removeTag}><BiX/></a>}
     </div>);
 }
