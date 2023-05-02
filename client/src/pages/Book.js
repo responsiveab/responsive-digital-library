@@ -29,19 +29,19 @@ function Book(props) {
         category:""
     })
 
-    useEffect(async () => {
+    useEffect(() => {
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
         
-        const account_id = props.user._id;
-        console.log("ACCOUNT ID::::::::::::::"+account_id)
+        async function fetchData() {
+            const account_id = props.user._id;
+            const user_ = await getUser(account_id)
+            setUser(user_.data)
+        }
 
-        const user_ = await getUser(account_id)
-        setUser(user_.data)
-
+        fetchData();
     }, []);
     
     useEffect(() => {
-        // check if user is undefined
         if (user !== undefined){
             if (user.reading_list_books.includes(id)){
                 setShowReadList(false);
@@ -140,7 +140,7 @@ function Book(props) {
         }
         else{
             
-            axios.patch("http://localhost:8080/api/users/" + user._id+"/loan-list-books", add_to_loanlist)
+            axios.patch(process.env.REACT_APP_API_URL + "/api/users/" + user._id + "/loan-list-books", add_to_loanlist)
             .then(res =>{
                 if(!res.data){
                     console.log(res);
@@ -167,8 +167,7 @@ function Book(props) {
             console.log("Boken ligger inte i lånlistan")
         }
         else{
-            axios.patch(
-                "http://localhost:8080/api/users/" +user._id +"/loan-list-books/" +id,remove_from_loanlist)
+            axios.patch(process.env.REACT_APP_API_URL + "/api/users/" +user._id +"/loan-list-books/" + id, remove_from_loanlist)
             .then(res =>{
                 console.log("Response:", res);
                 if(!res.data){
@@ -221,8 +220,7 @@ function Book(props) {
             console.log("Boken ligger inte i läslistan")
         }
         else{
-            axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
-            axios.patch("http://localhost:8080/api/users/" + user._id +"/reading-list-books/" + id, remove_from_readlist)
+            axios.patch(process.env.REACT_APP_API_URL + "/api/users/" + user._id +"/reading-list-books/" + id, remove_from_readlist)
             .then(res =>{
                 console.log("Response:", res);
                 if(!res.data){
@@ -240,6 +238,7 @@ function Book(props) {
 
     function removeFunc(){
         removeBook();
+        
         routeToIndex();
     }
         
@@ -259,9 +258,7 @@ function Book(props) {
     }
 
     const cancelBook = () => {
-        // reset input fields
         setBookMod(book)
-
         setShowResults(false)
     }
 
@@ -302,7 +299,6 @@ function Book(props) {
                 }  
 
                 <div className ='Book-buttons'>
-                    {/*Only shows Borrow or return if book isnt borrowed, or if you are the actually borrower*/}
                     { !book.borrowed ? (
                         <div className ='Borrow-Book'>
                             <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
@@ -326,14 +322,11 @@ function Book(props) {
                             <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
                         </div>
                     )}
-                   
-                     {/* TODO: Only let user who borrowed book se this*/}
                     
                     <div className ='Remove-Book'>
                         <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
                     </div>
 
-                    
                    { !showResults && (
                         <button type='button' id="edit-book" onClick={editBook}>Ändra metadata</button>
                     )}
@@ -343,8 +336,6 @@ function Book(props) {
                             <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
                         </div>
                     ) : null }
-                    
-                 
                 </div>
             </main>
         }
