@@ -149,11 +149,7 @@ function Book(props) {
             else{
                 axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
                 axios.patch(
-                    "http://localhost:8080/api/users/" +
-                      account_id +
-                      "/reading-list-books/" +
-                      id,
-                    remove_from_readlist
+                    process.env.REACT_APP_API_URL + "/api/users/" + account_id + "/reading-list-books/" + id, remove_from_readlist
                   )
                 .then(res =>{
                     console.log("Response:", res);
