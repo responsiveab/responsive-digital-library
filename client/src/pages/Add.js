@@ -42,7 +42,9 @@ function Add(props) {
                     img:(fetched_book.imageLinks ? fetched_book.imageLinks.thumbnail : "Bild saknas"),
                     language:(fetched_book.language ? fetched_book.language : "Okänt språk"),
                     publisher:(fetched_book.publisher ? fetched_book.publisher : "Okänt förlag"),
-                    date:(fetched_book.publishedDate ? fetched_book.publishedDate : "Okänt publiceringsdatum")
+                    date:(fetched_book.publishedDate ? fetched_book.publishedDate : "Okänt publiceringsdatum"),
+                    borrower:"ingen",
+                    borrowed:false
                 }
                 setBook(newBook);
                 // Hide input field

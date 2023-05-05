@@ -69,6 +69,8 @@ function Index(props) {
                                                                           category={book.category}
                                                                           language={book.language}
                                                                           publisher={book.publisher}
+                                                                          borrower={book.borrower}
+                                                                          borrowed={book.borrowed}
                                                                           date={book.published}
                                                                           img={book.imgstr}
                                                                           taglis={book.tags}
