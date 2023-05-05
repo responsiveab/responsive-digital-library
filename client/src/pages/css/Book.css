@@ -27,7 +27,7 @@
     flex-wrap: wrap;
 }
 
-#edit-book, #borrow-submit, #isbn-remove, #readlist-submit, #readlist-remove{
+#edit-book, #borrow-submit, #isbn-remove, #readlist-submit, #readlist-remove, #return-submit{
     margin: 0 10px;
     padding: 10px 20px;
     font-size: 16px;

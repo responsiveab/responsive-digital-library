@@ -15,6 +15,8 @@ import 'react-edit-text/dist/index.css';
 function Book(props) {
     let {id} = useParams();
 
+    const [showResults, setShowResults] = useState(undefined);
+    const [showReadList, setShowReadList] = useState(undefined);
     const [book, setBook] = useState({});
     const [user, setUser] = useState(undefined);
     const [editBookInfo, setEditBookInfo] = useState(false);
@@ -22,7 +24,7 @@ function Book(props) {
     const [bookMod, setBookMod] = useState({
         id:id,
         title:"",
-        subtitle:"",
+        subtitle:"", // ANVÄNDS INTE?
         body:"",
         published:"",
         author:"",
@@ -30,7 +32,30 @@ function Book(props) {
     })
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/books/" + id)
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
+        
+        async function fetchData() {
+            const account_id = props.user._id;
+            const user_ = await getUser(account_id)
+            setUser(user_.data)
+        }
+
+        fetchData();
+    }, []);
+    
+    useEffect(() => {
+        if (user !== undefined){
+            if (user.reading_list_books.includes(id)){
+                setShowReadList(false);
+            }
+            else{
+                setShowReadList(true);
+            }
+        }
+      }, [user]);
+
+    useEffect(() => {
+        axios.get(process.env.REACT_APP_API_URL + "/api/books/" + id)
         .then(res => {
             setBook(res.data.data)
             setBookMod(res.data.data) // copy for modification
@@ -42,10 +67,19 @@ function Book(props) {
     const routeToIndex = () =>{
         navigate('/');
     }
+    
+    async function getUser(account_id) {
+        try {
+            const response = await axios.get(process.env.REACT_APP_API_URL + "/api/users/" + account_id)
+            console.log('res', response.data);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     function removeBook(){
-        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.delete("http://localhost:8080/api/books/" + id)
+        axios.delete(process.env.REACT_APP_API_URL + "/api/books/" + id)
         .then(res =>{
             console.log(res)
             if(!res.data.data){
@@ -56,134 +90,157 @@ function Book(props) {
             console.log(err);
         })
     }
-    
-    function borrowBook(){
-        // TODO: Add authentication, waiting for logged in user implementation
-        let borrow = {
-            borrower:user,
-            borrowed:true
+
+    async function addBorrowerToBook(account_name){
+        let add_to_borrower = {
+            borrower: account_name,
+            borrowed: true
         }
-        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.patch("http://localhost:8080/api/books/" + id, borrow)        
+        axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, add_to_borrower)
         .then(res =>{
-            console.log(res)
-            if(!res.data.data){
-                console.log("fel?");
+            if(!res.data){
+                console.log(res);
             }
+            console.log(account_name + "added to borrower")
+            console.log(res)
+            setBook(res.data.data)
         })
         .catch(err => {
             console.log(err);
         })
-       console.log(user)    
     }
 
-    function returnBook(){
-        // TODO: Add authentication, waiting for logged in user implementation
-        let returner = {
-            borrower:'',
-            borrowed:false
+    function removeBorrowerFromBook(){
+        let remove_from_borrower = {
+            borrower: "ingen",
+            borrowed: false
         }
-       
-        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.patch("http://localhost:8080/api/books/" + id, returner)        
+        axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, remove_from_borrower)
         .then(res =>{
-            console.log(res)
-            if(!res.data.data){
-                console.log("fel?");
+            if(!res.data){
+                console.log(res);
             }
+            console.log("removed borrower")
+            console.log(res)
+            setBook(res.data.data)
         })
         .catch(err => {
             console.log(err);
         })
-       console.log(user)
     }
 
-    async function getUser(account_id) {
-        axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-        try {
-            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
-            console.log('res', response.data);
-            return response.data;
-        } catch (err) {
-            console.log(err);
+    async function borrowBook(){
+        let add_to_loanlist = {
+            book: {
+                _id: id
+            }
+        }
+        console.log(add_to_loanlist.book._id)
+        console.log(user._id)
+        if (user.loan_list_books.includes(id)){
+            console.log("Boken finns redan i lånlistan")
+        }
+        else{
+            
+            axios.patch(process.env.REACT_APP_API_URL + "/api/users/" + user._id + "/loan-list-books", add_to_loanlist)
+            .then(res =>{
+                if(!res.data){
+                    console.log(res);
+                }
+                console.log("Boken tillagd i lånlistan")
+                setUser(res.data.data)
+                addBorrowerToBook(user.name)
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+        
+    }
+
+    async function returnBook(){
+        let remove_from_loanlist = {
+            book: {
+                _id: id
+            }
+        };
+        if (!user.loan_list_books.includes(id)){
+            console.log("Boken ligger inte i lånlistan")
+        }
+        else{
+            axios.patch(process.env.REACT_APP_API_URL + "/api/users/" +user._id +"/loan-list-books/" + id, remove_from_loanlist)
+            .then(res =>{
+                console.log("Response:", res);
+                if(!res.data){
+                    console.log("Error:", res);
+                }
+                console.log("Boken borttagen från lånlistan");
+                console.log("Data:", res.data);
+                setUser(res.data.data)
+                removeBorrowerFromBook()
+            })
+            .catch(err => {
+                console.log("Error:", err);
+            });
         }
     }
 
     async function addToReadList(){
-        let account = props.user
-        let account_id = account._id
         let add_to_readlist = {
             book: {
                 _id: id
             }
         }
-        try{
-            let user_ = await getUser(account_id)
-            if (user_.data.reading_list_books.includes(id)){
-                console.log("Boken finns redan")
-            }
-            else{
-                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token')
-                axios.patch("http://localhost:8080/api/users/" + account_id, add_to_readlist)
-                .then(res =>{
-                    if(!res.data){
-                        console.log(res);
-                    }
-                    console.log("Boken tillagd")
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            }
 
-        }catch(err){
-            console.log(err)
-        } 
+        if (user.reading_list_books.includes(id)){
+            console.log("Boken finns redan i läslistan")
+        }
+        else{
+            axios.patch(process.env.REACT_APP_API_URL + "/api/users/" + user._id, add_to_readlist)
+            .then(res =>{
+                if(!res.data){
+                    console.log(res);
+                }
+                console.log("Boken tillagd")
+                console.log(res)
+                setUser(res.data.data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
     }
 
     async function removeFromReadList(){
-        let account = props.user;
-        let account_id = account._id;
         let remove_from_readlist = {
             book: {
                 _id: id
             }
         };
-        try{
-            let user_ = await getUser(account_id);
-            if (!user_.data.reading_list_books.includes(id)){
-                console.log("Boken ligger inte i läslistan")
-            }
-            else{
-                axios.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
-                axios.patch(
-                    "http://localhost:8080/api/users/" +
-                      account_id +
-                      "/reading-list-books/" +
-                      id,
-                    remove_from_readlist
-                  )
-                .then(res =>{
-                    console.log("Response:", res);
-                    if(!res.data){
-                        console.log("Error:", res);
-                    }
-                    console.log("Boken borttagen");
-                    console.log("Data:", res.data);
-                })
-                .catch(err => {
-                    console.log("Error:", err);
-                });
-            }
-    
-        }catch(err){
-            console.log("Error:", err);
+        if (!user.reading_list_books.includes(id)){
+            console.log("Boken ligger inte i läslistan")
         }
+        else{
+            axios.patch(process.env.REACT_APP_API_URL + "/api/users/" + user._id +"/reading-list-books/" + id, remove_from_readlist)
+            .then(res =>{
+                console.log("Response:", res);
+                if(!res.data){
+                    console.log("Error:", res);
+                }
+                console.log("Boken borttagen");
+                setUser(res.data.data)
+            })
+            .catch(err => {
+                console.log("Error:", err);
+            });
+        }
+    
     }
 
     function removeFunc(){
         removeBook();
+        
         routeToIndex();
     }
         
@@ -204,8 +261,8 @@ function Book(props) {
     };
 
     const saveBook = () => {
-        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-        axios.patch("http://localhost:8080/api/books/" + id, bookMod)
+        console.log(bookMod)
+        axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, bookMod)
         .then(res=> {
             console.log(res)
         })
@@ -247,29 +304,35 @@ function Book(props) {
                 </div>
 
                 <div className ='Book-buttons'>
-                    {/* TODO: Only show if book isn't borrowed?*/}
-                    <div className ='Borrow-Book'>
-                        <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
-                    </div>
+                    { !book.borrowed ? (
+                        <div className ='Borrow-Book'>
+                            <button type='button' id="borrow-submit" onClick={borrowBook}>Låna bok</button>
+                        </div>
+                    ) : (
+                        book.borrower === props.user.name && (
+                            <div className='Return-Book'>
+                                <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
+                            </div>
+                        )
+                             
+                    )}
 
-                    <div className ='ReadList-Book'>
-                        <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till i läslista</button>
-                    </div>
-                    <div className ='Remove-ReadList-Book'>
-                        <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
-                    </div>
-
-
-                    {/* TODO: Only let user who borrowed book se this*/}
-                    {/*
-                    <div className='Return-Book'>
-                        <button type='button' id='return-submit' onClick={returnBook}>Lämna bok</button>
-                    </div>*/}
+                    { showReadList ? (
+                        <div className ='ReadList-Book'>
+                            <button type ='button' id = "readlist-submit" onClick={addToReadList}>Lägg till i läslista</button>
+                        </div>
+                    ) : (
+                    
+                        <div className ='Remove-ReadList-Book'>
+                            <button type ='button' id = "readlist-remove" onClick={removeFromReadList}>Ta bort från läslista</button>
+                        </div>
+                    )}
+                    
                     <div className ='Remove-Book'>
                         <button type='button' id="isbn-remove" onClick={removeFunc}>Ta bort bok</button>
                     </div>
-                    
-                    {!editBookInfo && (
+
+                   { !showResults && (
                         <button type='button' id="edit-book" onClick={editBook}>Ändra metadata</button>
                     )}
                     {editBookInfo ? (

@@ -17,7 +17,7 @@ function Login({setAccount}) {
     }
 
     const login = () => {
-        axios.post("http://localhost:8080/api/users/login", user)
+        axios.post(process.env.REACT_APP_API_URL + "/api/users/login", user)
         .then(res => {
             setAccount(res.data.user)
             window.localStorage.setItem('account', JSON.stringify(res.data.user))

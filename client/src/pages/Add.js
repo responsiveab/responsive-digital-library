@@ -42,7 +42,9 @@ function Add(props) {
                     img:(fetched_book.imageLinks ? fetched_book.imageLinks.thumbnail : "Bild saknas"),
                     language:(fetched_book.language ? fetched_book.language : "Okänt språk"),
                     publisher:(fetched_book.publisher ? fetched_book.publisher : "Okänt förlag"),
-                    date:(fetched_book.publishedDate ? fetched_book.publishedDate : "Okänt publiceringsdatum")
+                    date:(fetched_book.publishedDate ? fetched_book.publishedDate : "Okänt publiceringsdatum"),
+                    borrower:"ingen",
+                    borrowed:false
                 }
                 setBook(newBook);
                 // Hide input field
@@ -52,12 +54,12 @@ function Add(props) {
     }
 
     const addBook = () => {
-        axios.get("http://localhost:8080/api/books/" + isbnNr)
+        axios.get(process.env.REACT_APP_API_URL + "/api/books/" + isbnNr)
         .then(res => {
             if(!res.data.data) {
                 if (book) {
                     axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-                    axios.post("http://localhost:8080/api/books/", book)
+                    axios.post(process.env.REACT_APP_API_URL + "/api/books/", book)
                     .then(res=> {
                         console.log(res)
                         for(var i = 0; i < tags.length; i++) {
@@ -113,13 +115,13 @@ function Add(props) {
         let newTag = {
             name: t
         }
-        axios.post("http://localhost:8080/api/tags/", newTag)
+        axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
         .then(res=> {
             let modifiedFields = {
                 tag: res.data.data
             }
             console.log(modifiedFields)
-            axios.patch("http://localhost:8080/api/tags/" + isbnNr, modifiedFields)
+            axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
             .then(res => {
                 console.log(res)
             })

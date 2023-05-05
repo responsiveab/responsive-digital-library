@@ -28,7 +28,7 @@ function Tag(props) {
     }
 
     function removeTag() {
-        axios.delete("http://localhost:8080/api/tags/" + props.isbn + "/" + props.content)
+        axios.delete(process.env.REACT_APP_API_URL + "/api/tags/" + props.isbn + "/" + props.content)
         .then(res =>{
             console.log(res)
         })

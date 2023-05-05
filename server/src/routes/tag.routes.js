@@ -36,7 +36,7 @@ tagRouter.get("/:tag_id", (req, res, next) => {
 });
 
 // Add Single Tag
-tagRouter.post("/", (req, res, next) => {
+tagRouter.post("/", (req, res, next) => { //TODO: Add auth
     let newTag = {
       _id: req.body.name
     };
@@ -56,7 +56,7 @@ tagRouter.post("/", (req, res, next) => {
   });
 
 // Add Single Tag To Book
-tagRouter.patch("/:book_id", (req, res, next) => {
+tagRouter.patch("/:book_id", (req, res, next) => { //TODO: Add auth
     Book.findByIdAndUpdate(req.params.book_id, { $push: { tags: req.body.tag._id } }, { new: true, useFindAndModify: false },  function (err, result) {
         if(err){
             res.status(400).send({
@@ -73,7 +73,7 @@ tagRouter.patch("/:book_id", (req, res, next) => {
   });
 
 // Delete Single Tag
-tagRouter.delete("/:book_id/:tag_id", (req, res, next) => {
+tagRouter.delete("/:book_id/:tag_id", (req, res, next) => { //TODO: Add auth
   Book.findByIdAndUpdate(req.params.book_id, { $pull: { tags: req.params.tag_id } }, { new: true, useFindAndModify: false },  function (err, result) {
     if(err){
         res.status(400).send({
