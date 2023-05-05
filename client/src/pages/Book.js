@@ -8,8 +8,9 @@ import {
 
 import React, {useEffect, useState} from 'react'
 import axios, * as others from 'axios';
-import ContentEditable from 'react-contenteditable'
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
 
 function Book(props) {
     let {id} = useParams();
@@ -18,6 +19,7 @@ function Book(props) {
     const [showReadList, setShowReadList] = useState(undefined);
     const [book, setBook] = useState({});
     const [user, setUser] = useState(undefined);
+    const [editBookInfo, setEditBookInfo] = useState(false);
     
     const [bookMod, setBookMod] = useState({
         id:id,
@@ -243,8 +245,20 @@ function Book(props) {
     }
         
     const editBook = () => {
-        setShowResults(true)
+        setEditBookInfo(true)
     }
+
+    const cancelBook = () => {
+        setBookMod(book)
+        setEditBookInfo(false)
+    }
+
+    const handleSave = ({ name, value}) => {
+        setBookMod({
+            ...bookMod,
+            [name]:value
+        })
+    };
 
     const saveBook = () => {
         console.log(bookMod)
@@ -254,49 +268,40 @@ function Book(props) {
         })
         .catch(err=>console.log(err))   
         setBook(bookMod)
-        setShowResults(false);
+        setEditBookInfo(false)
     }
 
-    const cancelBook = () => {
-        setBookMod(book)
-        setShowResults(false)
-    }
-
-    const handleChange = e => {
-        const {title,textContent} = e.currentTarget
-        setBookMod({
-            ...bookMod,
-            [title]:textContent
-        })
-    }
-    
     return (
     <>
         <HeaderWithoutSearch user={props.user}/>
         {
             <main className='Book-Wrapper'>
                 <div className='Book-Header'>
+                    {book.imgstr !== "Bild saknas" && (
                     <div className='Book-Thumbnail'>
-                        <img src={book.imgstr} height='256px' alt="thumbnail"></img>
+                        <img src={book.imgstr} width='128px' alt="thumbnail"></img>
                     </div>
+                    )}
                     <div className='Book-Text'>
-                        <h1 className='Book-Title'>{showResults ?  <ContentEditable title="title" onChange={handleChange} onBlur={handleChange} html={bookMod.title} /> : book.title} [{book.borrower}]</h1>
-                        <h2 className='Book-Sub-Title'>{showResults ? <ContentEditable title="subtitle" onChange={handleChange} onBlur={handleChange} html={bookMod.subtitle} /> : book.subtitle}</h2>
-                        <span className='Book-Desc'>{showResults ?  <ContentEditable title="body" onChange={handleChange} onBlur={handleChange} html={bookMod.body} /> : book.body}</span>
-                    </div>
-                </div>
-                <br/>
-                { 
-                    <div className='Book-Meta'>
-                        <span className='Book-Date'><b>Published: </b>{showResults ?  <ContentEditable title="published" onChange={handleChange} onBlur={handleChange} html={bookMod.published} /> : book.published}</span>{!showResults ? <br></br> : <></>}
-                        <span className='Book-Author'><b>Author: </b>{showResults ?  <ContentEditable title="author" onChange={handleChange} onBlur={handleChange} html={bookMod.author} /> : book.author}</span>{!showResults ? <br></br> : <></>}
-                        <span className='Book-Category'><b>Category: </b>{showResults ? <ContentEditable title="category" onChange={handleChange} onBlur={handleChange} html={bookMod.category} /> : book.category}</span>{!showResults ? <br></br> : <></>}
-                        <span className='Book-Id'><b>ISBN: </b>{book._id}</span>{!showResults ? <br></br> : <></>}
+                        {/* TODO: Fix styling for longer book titles */}
+                        <EditText id="Book-Title" name="title" defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
+                        <EditText id="Book-Title" name="borrower" defaultValue={<>[{book.borrower}]</>} onSave={handleSave} inline readonly={true} placeholder={"Lånad av"}/>
+                        <br></br>
+                        <EditText id="Book-Author" name='author' defaultValue={bookMod.author} inline onSave={handleSave}readonly={!editBookInfo}  placeholder={"Författare"}/>
+                        <br></br>
+                        <EditText id="Book-Date" name='published' defaultValue={bookMod.published} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Publiceringsdatum"}/>
+                        <br></br>
+                        <EditText id="Book-Category" name='category' defaultValue={bookMod.category} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Kategori"}/>
+                        <br></br>
+                        <EditText id="Book-Publisher" name='publisher' defaultValue={bookMod.publisher} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Förlag"}/>
+                        <br></br>
+                        <EditTextarea id="Book-Body" name='body' defaultValue={bookMod.body} rows={'auto'} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Beskrivning"}/>
+                        <EditText id="book-id" defaultValue={bookMod._id} inline readonly={true} placeholder={"ISBN"}/>
                         <div className='Tags-Wrapper'>
                             {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
                         </div>
                     </div>
-                }  
+                </div>
 
                 <div className ='Book-buttons'>
                     { !book.borrowed ? (
@@ -330,12 +335,12 @@ function Book(props) {
                    { !showResults && (
                         <button type='button' id="edit-book" onClick={editBook}>Ändra metadata</button>
                     )}
-                    { showResults ? (
+                    {editBookInfo ? (
                         <div className='Align-h'>
                             <button type='button' id="edit-book" onClick={saveBook}>Spara</button>
                             <button type='button' id="edit-book" onClick={cancelBook}>Avbryt</button>
                         </div>
-                    ) : null }
+                    ) : null}
                 </div>
             </main>
         }
