@@ -285,7 +285,7 @@ function Book(props) {
                     <div className='Book-Text'>
                         {/* TODO: Fix styling for longer book titles */}
                         <EditText id="Book-Title" name="title" defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
-                        <EditText id="Book-Title" name="borrower" defaultValue={<>[{bookMod.borrower}]</>} onSave={handleSave} inline readonly={true} placeholder={"Lånad av"}/>
+                        <EditText id="Book-Title" name="borrower" defaultValue={<>[{book.borrower}]</>} onSave={handleSave} inline readonly={true} placeholder={"Lånad av"}/>
                         <br></br>
                         <EditText id="Book-Author" name='author' defaultValue={bookMod.author} inline onSave={handleSave}readonly={!editBookInfo}  placeholder={"Författare"}/>
                         <br></br>
