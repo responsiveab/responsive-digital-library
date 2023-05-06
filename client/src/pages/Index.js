@@ -45,7 +45,8 @@ function Index(props) {
       } else {
         setFilteredBooks(
           books.filter(book =>
-            book.title.toLowerCase().includes(input) ||
+            (book._id.includes(input)) ||
+            (book.title.toLowerCase().includes(input)) ||
             (book.tags && book.tags.some(tag => tag.toLowerCase().includes(input))) ||
             (book.body && book.body.toLowerCase().includes(input)) ||
             (book.author && book.author.toLowerCase().includes(input)) ||
