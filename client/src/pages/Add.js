@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 
 import { EditText, EditTextarea } from 'react-edit-text';
@@ -21,6 +21,19 @@ function Add(props) {
     const [tag, setTag] = useState(undefined);
 
     const [tags, setTags] = useState([]);
+
+    const [dbTags, setDbTags] = useState([]);
+
+    useEffect(() => {
+        axios.get(process.env.REACT_APP_API_URL + "/api/tags")
+        .then(res => {
+            setDbTags(res.data.data)
+            console.log(res.data.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, []);
 
     // let navigate = useNavigate();
     const routeToIndex = () =>{
@@ -111,16 +124,24 @@ function Add(props) {
         document.getElementById('tag-input').value = ''
     }
 
+    const check_tag_exists = (t) => {
+        for(let i = 0; i < dbTags.length; i++) {
+            if(dbTags[i]._id == t) {
+                return true
+            }
+        }
+        return false
+    }
+
     const addTag = (t) => {
         let newTag = {
             name: t
         }
-        axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
-        .then(res=> {
+
+        if(check_tag_exists(t)) { // TAG EXISTS
             let modifiedFields = {
-                tag: res.data.data
+                tag: { _id: t }
             }
-            console.log(modifiedFields)
             axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
             .then(res => {
                 console.log(res)
@@ -128,8 +149,25 @@ function Add(props) {
             .catch(err => {
                 console.log(err)
             })
-        })
-        .catch(err=>console.log(err))
+        }
+        else { // TAG DOES NOT EXIST
+            axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
+            .then(res=> {
+                console.log(res.data.data)
+                let modifiedFields = {
+                    tag: res.data.data
+                }
+                console.log(modifiedFields)
+                axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            })
+            .catch(err=>console.log(err))
+        }
     }
 
     const handleSave = ({ name, value, previousValue }) => {
