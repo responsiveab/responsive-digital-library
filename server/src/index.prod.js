@@ -10,7 +10,7 @@ import './config/mongodb.config';
 var cors = require('cors')
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.BUILD_PORT || 8080;
 
 const CLIENT_BUILD_PATH = path.join(__dirname, "../../client/build");
 

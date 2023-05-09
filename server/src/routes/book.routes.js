@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 const bookRouter = express.Router();
 
 // Get all Books
-bookRouter.get('/', (req, res, next) => {
+bookRouter.get('/', (req, res, next) => { //TODO: Add auth
   Book.find({} , function(err, result){
       if(err){
           res.status(400).send({
@@ -68,7 +68,7 @@ bookRouter.get('/list', (req, res, next) => {
 
 
 // Get Single Book
-bookRouter.get("/:book_id", (req, res, next) => {
+bookRouter.get("/:book_id", (req, res, next) => { //TODO: Add auth
     Book.findById(req.params.book_id, function (err, result) {
         if(err){
              res.status(400).send({

@@ -25,7 +25,7 @@ userRouter.get("/", (req, res, next) => {
 
 
 //Get user by id
-userRouter.get("/:user_id", auth,(req, res, next) => {
+userRouter.get("/:user_id", auth, (req, res, next) => {
     User.findById(req.params.user_id, function (err, result) {
         if(err){
              res.status(400).send({
@@ -41,9 +41,8 @@ userRouter.get("/:user_id", auth,(req, res, next) => {
      });
 });
 
-
 // Add single book to user reading list
-userRouter.patch("/:user_id",auth, (req, res, next) => {
+userRouter.patch("/:user_id", auth, (req, res, next) => {
     User.findByIdAndUpdate(req.params.user_id, { $push: { reading_list_books: req.body.book._id } }, { new: true, useFindAndModify: false },  function (err, result) {
         if(err){
             res.status(400).send({
@@ -61,7 +60,7 @@ userRouter.patch("/:user_id",auth, (req, res, next) => {
   });
 
 //Delete a single book from user reading list
-userRouter.patch("/:user_id/reading-list-books/:book_id",auth,(req,res,next)=> {
+userRouter.patch("/:user_id/reading-list-books/:book_id", auth,(req,res,next)=> {
     User.findByIdAndUpdate(req.params.user_id,{$pull:{reading_list_books:req.params.book_id}}, {new:true, useFindAndModify:false},function(err,result) {
         if(err){
             res.status(400).send({
@@ -77,21 +76,43 @@ userRouter.patch("/:user_id/reading-list-books/:book_id",auth,(req,res,next)=> {
     });
 });
   
-// Get all users
-userRouter.get('/', (req, res, next) => {
-  User.find({} , function(err, result){
-      if(err){
-          res.status(400).send({
-              'success': false,
-              'error': err.message
+
+// Add single book to user loan list
+userRouter.patch("/:user_id/loan-list-books", auth, (req, res, next) => {
+    User.findByIdAndUpdate(req.params.user_id, { $push: { loan_list_books: req.body.book._id } }, { new: true, useFindAndModify: false },  function (err, result) {
+        if(err){
+            res.status(400).send({
+               success: false,
+               error: err.message
+              });
+            
+        }
+        res.status(200).send({
+          success: true,
+          data: result,
+          message: "Book successfully added to loan list"
           });
-      }
-      res.status(200).send({
-          'success': true,
-          'data': result
-      });
+    });
   });
+
+// Delete a single book from user loan list
+userRouter.patch("/:user_id/loan-list-books/:book_id", auth, (req,res,next)=> {
+    User.findByIdAndUpdate(req.params.user_id,{$pull:{loan_list_books:req.params.book_id}}, {new:true, useFindAndModify:false},function(err,result) {
+        if(err){
+            res.status(400).send({
+                success: false,
+                error: err.message
+            })
+        }
+        res.status(200).send({
+            success: true,
+            data: result,
+            message: "Book successfully removed from loan list"
+        });
+    });
 });
+  
+
 
 
 const bcrypt = require('bcryptjs');

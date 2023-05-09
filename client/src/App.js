@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 
-// import Header from './components/headers/Header';
-
-import Index from './pages/Index';
 import Error from './pages/Error';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -15,12 +12,12 @@ import HeaderIndex from './components/headers/HeaderIndex';
 import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 
 function App() {
+
   const [account, setAccount] = useState(); //TODO: Remove this
 
   useEffect(() => {
     try { //TODO: This should be removed, instead check for valid token
           //or cache if logged in
-       
       const accountData = window.localStorage.getItem('account');
       if (accountData) {
         setAccount(JSON.parse(accountData));

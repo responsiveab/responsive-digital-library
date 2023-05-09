@@ -8,22 +8,8 @@
 }
 
 .Book-Thumbnail {
-    width: 12em;
-    margin-top: 0.4em;
+    width: 8.5em;
     float: left;
-}
-
-.Book-Sub-Title {
-    margin-top: 8px;
-}
-
-.Book-Desc {
-    margin-top: 16px;
-}
-
-.Book-Meta {
-    display: inline-block;
-    text-align: left;
 }
 
 .Tags-Wrapper {
@@ -37,10 +23,11 @@
     height: fit-content;
     width: fit-content;
     margin: auto;
+    margin-top: 16px;
     flex-wrap: wrap;
 }
 
-#edit-book, #borrow-submit, #isbn-remove,#readlist-submit,#readlist-remove{
+#edit-book, #borrow-submit, #isbn-remove, #readlist-submit, #readlist-remove, #return-submit{
     margin: 0 10px;
     padding: 10px 20px;
     font-size: 16px;
@@ -50,4 +37,30 @@
     max-width: 192px;
     justify-content: center;
     align-items: center;
+}
+
+#Book-Title{
+    font-size: 1.5em;
+    margin: 0;
+    margin-bottom: 0.4em;
+    font-weight: bold;
+    width: fit-content;
+}
+
+#Book-Author, #Book-Category, #Book-Date, #Book-Publisher, #Book-Language, #Book-Isbn {
+    font-size: 1em;
+    margin: 0;
+    margin-bottom: 0.4em;
+    width: fit-content;
+}
+
+#Book-Body {
+    font-size: 1em;
+    margin: 0;
+    margin-bottom: 0.4em;
+    font-style: italic;
+}
+
+#book-id {
+    font-weight: bold;
 }
