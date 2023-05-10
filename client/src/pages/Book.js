@@ -44,6 +44,7 @@ function Book(props) {
     }, []);
     
     useEffect(() => {
+        // Comment: If this causes an error, you probably have an invalid account
         if (user !== undefined){
             if (user.reading_list_books.includes(id)){
                 setShowReadList(false);
