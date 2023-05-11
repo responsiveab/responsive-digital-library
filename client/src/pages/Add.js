@@ -177,10 +177,16 @@ function Add(props) {
         })
     };
 
+    const handleAddBookSubmit = (event) => {
+        // PreventDefault makes the page not reload when Enter key is pressed.
+        event.preventDefault();
+        fetchBook();
+    };
+
     return (
     <>
         <HeaderWithoutSearch user={props.user}/>
-        <form action='#' className='add-book-form'>
+        <form action='#' className='add-book-form' onSubmit={handleAddBookSubmit}>
             <input type="text" id="isbn-input" name="isbn" placeholder='ISBN' onInput={e => setIsbnNr(e.target.value)}/>
             {
                 isbnNr && (isbnNr.length > 8) &&
@@ -212,7 +218,7 @@ function Add(props) {
                     <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button>
                     <button type='button' id="isbn-cancel" onClick={cancelBook}>Avbryt</button>
 
-                </div> : <button type='button' id="isbn-submit" onClick={fetchBook}>Hämta bok</button>)
+                </div> : <button type='button' id="isbn-submit" onClick={handleAddBookSubmit}>Hämta bok</button>)
             }
         </form>
     </>);
