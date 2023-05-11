@@ -2,13 +2,48 @@ import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 import './css/Account.css'
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import BookPreview from "../components/BookPreview"
+import ReadingListPreview from "../components/ReadingListPreview"
+import LoanListPreview from "../components/LoanListPreview"
 
 
 function Account(props) {
     const [books, setBooks] = useState()
+    const [user,setUser] = useState(undefined)
+    const [loanBooks, setLoanBooks] = useState(undefined)
+    const [readBooksId,setReadBooksId] = useState(undefined)
+    const [readBooks, setReadBooks] = useState(undefined)
+
+    useEffect(async() => {
+        axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
+        const account_id = props.user._id;
+        const user_ = await getUser(account_id)
+        setUser(user_.data)
+
+    },[]);
+
+    useEffect(()=>{
+        if(user !== undefined){
+            setReadBooksId(user.reading_list_books)
+            //setLoanBooks(user.loan_list_books) LOAN LIST FINNS INTE I DENNA BRANCHEN
+        }
+
+    },[user]);
+    
+    useEffect(async()=> {
+        if (readBooksId !== undefined) {
+            const idList = readBooksId
+            await axios.get(`http://localhost:8080/api/books/list?ids=${idList.join(',')}`)
+                .then(res => {
+                    console.log(res.data.data);
+                    setReadBooks(res.data.data);
+                })
+          .catch(error => console.error(error));
+        }
+    },[readBooksId])
+
+
     useEffect(() => {
-        axios.get("http://localhost:8080/api/books/")
+        axios.get(process.env.REACT_APP_API_URL + "/api/books/")
           .then(res => {
             setBooks(res.data.data)
             console.log(res.data.data)
@@ -16,6 +51,18 @@ function Account(props) {
           .catch(error => console.error(error));
           // eslint-disable-next-line
       }, []);
+
+
+    async function getUser(account_id) {
+        try {
+            const response = await axios.get("http://localhost:8080/api/users/" + account_id)
+            console.log('res', response.data);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     return (
     <>
@@ -40,8 +87,8 @@ function Account(props) {
                                </div>
                                 <div className="reading-list">
                                     <h1>Läslista</h1>
-                                    {books ? books.map((book) => <span key={book._id}>
-                                                            <BookPreview id={book._id} 
+                                    {readBooks ? readBooks.map((book) => <span key={book._id}>
+                                                            <ReadingListPreview id={book._id} 
                                                                           title={book.title} 
                                                                           author={book.author}
                                                                           body={book.body}
@@ -55,11 +102,12 @@ function Account(props) {
                             <div className="loan-list">
                                 <h1>Mina Lån</h1>
                                      {books ? books.map((book) => <span key={book._id}>
-                                                            <BookPreview id={book._id} 
-                                                                          img={book.imgstr}
-                                                                          
-                                                                          />
-                                                            </span>): <></>
+                                                            <LoanListPreview id={book._id} 
+                                                                          title={book.title} 
+                                                                          author={book.author}
+                                                                          body={book.body}
+                                                                          taglis={book.tags}/>
+                                                            </span>): <></>                                    
                                     }
                             </div>
                         </div>

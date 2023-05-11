@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 const bookRouter = express.Router();
 
 // Get all Books
-bookRouter.get('/', (req, res, next) => {
+bookRouter.get('/', (req, res, next) => { //TODO: Add auth
   Book.find({} , function(err, result){
       if(err){
           res.status(400).send({
@@ -20,9 +20,55 @@ bookRouter.get('/', (req, res, next) => {
       });
   });
 });
+// bookRouter.get('/list', (req,res,next) => {
+//   Book.find({_id: {$in:idList}}, function(err,result){
+//     if(err){
+//       res.status(400).send({
+//         sucess:false,
+//         error:err.message
+//       });
+//     }
+//     res.status(200).send({
+//       success: true,
+//       data: result
+//     });
+//   });
+// });
+
+bookRouter.get('/list', (req, res, next) => {
+  const idList = req.query.ids.split(',');
+  if (!idList || idList.length === 0) {
+    return res.status(400).send({
+      success: false,
+      error: 'No book IDs specified',
+    });
+  }
+  Book.find({ _id: { $in: idList } }, function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send({
+        success: false,
+        error: err.message,
+      });
+    }
+    if (!result || result.length === 0) {
+      return res.status(404).send({
+        success: false,
+        error: 'No books found with the specified IDs',
+      });
+    }
+    console.log(result);
+
+    return res.status(200).send({
+      success: true,
+      data: result,
+    });
+  });
+});
+
 
 // Get Single Book
-bookRouter.get("/:book_id", (req, res, next) => {
+bookRouter.get("/:book_id", (req, res, next) => { //TODO: Add auth
     Book.findById(req.params.book_id, function (err, result) {
         if(err){
              res.status(400).send({

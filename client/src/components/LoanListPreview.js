@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react'
 
-import './css/BookPreview.css';
+import './css/LoanListPreview.css';
 import Tag from './Tag'
 
 import DetailedBookPreview from './DetailedBookPreview';
+import { Link } from 'react-router-dom';
 
 function trimString(string){
-    var textLength = 200;
+    var textLength = 100;
     var trimmedString = string.substr(0, textLength);
     if (string.length <= trimmedString.length){trimmedString+=" "};
     trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
@@ -14,7 +15,7 @@ function trimString(string){
     return trimmedString;
 }
 
-function BookPreview(props) {
+function LoanListPreview(props) {
     // eslint-disable-next-line
     const [tags, setTags] = useState([]);
     const [active, setActive] = useState(false);
@@ -26,9 +27,7 @@ function BookPreview(props) {
     // eslint-disable-next-line
     }, [])
 
-    function toggleActive() {
-        setActive(!active)
-    }
+  
 
     function increaseCount() {
         setCount(count + 5)
@@ -36,14 +35,9 @@ function BookPreview(props) {
 
     return (
     <>
-    <div className="BookPreview-Wrapper">
-        <div className="CoverImage-Wrapper">
-            {
-                <img src={props.img} width="128px" alt="cover"></img>
-            }
-        </div>
+    <div className="LoanListPreview-Wrapper">
         <div className="MetaData-Wrapper">
-            <h3><b><a onClick={toggleActive}>{props.title}</a></b></h3>
+            <h3><b><Link to={'/books/' + props.id}>{props.title}</Link></b></h3>
             {
                 props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
             }
@@ -58,20 +52,7 @@ function BookPreview(props) {
             }
         </div>
     </div>
-    {active && <DetailedBookPreview id={props.id} 
-                                    title={props.title} 
-                                    body={props.body} 
-                                    author={props.author}
-                                    shelf={props.shelf}
-                                    category={props.category}
-                                    language={props.language}
-                                    publisher={props.publisher}
-                                    borrower={props.borrower}
-                                    borrowed = {props.borrowed}
-                                    date={props.date}
-                                    img={props.img}
-                                    tags={tags}/>}
     </>);
 }
 
-export default BookPreview;
+export default LoanListPreview;

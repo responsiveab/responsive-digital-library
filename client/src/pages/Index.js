@@ -7,7 +7,7 @@ function Index(props) {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const input = props.input.toLowerCase();
   useEffect(() => {
-    axios.get("http://localhost:8080/api/books/")
+    axios.get(process.env.REACT_APP_API_URL + "/api/books/")
       .then(res => {
         setBooks(res.data.data)
         // console.log(res.data.data)
@@ -45,7 +45,8 @@ function Index(props) {
       } else {
         setFilteredBooks(
           books.filter(book =>
-            book.title.toLowerCase().includes(input) ||
+            (book._id.includes(input)) ||
+            (book.title.toLowerCase().includes(input)) ||
             (book.tags && book.tags.some(tag => tag.toLowerCase().includes(input))) ||
             (book.body && book.body.toLowerCase().includes(input)) ||
             (book.author && book.author.toLowerCase().includes(input)) ||
@@ -69,6 +70,8 @@ function Index(props) {
                                                                           category={book.category}
                                                                           language={book.language}
                                                                           publisher={book.publisher}
+                                                                          borrower={book.borrower}
+                                                                          borrowed={book.borrowed}
                                                                           date={book.published}
                                                                           img={book.imgstr}
                                                                           taglis={book.tags}

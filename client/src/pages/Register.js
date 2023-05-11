@@ -26,7 +26,7 @@ function Register() {
     const register = () => {
         const {name,email,password} = user
         if (name && email && password) {
-         axios.post("http://localhost:8080/api/users/register", user)
+         axios.post(process.env.REACT_APP_API_URL + "/api/users/register", user)
          .then(res=>console.log(res))
          .catch(err=>console.log(err))
         }
