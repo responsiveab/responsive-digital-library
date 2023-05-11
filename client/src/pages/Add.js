@@ -119,9 +119,17 @@ function Add(props) {
     }
 
     const appendTag = () => {
-        tags.push(tag)
-        setTag('')
-        document.getElementById('tag-input').value = ''
+        // Makes sure it is not an empty tag
+        if (tag)
+        {   
+            if (!tags.includes(tag)){
+                // Covers the event of trying to add a duplicate tag
+                tags.push(tag);
+            } 
+            setTag('');
+            document.getElementById('tag-input').value = '';
+        }
+        
     }
 
     const check_tag_exists = (t) => {
