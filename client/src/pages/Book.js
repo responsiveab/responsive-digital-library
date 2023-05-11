@@ -7,7 +7,8 @@ import {
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
-import axios, * as others from 'axios';
+import axios, * as others from 'axios'
+// import { API_URL } from '../utils/constants';
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
@@ -91,11 +92,17 @@ function Book(props) {
             console.log(err);
         })
     }
+    
+    function borrowBook(){
+        // TODO: Add authentication, waiting for logged in user implementation
+        let borrow = {
+            borrower:user,
+            borrowed:true};
 
-    async function addBorrowerToBook(account_name){
-        let add_to_borrower = {
-            borrower: account_name,
-            borrowed: true
+        async function addBorrowerToBook(account_name){
+            let add_to_borrower = {
+                borrower: account_name,
+                borrowed: true
         }
         axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, add_to_borrower)
         .then(res =>{
@@ -109,7 +116,7 @@ function Book(props) {
         .catch(err => {
             console.log(err);
         })
-    }
+    }};
 
     function removeBorrowerFromBook(){
         let remove_from_borrower = {
@@ -238,21 +245,34 @@ function Book(props) {
         }
     
     }
+    catch(error){
+        console.log("Error:", error);
+    }}
+
 
     function removeFunc(){
         removeBook();
         
         routeToIndex();
-    }
+    };
+
+    useEffect(() => {
+        axios.get(process.env.REACT_APP_API_URL + "/api/books/" + id)
+        .then(res => {
+            setBook(res.data.data)
+            setBookMod(res.data.data) // copy for modification
+        })
+        .catch(err => console.log(err))
+    }, [])
         
     const editBook = () => {
         setEditBookInfo(true)
     }
 
-    const cancelBook = () => {
-        setBookMod(book)
-        setEditBookInfo(false)
-    }
+    // const cancelBook = () => {
+    //     setBookMod(book)
+    //     setEditBookInfo(false)
+    // }
 
     const handleSave = ({ name, value}) => {
         setBookMod({
@@ -428,5 +448,6 @@ function Book(props) {
     </>
         ); 
 }
+
 
 export default Book;
