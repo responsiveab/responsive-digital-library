@@ -295,34 +295,33 @@ function Book(props) {
 
 
 
-    const downloadBook = () => {
-
+    const downloadBook = async(event) => {
+        event.preventDefault();
+        await axios.get(`http://localhost:8080/api/files/download`)
+        
     }
-
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         const file = event.target.files[0];
         try {
-          //const { title, description } = event.target.value;
-          const title = event.target.files[0].name;
-          //if (title.trim() !== '' && description.trim() !== '') {
+           
             if (file) {
-              console.log(file)
-              const formData = new FormData();
-              formData.append('_id', id);
-              formData.append('file', file); // lagra i databasen
-              formData.append('title', title); // skicka till book model
-      
-            //   setErrorMsg('');
-              await axios.post(`http://localhost:8080/api/files/upload`, formData, {
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
-              });
-            alert("Filen är uppladdad.")
+                console.log(file)
+                const formData = new FormData();
+                formData.append('_id', id);
+                formData.append('file', file); // lagra i databasen
+              //   setErrorMsg('');
+                await axios.post(`http://localhost:8080/api/files/upload`, formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                });
+              alert("Filen är uppladdad.")  
+              await axios.post(`http://localhost:8080/api/files/upload`, file);
             } else {
                 alert('Please select a file to add.');
             }
+            
             /*const filename = "filename";
             setBookMod({
                 ...bookMod,
@@ -333,6 +332,7 @@ function Book(props) {
         catch (error) {
             console.log(error); //   error.response && setErrorMsg(error.response.data);
         }
+        alert("Filen är uppladdad.")
       };
       
 

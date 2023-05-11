@@ -15,6 +15,7 @@
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "assert": "^2.0.0",
+    "bcryptjs": "^2.4.3",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "constants-browserify": "^1.0.0",
@@ -26,6 +27,7 @@
     "fs": "^0.0.1-security",
     "fs-extra": "^11.1.1",
     "https-browserify": "^1.0.0",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.13.17",
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.2",
@@ -35,9 +37,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.1.1",
     "util": "^0.12.3",
-    "vm-browserify": "^1.1.2",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.0"
+    "vm-browserify": "^1.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

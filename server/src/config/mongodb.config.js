@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { GridFSBucket } from 'mongoose';
 
 dotenv.config();
 
@@ -41,8 +40,6 @@ db.on('connected', () => {
 
 db.once('open', async() => {
      console.log('Mongodb Connection Successful');
-     //const bucket = new GridFSBucket(db.db());
-     // use the bucket object here
 
 });
 

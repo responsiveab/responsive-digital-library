@@ -4,6 +4,7 @@ import mongoose from 'mongoose';//import dbConnectionURL from '../src/config/mon
 import {dbConnectionURL, bucket } from '../config/mongodb.config';
 //const url = db.config.REMOTE_DB_URL
 
+
 // Create new GridFsStorage instance
 const storage = new GridFsStorage({
   url: dbConnectionURL.LOCAL_DB_URL,
