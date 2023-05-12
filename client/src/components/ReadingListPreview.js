@@ -36,11 +36,11 @@ function ReadingListPreview(props) {
     return (
     <>
     <div className="ReadingListPreview-Wrapper">
-        <div className="CoverImage-Wrapper">
+        {/* <div className="CoverImage-Wrapper">
             {
                 <img src={props.img} width="128px" alt="cover"></img>
             }
-        </div>
+        </div> */}
         <div className="MetaData-Wrapper">
             <h3><b><Link to={'/books/' + props.id}>{props.title}</Link></b></h3>
             {
