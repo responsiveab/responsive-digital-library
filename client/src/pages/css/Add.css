@@ -34,14 +34,14 @@
 #book-author, #book-category, #book-date, #book-publisher, #book-language, #book-isbn {
     font-size: 1em;
     margin: 0;
-    margin-bottom: 0.4em;
+    margin-bottom: 100px;
     width: fit-content;
 }
 
 #book-body {
     font-size: 1em;
     margin: 0;
-    margin-bottom: 0.4em;
+    margin: 4px 0px 4px 0px;
     font-style: italic;
 }
 
@@ -50,26 +50,45 @@
     margin: auto;
 }
 
-.outline {
+/* .outline {
     margin-top: 16px;
     border: 1px solid black;
     border-radius: 8px;
     padding: 8px;
-}
+    display: flex;
+    flex-direction: column;
+} */
 
 .CoverImage-Wrapper {
     width: 8.5em;
     float: left;
 }
 
+
 @media screen and (min-width: 800px) {
     .add-book-form {
         width: 65%;
+    }
+    .outline {
+        margin-top: 16px;
+        border: 1px solid black;
+        border-radius: 8px;
+        padding: 8px;
     }
   }
 @media screen and (max-width: 799px) {
     .add-book-form {
         width: 80%;
     }
+    .outline {
+        margin-top: 16px;
+        border: 1px solid black;
+        border-radius: 8px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+    }
 }
+
+
 
