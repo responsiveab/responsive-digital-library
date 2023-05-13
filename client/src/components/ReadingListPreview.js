@@ -42,19 +42,22 @@ function ReadingListPreview(props) {
             }
         </div> */}
         <div className="MetaData-Wrapper">
-            <h3><b><Link to={'/books/' + props.id}>{props.title}</Link></b></h3>
+            <h3><Link to={'/books/' + props.id}>{props.title}</Link></h3>
+
             {
                 props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
             }
             {
-                props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
-            }
-            {
-                tags ? <div className='tags-wrapper'>
+                tags ? <div className='tags'>
                     {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} inputUpdate={props.inputUpdate}/>)}
-                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}</div> : <></>
+                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}
+                    </div> : <></>
                 // TODO: Hide some tags if there are too many
             }
+            {
+                props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
+            }
+
         </div>
     </div>
     </>);

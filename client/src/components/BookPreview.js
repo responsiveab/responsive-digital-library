@@ -48,13 +48,14 @@ function BookPreview(props) {
                 props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
             }
             {
-                props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
+                tags ? <div className='tags'>
+                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} inputUpdate={props.inputUpdate}/>)}
+                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}
+                    </div> : <></>
+                // TODO: Hide some tags if there are too many
             }
             {
-                tags ? <div className='tags-wrapper'>
-                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} inputUpdate={props.inputUpdate}/>)}
-                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}</div> : <></>
-                // TODO: Hide some tags if there are too many
+                props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
             }
         </div>
     </div>
