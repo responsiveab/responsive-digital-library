@@ -46,7 +46,7 @@
 }
 
 .add-book-form {
-    width: 50%;
+    width: 80%;
     margin: auto;
 }
 
@@ -61,3 +61,15 @@
     width: 8.5em;
     float: left;
 }
+
+@media screen and (min-width: 800px) {
+    .add-book-form {
+        width: 65%;
+    }
+  }
+@media screen and (max-width: 799px) {
+    .add-book-form {
+        width: 80%;
+    }
+}
+
