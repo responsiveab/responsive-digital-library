@@ -15,11 +15,12 @@ const PORT = process.env.BUILD_PORT || 8080;
 app.use(cors())
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
+    limit: '10mb'
   })
 );
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
 
 app.use('/api', router);
 app.use('/api/books', bookRouter);

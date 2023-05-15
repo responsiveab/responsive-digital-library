@@ -92,17 +92,11 @@ function Book(props) {
             console.log(err);
         })
     }
-    
-    function borrowBook(){
-        // TODO: Add authentication, waiting for logged in user implementation
-        let borrow = {
-            borrower:user,
-            borrowed:true};
 
-        async function addBorrowerToBook(account_name){
-            let add_to_borrower = {
-                borrower: account_name,
-                borrowed: true
+    async function addBorrowerToBook(account_name){
+        let add_to_borrower = {
+            borrower: account_name,
+            borrowed: true
         }
         axios.patch(process.env.REACT_APP_API_URL + "/api/books/" + id, add_to_borrower)
         .then(res =>{
@@ -116,7 +110,8 @@ function Book(props) {
         .catch(err => {
             console.log(err);
         })
-    }};
+    }
+
 
     function removeBorrowerFromBook(){
         let remove_from_borrower = {
@@ -243,12 +238,7 @@ function Book(props) {
                 console.log("Error:", err);
             });
         }
-    
     }
-    catch(error){
-        console.log("Error:", error);
-    }}
-
 
     function removeFunc(){
         removeBook();
@@ -269,10 +259,10 @@ function Book(props) {
         setEditBookInfo(true)
     }
 
-    // const cancelBook = () => {
-    //     setBookMod(book)
-    //     setEditBookInfo(false)
-    // }
+    const cancelBook = () => {
+        setBookMod(book)
+        setEditBookInfo(false)
+    }
 
     const handleSave = ({ name, value}) => {
         setBookMod({
@@ -290,47 +280,35 @@ function Book(props) {
         .catch(err=>console.log(err))   
         setBook(bookMod)
         setEditBookInfo(false)
-      
     }
-
-    
-
-    // TODO: Async, wait until file is uploaded to volume before editing
-    function uploadBook(e) {
-        handleOnSubmit(e);
-        // e.preventDefault();
-
-        // const fileContent = e.target.files[0];
-        // let blobPDF = new Blob([e.target.files], {type: "pdf"});
-        // let formData = new FormData ();
-        // formData.append(fileContent.name, blobPDF);
-        // bookMod.filename = fileContent.name;
-        // // setBookMod({
-        // //     ...bookMod,
-        // //     ["filename"]:fileContent.name
-        // // })
-        // saveBook();
-        // alert("File submitted")
-    }
-
-
 
     const downloadBook = async(event) => {
         event.preventDefault();
-        await axios.get(`http://localhost:8080/api/files/download`)
-        
+        console.log(book.filename)
+        await axios.get(`http://localhost:8080/api/files/download`+'?filename='+book.filename).then(
+            res => {
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', book.title);
+                document.body.appendChild(link);
+                link.click();
+            }).catch(err => console.log(err));
     }
+
+
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         const file = event.target.files[0];
+        console.log(file)
         try {
-           
             if (file) {
-                console.log(file)
                 const formData = new FormData();
                 formData.append('_id', id);
-                formData.append('file', file); // lagra i databasen
-              //   setErrorMsg('');
+                formData.append('file', file); 
+                // delete previous file
+                await axios.delete('http://localhost:8080/api/files/delete'+'?filename='+book.filename);
+
                 await axios.post(`http://localhost:8080/api/files/upload`, formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data'
@@ -341,20 +319,25 @@ function Book(props) {
             } else {
                 alert('Please select a file to add.');
             }
-            
-            /*const filename = "filename";
-            setBookMod({
-                ...bookMod,
-                [filename]:title
-            })
-            saveBook();*/
+            const filename = "filename"
+            console.log(file.name)
+            bookMod.filename = file.name
+            saveBook();
         } 
         catch (error) {
-            console.log(error); //   error.response && setErrorMsg(error.response.data);
+            console.log(error); 
         }
         alert("Filen är uppladdad.")
       };
       
+
+    const deleteBook  = async(event) => {
+        event.preventDefault();
+        await axios.delete('http://localhost:8080/api/files/delete'+'?filename='+book.filename)
+        .then(res=> {
+            console.log(res)
+        });
+    }
 
     const handleChange = e => {
         const {title,textContent} = e.currentTarget
@@ -402,6 +385,7 @@ function Book(props) {
 
         <div className ='Remove-Book'>
             <button type='button' id="upload book" onClick={downloadBook}>Ladda ned bok</button>
+            <button type='button' id="upload book" onClick={deleteBook}>Delete ebok</button>
         </div>
 
                 <div className ='Book-buttons'>
@@ -448,6 +432,5 @@ function Book(props) {
     </>
         ); 
 }
-
 
 export default Book;
