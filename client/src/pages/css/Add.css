@@ -1,4 +1,4 @@
-#isbn-input, #isbn-submit, #isbn-cancel {
+#isbn-input, #isbn-submit, #isbn-cancel, #tag-submit {
     width: 100%;
     padding: 8px;
     margin-top: 8px;
@@ -13,20 +13,22 @@
     border-radius: 8px;
     font-size: 16px;
     border: 1px solid black;
-    margin-right: 4px;
+    /* margin-right: 4px; */
+    /* box-sizing: content-box; */
+    width: 100%;
 }
 
-#tag-submit {
+/* #tag-submit {
     font-size: 16px;
     padding: 4px;
     border-radius: 8px;
     border: 1px solid black;
-}
+    box-sizing: content-box;
+} */
 
 #book-title{
     font-size: 1.17em;
     margin: 0;
-    margin-bottom: 0.4em;
     font-weight: bold;
     width: fit-content;
 }
@@ -60,7 +62,7 @@
 } */
 
 .CoverImage-Wrapper {
-    width: 8.5em;
+    /* width: 8.5em; */
     float: left;
 }
 

@@ -211,7 +211,7 @@ function Add(props) {
                         </div>
                         }
                         <div className='edit-text-div'>
-                            <EditText id="book-title" name="title" defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
+                            <EditTextarea id="book-title" name="title" rows={'auto'} defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
                             <br></br>
                             <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave} placeholder={"Författare"}/>
                             <br></br>
@@ -229,7 +229,7 @@ function Add(props) {
                             tags ? <div>{tags.map((t) => <Tag key={t} content={t} />)}</div> : <></>
                         }
                         <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
-                        <button type='button' id="tag-submit" onClick={appendTag}><BiPlusCircle/></button>
+                        <button type='button' id="tag-submit" onClick={appendTag}>Lägg till tagg</button>
                     <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button>
                     <button type='button' id="isbn-cancel" onClick={cancelBook}>Avbryt</button>
 
