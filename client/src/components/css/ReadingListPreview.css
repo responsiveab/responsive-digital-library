@@ -1,6 +1,6 @@
 .ReadingListPreview-Wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border: 1px solid black;
     border-radius: 8px;
     padding: 8px;
