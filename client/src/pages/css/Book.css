@@ -26,7 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: fit-content;
+    margin-top: 100px;
     width: fit-content;
     margin: auto;
     margin-top: 16px;
@@ -34,7 +34,7 @@
 }
 
 #edit-book, #borrow-submit, #isbn-remove, #readlist-submit, #readlist-remove, #return-submit{
-    margin: 0 10px;
+    margin: 6px 6px;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 8px;
@@ -86,3 +86,4 @@
     display: flex;
     flex-direction: column;
 }
+
