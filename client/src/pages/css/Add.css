@@ -13,18 +13,8 @@
     border-radius: 8px;
     font-size: 16px;
     border: 1px solid black;
-    /* margin-right: 4px; */
-    /* box-sizing: content-box; */
     width: 100%;
 }
-
-/* #tag-submit {
-    font-size: 16px;
-    padding: 4px;
-    border-radius: 8px;
-    border: 1px solid black;
-    box-sizing: content-box;
-} */
 
 #book-title{
     font-size: 1.17em;
@@ -40,10 +30,14 @@
     width: fit-content;
 }
 
+#isbn {
+    font-weight: bolder;
+}
+
 #book-body {
     font-size: 1em;
     margin: 0;
-    margin: 4px 0px 4px 0px;
+    margin: 12px 0px 4px 0px;
     font-style: italic;
 }
 
@@ -52,18 +46,13 @@
     margin: auto;
 }
 
-/* .outline {
+.outline {
     margin-top: 16px;
     border: 1px solid black;
     border-radius: 8px;
     padding: 8px;
     display: flex;
     flex-direction: column;
-} */
-
-.CoverImage-Wrapper {
-    /* width: 8.5em; */
-    float: left;
 }
 
 
@@ -71,26 +60,10 @@
     .add-book-form {
         width: 65%;
     }
-    .outline {
-        margin-top: 16px;
-        border: 1px solid black;
-        border-radius: 8px;
-        padding: 8px;
-    }
   }
 @media screen and (max-width: 799px) {
     .add-book-form {
         width: 80%;
     }
-    .outline {
-        margin-top: 16px;
-        border: 1px solid black;
-        border-radius: 8px;
-        padding: 8px;
-        display: flex;
-        flex-direction: column;
-    }
 }
-
-
 

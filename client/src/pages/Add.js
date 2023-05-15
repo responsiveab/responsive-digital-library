@@ -212,7 +212,6 @@ function Add(props) {
                         }
                         <div className='edit-text-div'>
                             <EditTextarea id="book-title" name="title" rows={'auto'} defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
-                            <br></br>
                             <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave} placeholder={"Författare"}/>
                             <br></br>
                             <EditText id="book-date" name='date' defaultValue={book.date} inline onSave={handleSave} placeholder={"Publiceringsdatum"}/>
@@ -221,10 +220,10 @@ function Add(props) {
                             <br></br>
                             <EditText id="book-publisher" name='publisher' defaultValue={book.publisher} inline onSave={handleSave} placeholder={"Förlag"}/>
                             <br></br>
+                            <EditText id="isbn" name='body' defaultValue={book.id} rows={'auto'} inline onSave={handleSave} placeholder={"ISBN"}/>
+                            <br></br>
                             <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave} placeholder={"Beskrivning"}/>
                         </div>
-                       
-                        <p><b>{book.id}</b></p>
                         {
                             tags ? <div>{tags.map((t) => <Tag key={t} content={t} />)}</div> : <></>
                         }
