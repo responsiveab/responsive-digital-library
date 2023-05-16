@@ -76,17 +76,14 @@ function Account(props) {
                         <div className="flex-container">
                             <div className="left-column">
                                 <div className="information">
-                                    <div className='Photo'>
-
-                                    </div>
+                                    {/* <div className='Photo'></div> */}
                                     <div className='User'>
                                         <h1>{props.user.name}</h1>
-                                        <h1>{props.user.email}</h1>
+                                        <h2>{props.user.email}</h2>
                                     </div>
-                                    
                                </div>
                                 <div className="reading-list">
-                                    <h1>Läslista</h1>
+                                    <h1 className='section-header'>Läslista</h1>
                                     {readBooks ? readBooks.map((book) => <span key={book._id}>
                                                             <ReadingListPreview id={book._id} 
                                                                           title={book.title} 
@@ -100,7 +97,7 @@ function Account(props) {
                                 </div>
                             </div>
                             <div className="loan-list">
-                                <h1>Mina Lån</h1>
+                                <h1 className='section-header'>Mina Lån</h1>
                                      {books ? books.map((book) => <span key={book._id}>
                                                             <LoanListPreview id={book._id} 
                                                                           title={book.title} 

@@ -4,6 +4,7 @@ import './css/BookPreview.css';
 import Tag from './Tag'
 
 import DetailedBookPreview from './DetailedBookPreview';
+import { Link } from 'react-router-dom';
 
 function trimString(string){
     var textLength = 200;
@@ -17,18 +18,12 @@ function trimString(string){
 function BookPreview(props) {
     // eslint-disable-next-line
     const [tags, setTags] = useState([]);
-    const [active, setActive] = useState(false);
-
     const [count, setCount] = useState(5);
 
     useEffect(() => {
         setTags(props.taglis)
     // eslint-disable-next-line
     }, [])
-
-    function toggleActive() {
-        setActive(!active)
-    }
 
     function increaseCount() {
         setCount(count + 5)
@@ -43,34 +38,23 @@ function BookPreview(props) {
             }
         </div>
         <div className="MetaData-Wrapper">
-            <h3><b><a onClick={toggleActive}>{props.title}</a></b></h3>
+            <h3><b><Link to={'/books/' + props.id}>{props.title}</Link></b></h3>
+           
             {
                 props.author ? <div className='metatext'><p>{props.author}</p></div> : <></>
             }
             {
-                props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
+                tags ? <div className='tags'>
+                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} inputUpdate={props.inputUpdate}/>)}
+                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}
+                    </div> : <></>
+                // TODO: Hide some tags if there are too many
             }
             {
-                tags ? <div className='tags-wrapper'>
-                    {tags.slice(0, count).map((tag) => <Tag key={tag} content={tag} inputUpdate={props.inputUpdate}/>)}
-                    {count < tags.length && <span className='Expander'><a href="#" onClick={increaseCount}>...</a></span>}</div> : <></>
-                // TODO: Hide some tags if there are too many
+                props.body ? <div className='metatext'><p><i>{trimString(props.body)}</i></p></div> : <></>
             }
         </div>
     </div>
-    {active && <DetailedBookPreview id={props.id} 
-                                    title={props.title} 
-                                    body={props.body} 
-                                    author={props.author}
-                                    shelf={props.shelf}
-                                    category={props.category}
-                                    language={props.language}
-                                    publisher={props.publisher}
-                                    borrower={props.borrower}
-                                    borrowed = {props.borrowed}
-                                    date={props.date}
-                                    img={props.img}
-                                    tags={tags}/>}
     </>);
 }
 

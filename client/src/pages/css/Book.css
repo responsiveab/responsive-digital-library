@@ -5,6 +5,12 @@
     height: 100%;
     margin: auto;
     margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 8px;
+    
 }
 
 .Book-Thumbnail {
@@ -20,7 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: fit-content;
+    margin-top: 100px;
     width: fit-content;
     margin: auto;
     margin-top: 16px;
@@ -28,7 +34,7 @@
 }
 
 #edit-book, #borrow-submit, #isbn-remove, #readlist-submit, #readlist-remove, #return-submit{
-    margin: 0 10px;
+    margin: 6px 6px;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 8px;
@@ -40,9 +46,8 @@
 }
 
 #Book-Title{
-    font-size: 1.5em;
+    font-size: 1.17em;
     margin: 0;
-    margin-bottom: 0.4em;
     font-weight: bold;
     width: fit-content;
 }
@@ -58,9 +63,27 @@
     font-size: 1em;
     margin: 0;
     margin-bottom: 0.4em;
+    margin-top: 12px;
     font-style: italic;
 }
 
 #book-id {
     font-weight: bold;
 }
+
+@media screen and (min-width: 800px) {
+    .Book-Wrapper {
+      width: 65%;
+    }
+  }
+@media screen and (max-width: 799px) {
+  .Book-Wrapper {
+    width: 80%;
+  }
+}
+
+.Book-Header {
+    display: flex;
+    flex-direction: column;
+}
+

@@ -13,34 +13,60 @@
     margin-top: 8px;
   }
   
-  .flex-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 80%;
-    height: 80%;
+  @media screen and (min-width: 1200px) {
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      /* justify-content: space-evenly; */
+      width: 84%;
+      height: 80%;
+    }
 
+    .loan-list {
+      margin-left: 10px;
+      padding-left: 10px;
+      width: 30%; /* Updated width */
+      height: 100%;
+      justify-content:stretch;
+      border: 1px solid black;
+      border-radius: 8px;
+    }
   }
-  
+  @media screen and (max-width: 1199px) {
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 80%;
+    }
+
+    .loan-list {
+      margin-top: 10px;
+      width: 70%; /* Updated width */
+      height: 100%;
+      border: 1px solid black;
+      border-radius: 8px;
+    }
+    
+    .User {
+      font-size: 12px;
+    }
+    .section-header {
+      font-size: 24px;
+      padding-top: 8px;
+    }
+  }
+
   .left-column {
     display: flex;
     flex-direction: column;
-    width: 70%; /* Updated width */
+    width: 70%; 
     height: 100%;
     background-color: white;
   }
   
-  .loan-list {
-    margin-left: 10px;
-    padding-left: 10px;
-    width: 30%; /* Updated width */
-    height: 100%;
-    justify-content:stretch;
-    border: 1px solid black;
-    border-radius: 8px;
-
-  }
-
   .information {
     flex: 1;
     display: flex;
@@ -54,8 +80,14 @@
     display: flex;
     flex-direction: column;
     border: 1px solid black;
-    padding-left: 10px;
     margin-top: 10px;
     border-radius: 8px;
   }
- 
+
+.section-header {
+  text-align: center;
+}
+
+.User {
+  padding: 12px;
+}
