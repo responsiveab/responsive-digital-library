@@ -375,14 +375,13 @@ function Book(props) {
                     </div>
                 </div>
 
-        <div className ='Upload-Book'>
-            <input type="file" onChange={handleOnSubmit}/>
-        </div>
 
-        <div className ='Remove-Book'>
-            <button type='button' id="upload book" onClick={downloadBook}>Ladda ned bok</button>
-            <button type='button' id="upload book" onClick={deleteBook}>Delete ebok</button>
-        </div>
+                    <div className ='E-Book'>
+                        <input type="file" id="browse-button" onChange={handleOnSubmit}/>
+
+                        <button type='button' id="borrow-submit" onClick={downloadBook}>Ladda ned bok</button>
+                        <button type='button' id="borrow-submit" onClick={deleteBook}>Delete ebok</button>
+                    </div>
 
                 <div className ='Book-buttons'>
                     { !book.borrowed ? (

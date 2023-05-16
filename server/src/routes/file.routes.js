@@ -47,17 +47,6 @@ fileRouter.post('/upload', auth, upload.single('file'), async (req, res) => {
 fileRouter.get('/download', auth, async (req, res) => {
     const fileName = req.query.filename;
     bucket.openDownloadStreamByName(fileName).pipe(res);
-    /*bucket.find({filename: fileName}, (err, file) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Failed to retrieve the file details from the database' });
-      }
-      if (!file) {
-        return res.status(404).json({ error: 'File not found' });
-      }
-    bucket.openDownloadStreamByName(fileName).pipe(res);
-    
-    }) */
   })
 
 fileRouter.delete('/delete', auth, async (req, res) => {
