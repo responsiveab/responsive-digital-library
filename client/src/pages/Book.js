@@ -284,10 +284,11 @@ function Book(props) {
 
     const downloadBook = async(event) => {
         event.preventDefault();
-        console.log(book.filename)
-        await axios.get(`http://localhost:8080/api/files/download`+'?filename='+book.filename).then(
-            res => {
-                const url = window.URL.createObjectURL(new Blob([res.data]));
+        await axios.get(`http://localhost:8080/api/files/download`+'?filename='+book.filename, {responseType: 'blob'}).then(
+            res => { 
+                const blob = new Blob([res.data], { type: res.headers['content-type'] });
+                console.log(blob)
+                const url = window.URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', book.title);
@@ -308,22 +309,11 @@ function Book(props) {
                 formData.append('file', file); 
                 // delete previous file
                 await axios.delete('http://localhost:8080/api/files/delete'+'?filename='+book.filename);
-
-                await axios.post(`http://localhost:8080/api/files/upload`, formData, {
-                  headers: {
-                    'Content-Type': 'multipart/form-data'
-                  }
-                });
-              alert("Filen är uppladdad.")  
-              await axios.post(`http://localhost:8080/api/files/upload`, file);
-            } else {
-                alert('Please select a file to add.');
-            }
+                await axios.post(`http://localhost:8080/api/files/upload`, formData);
             const filename = "filename"
-            console.log(file.name)
             bookMod.filename = file.name
             saveBook();
-        } 
+        }}
         catch (error) {
             console.log(error); 
         }
