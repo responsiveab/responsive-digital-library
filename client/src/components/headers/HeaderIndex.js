@@ -57,11 +57,14 @@ function HeaderIndex(props) {
             {/* <input type="text" id="search" name="search" onKeyPress={handleChange}/> */}
                 <input 
                     id="searchInput"
-                    type="text" 
+                    type="search" 
                     name="search"
                     onChange={inputHandler}
                 />
-                <BiFilter className="icon" id="search-right"/>
+                {
+                /* Meant to initially support multiple filter functions for the search */
+                /* <BiFilter className="icon" id="search-right"/> */
+                }
             </div>
             <hr/>
             </header>

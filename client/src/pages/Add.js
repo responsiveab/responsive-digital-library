@@ -6,9 +6,9 @@ import 'react-edit-text/dist/index.css';
 import {BiPlusCircle} from "react-icons/bi";
 
 import Tag from '../components/Tag'
+import cover_missing_img from "../media/cover_missing_img.png";
 
 import './css/Add.css'
-
 import {
     useNavigate
 } from "react-router-dom";
@@ -35,16 +35,26 @@ function Add(props) {
         })
     }, []);
 
-    // let navigate = useNavigate();
-    const routeToIndex = () =>{
-        //navigate('/');
-    }
-
     function fetchBook() {
         var isbn = require('node-isbn');
         isbn.resolve(isbnNr, function (err, fetched_book) {
             if (err) {
-                console.log('Book not found', err);
+                console.log('Book not found. Add the book manually.', err);
+                let newBook = {
+                    id: isbnNr,
+                    title: "Skriv produktens titel",
+                    body: "Skriv beskrivning av produkten",
+                    author: "Skriv författare av produkten",
+                    category: "Skriv kategori av produkten",
+                    img: cover_missing_img,
+                    language: "Skriv produktens språk",
+                    publisher: "Skriv produktens förlag",
+                    date: "Skriv produktens utgivningsdatum",
+                    borrower: "ingen",
+                    borrowed: false
+                  };
+                setBook(newBook);
+                alert(`Boken med ISBN-nummer: ${newBook.id} hittades inte i databasen, vär vänlig och fyll i uppgifterna manuellt.`)
             } else {
                 let newBook = {
                     id:isbnNr,
@@ -52,7 +62,7 @@ function Add(props) {
                     body:(fetched_book.description ? fetched_book.description : "Beskrivning saknas"),
                     author:(fetched_book.authors ? fetched_book.authors[0] : "Okänd författare"), 
                     category:(fetched_book.categories ? fetched_book.categories[0] : "Okategoriserad"),
-                    img:(fetched_book.imageLinks ? fetched_book.imageLinks.thumbnail : "Bild saknas"),
+                    img:(fetched_book.imageLinks ? fetched_book.imageLinks.thumbnail : cover_missing_img),
                     language:(fetched_book.language ? fetched_book.language : "Okänt språk"),
                     publisher:(fetched_book.publisher ? fetched_book.publisher : "Okänt förlag"),
                     date:(fetched_book.publishedDate ? fetched_book.publishedDate : "Okänt publiceringsdatum"),
@@ -60,9 +70,9 @@ function Add(props) {
                     borrowed:false
                 }
                 setBook(newBook);
-                // Hide input field
-                document.getElementById('isbn-input').style.display = 'none';
             }
+            // Hide input field
+            document.getElementById('isbn-input').style.display = 'none';
         })
     }
 
@@ -90,8 +100,6 @@ function Add(props) {
                             document.getElementById('isbn-input').style.display = 'block';
                             document.getElementById('isbn-input').focus();
                         }, 500);
-
-                        routeToIndex()
                     })
                     .catch(err=>console.log(err))
                 }
@@ -119,9 +127,17 @@ function Add(props) {
     }
 
     const appendTag = () => {
-        tags.push(tag)
-        setTag('')
-        document.getElementById('tag-input').value = ''
+        // Makes sure it is not an empty tag
+        if (tag)
+        {   
+            if (!tags.includes(tag)){
+                // Covers the event of trying to add a duplicate tag
+                tags.push(tag);
+            } 
+            setTag('');
+            document.getElementById('tag-input').value = '';
+        }
+        
     }
 
     const check_tag_exists = (t) => {
@@ -138,7 +154,7 @@ function Add(props) {
             name: t
         }
 
-        if(check_tag_exists(t)) { // TAG EXISTS
+        if(check_tag_exists(t)) {
             let modifiedFields = {
                 tag: { _id: t }
             }
@@ -150,7 +166,7 @@ function Add(props) {
                 console.log(err)
             })
         }
-        else { // TAG DOES NOT EXIST
+        else {
             axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
             .then(res=> {
                 console.log(res.data.data)
@@ -177,10 +193,16 @@ function Add(props) {
         })
     };
 
+    const handleAddBookSubmit = (event) => {
+        // PreventDefault makes the page not reload when Enter key is pressed.
+        event.preventDefault();
+        fetchBook();
+    };
+
     return (
     <>
         <HeaderWithoutSearch user={props.user}/>
-        <form action='#' className='add-book-form'>
+        <form action='#' className='add-book-form' onSubmit={handleAddBookSubmit}>
             <input type="text" id="isbn-input" name="isbn" placeholder='ISBN' onInput={e => setIsbnNr(e.target.value)}/>
             {
                 isbnNr && (isbnNr.length > 8) &&
@@ -189,7 +211,13 @@ function Add(props) {
                         {
                             <img src={book.img} width="128px" alt="cover"></img>
                         }
-                        </div> : <></>}
+                        </div> : 
+                        <div className="CoverImage-Wrapper">
+                        {
+                            <img src={cover_missing_img} width="128px" alt="cover"></img>
+                        }
+                        </div>
+                        }
                         <EditText id="book-title" name="title" defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
                         <br></br>
                         <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave} placeholder={"Författare"}/>
@@ -202,17 +230,15 @@ function Add(props) {
                         <br></br>
                         <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave} placeholder={"Beskrivning"}/>
                         <p><b>{book.id}</b></p>
-
                         {
                             tags ? <div>{tags.map((t) => <Tag key={t} content={t} />)}</div> : <></>
                         }
-
                         <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
                         <button type='button' id="tag-submit" onClick={appendTag}><BiPlusCircle/></button>
                     <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button>
                     <button type='button' id="isbn-cancel" onClick={cancelBook}>Avbryt</button>
 
-                </div> : <button type='button' id="isbn-submit" onClick={fetchBook}>Hämta bok</button>)
+                </div> : <button type='button' id="isbn-submit" onClick={handleAddBookSubmit}>Hämta bok</button>)
             }
         </form>
     </>);
