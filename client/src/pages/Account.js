@@ -10,6 +10,7 @@ function Account(props) {
     const [books, setBooks] = useState()
     const [user,setUser] = useState(undefined)
     const [loanBooks, setLoanBooks] = useState(undefined)
+    const [loanBooksId, setLoanBooksId] = useState(undefined)
     const [readBooksId,setReadBooksId] = useState(undefined)
     const [readBooks, setReadBooks] = useState(undefined)
 
@@ -24,7 +25,7 @@ function Account(props) {
     useEffect(()=>{
         if(user !== undefined){
             setReadBooksId(user.reading_list_books)
-            //setLoanBooks(user.loan_list_books) LOAN LIST FINNS INTE I DENNA BRANCHEN
+            setLoanBooksId(user.loan_list_books)
         }
 
     },[user]);
@@ -40,6 +41,19 @@ function Account(props) {
           .catch(error => console.error(error));
         }
     },[readBooksId])
+
+    useEffect(async()=> {
+        if (loanBooksId !== undefined) {
+            const idList = loanBooksId
+            await axios.get(`http://localhost:8080/api/books/list?ids=${idList.join(',')}`)
+                .then(res => {
+                    console.log(res.data.data);
+                    setLoanBooks(res.data.data);
+                })
+          .catch(error => console.error(error));
+        }
+    },[loanBooksId])
+
 
 
     useEffect(() => {
@@ -98,7 +112,7 @@ function Account(props) {
                             </div>
                             <div className="loan-list">
                                 <h1 className='section-header'>Mina Lån</h1>
-                                     {books ? books.map((book) => <span key={book._id}>
+                                     {loanBooks ? loanBooks.map((book) => <span key={book._id}>
                                                             <LoanListPreview id={book._id} 
                                                                           title={book.title} 
                                                                           author={book.author}
