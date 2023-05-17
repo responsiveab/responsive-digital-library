@@ -298,7 +298,7 @@ function Book(props) {
         }
     }
     
-    async function uploadFile(formData) {
+    async function uploadFile(file, formData) {
         try {
             const ebook = await axios.get(`http://localhost:8080/api/files/ebook`+'?filename='+book.filename, {responseType: 'blob'});
             if (ebook) {
@@ -320,6 +320,8 @@ function Book(props) {
                 alert("Filen är uppladdad.")
             })
             .catch(err => alert(err))
+            bookMod.filename = file.name
+            saveBook();
             window.location.reload(true);
         }
     }
@@ -348,17 +350,15 @@ function Book(props) {
 
     const handleOnSubmit = async (event) => {
         event.preventDefault();
-        let file = event.target.files[0];
+        const file = event.target.files[0];
         try {
             if (file) {
                 const formData = new FormData();
                 formData.append('file', file); 
                
-                uploadFile(formData);
+                uploadFile(file, formData);
                
                 
-                bookMod.filename = file.name
-                saveBook();
             }
         }
         catch (error) {
