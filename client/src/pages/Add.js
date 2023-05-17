@@ -154,26 +154,12 @@ function Add(props) {
             name: t
         }
 
-        if(check_tag_exists(t)) {
-            let modifiedFields = {
-                tag: { _id: t }
-            }
-            axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        }
-        else {
-            axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
-            .then(res=> {
-                console.log(res.data.data)
+        if(t){
+            if(check_tag_exists(t)) {
+                console.log("tag exists")
                 let modifiedFields = {
-                    tag: res.data.data
+                    tag: { _id: t }
                 }
-                console.log(modifiedFields)
                 axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
                 .then(res => {
                     console.log(res)
@@ -181,8 +167,26 @@ function Add(props) {
                 .catch(err => {
                     console.log(err)
                 })
-            })
-            .catch(err=>console.log(err))
+            }
+            else {
+                console.log("tag does not exist")
+                axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
+                .then(res=> {
+                    console.log(res.data.data)
+                    let modifiedFields = {
+                        tag: res.data.data
+                    }
+                    console.log(modifiedFields)
+                    axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                })
+                .catch(err=>console.log(err))
+            }
         }
     }
 
