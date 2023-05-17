@@ -10,6 +10,7 @@ function Account(props) {
     const [books, setBooks] = useState()
     const [user,setUser] = useState(undefined)
     const [loanBooks, setLoanBooks] = useState(undefined)
+    const [loanBooksId, setLoanBooksId] = useState(undefined)
     const [readBooksId,setReadBooksId] = useState(undefined)
     const [readBooks, setReadBooks] = useState(undefined)
 
@@ -24,7 +25,7 @@ function Account(props) {
     useEffect(()=>{
         if(user !== undefined){
             setReadBooksId(user.reading_list_books)
-            //setLoanBooks(user.loan_list_books) LOAN LIST FINNS INTE I DENNA BRANCHEN
+            setLoanBooksId(user.loan_list_books)
         }
 
     },[user]);
@@ -40,6 +41,19 @@ function Account(props) {
           .catch(error => console.error(error));
         }
     },[readBooksId])
+
+    useEffect(async()=> {
+        if (loanBooksId !== undefined) {
+            const idList = loanBooksId
+            await axios.get(`http://localhost:8080/api/books/list?ids=${idList.join(',')}`)
+                .then(res => {
+                    console.log(res.data.data);
+                    setLoanBooks(res.data.data);
+                })
+          .catch(error => console.error(error));
+        }
+    },[loanBooksId])
+
 
 
     useEffect(() => {
@@ -76,17 +90,14 @@ function Account(props) {
                         <div className="flex-container">
                             <div className="left-column">
                                 <div className="information">
-                                    <div className='Photo'>
-
-                                    </div>
+                                    {/* <div className='Photo'></div> */}
                                     <div className='User'>
                                         <h1>{props.user.name}</h1>
-                                        <h1>{props.user.email}</h1>
+                                        <h2>{props.user.email}</h2>
                                     </div>
-                                    
                                </div>
                                 <div className="reading-list">
-                                    <h1>Läslista</h1>
+                                    <h1 className='section-header'>Läslista</h1>
                                     {readBooks ? readBooks.map((book) => <span key={book._id}>
                                                             <ReadingListPreview id={book._id} 
                                                                           title={book.title} 
@@ -100,8 +111,8 @@ function Account(props) {
                                 </div>
                             </div>
                             <div className="loan-list">
-                                <h1>Mina Lån</h1>
-                                     {books ? books.map((book) => <span key={book._id}>
+                                <h1 className='section-header'>Mina Lån</h1>
+                                     {loanBooks ? loanBooks.map((book) => <span key={book._id}>
                                                             <LoanListPreview id={book._id} 
                                                                           title={book.title} 
                                                                           author={book.author}

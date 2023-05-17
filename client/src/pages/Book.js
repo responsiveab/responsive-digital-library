@@ -405,8 +405,11 @@ function Book(props) {
                     )}
                     <div className='Book-Text'>
                         {/* TODO: Fix styling for longer book titles */}
-                        <EditText id="Book-Title" name="title" defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
+                        <EditTextarea id="Book-Title" name="title" rows={'auto'} defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
                         <EditText id="Book-Title" name="borrower" defaultValue={<>[{book.borrower}]</>} onSave={handleSave} inline readonly={true} placeholder={"Lånad av"}/>
+                        <div className='Tags-Wrapper'>
+                            {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
+                        </div>
                         <br></br>
                         <EditText id="Book-Author" name='author' defaultValue={bookMod.author} inline onSave={handleSave}readonly={!editBookInfo}  placeholder={"Författare"}/>
                         <br></br>
@@ -416,12 +419,10 @@ function Book(props) {
                         <br></br>
                         <EditText id="Book-Publisher" name='publisher' defaultValue={bookMod.publisher} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Förlag"}/>
                         <br></br>
-                        <EditTextarea id="Book-Body" name='body' defaultValue={bookMod.body} rows={'auto'} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Beskrivning"}/>
                         <EditText id="book-id" defaultValue={bookMod._id} inline readonly={true} placeholder={"ISBN"}/>
-                        <div className='Tags-Wrapper'>
-                            {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
-                        </div>
+                        <EditTextarea id="Book-Body" name='body' defaultValue={bookMod.body} rows={'auto'} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Beskrivning"}/>
                     </div>
+
                 </div>
 
 

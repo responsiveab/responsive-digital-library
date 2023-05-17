@@ -154,26 +154,12 @@ function Add(props) {
             name: t
         }
 
-        if(check_tag_exists(t)) {
-            let modifiedFields = {
-                tag: { _id: t }
-            }
-            axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        }
-        else {
-            axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
-            .then(res=> {
-                console.log(res.data.data)
+        if(t){
+            if(check_tag_exists(t)) {
+                console.log("tag exists")
                 let modifiedFields = {
-                    tag: res.data.data
+                    tag: { _id: t }
                 }
-                console.log(modifiedFields)
                 axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
                 .then(res => {
                     console.log(res)
@@ -181,8 +167,26 @@ function Add(props) {
                 .catch(err => {
                     console.log(err)
                 })
-            })
-            .catch(err=>console.log(err))
+            }
+            else {
+                console.log("tag does not exist")
+                axios.post(process.env.REACT_APP_API_URL + "/api/tags/", newTag)
+                .then(res=> {
+                    console.log(res.data.data)
+                    let modifiedFields = {
+                        tag: res.data.data
+                    }
+                    console.log(modifiedFields)
+                    axios.patch(process.env.REACT_APP_API_URL + "/api/tags/" + isbnNr, modifiedFields)
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                })
+                .catch(err=>console.log(err))
+            }
         }
     }
 
@@ -218,23 +222,25 @@ function Add(props) {
                         }
                         </div>
                         }
-                        <EditText id="book-title" name="title" defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
-                        <br></br>
-                        <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave} placeholder={"Författare"}/>
-                        <br></br>
-                        <EditText id="book-date" name='date' defaultValue={book.date} inline onSave={handleSave} placeholder={"Publiceringsdatum"}/>
-                        <br></br>
-                        <EditText id="book-category" name='category' defaultValue={book.category} inline onSave={handleSave} placeholder={"Kategori"}/>
-                        <br></br>
-                        <EditText id="book-publisher" name='publisher' defaultValue={book.publisher} inline onSave={handleSave} placeholder={"Förlag"}/>
-                        <br></br>
-                        <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave} placeholder={"Beskrivning"}/>
-                        <p><b>{book.id}</b></p>
+                        <div className='edit-text-div'>
+                            <EditTextarea id="book-title" name="title" rows={'auto'} defaultValue={book.title} inline onSave={handleSave} placeholder={"Titel"}/>
+                            <EditText id="book-author" name='author' defaultValue={book.author} inline onSave={handleSave} placeholder={"Författare"}/>
+                            <br></br>
+                            <EditText id="book-date" name='date' defaultValue={book.date} inline onSave={handleSave} placeholder={"Publiceringsdatum"}/>
+                            <br></br>
+                            <EditText id="book-category" name='category' defaultValue={book.category} inline onSave={handleSave} placeholder={"Kategori"}/>
+                            <br></br>
+                            <EditText id="book-publisher" name='publisher' defaultValue={book.publisher} inline onSave={handleSave} placeholder={"Förlag"}/>
+                            <br></br>
+                            <EditText id="isbn" name='body' defaultValue={book.id} rows={'auto'} inline onSave={handleSave} placeholder={"ISBN"}/>
+                            <br></br>
+                            <EditTextarea id="book-body" name='body' defaultValue={book.body} rows={'auto'} inline onSave={handleSave} placeholder={"Beskrivning"}/>
+                        </div>
                         {
                             tags ? <div>{tags.map((t) => <Tag key={t} content={t} />)}</div> : <></>
                         }
                         <input type="text" id="tag-input" name="tag" placeholder="tagg" onInput={e => setTag(e.target.value)}/>
-                        <button type='button' id="tag-submit" onClick={appendTag}><BiPlusCircle/></button>
+                        <button type='button' id="tag-submit" onClick={appendTag}>Lägg till tagg</button>
                     <button type='button' id="isbn-submit" onClick={addBook}>Lägg till bok</button>
                     <button type='button' id="isbn-cancel" onClick={cancelBook}>Avbryt</button>
 
