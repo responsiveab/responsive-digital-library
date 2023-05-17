@@ -5,30 +5,32 @@ const auth = require("../middleware/auth");
 import { upload, bucket } from '../middleware/upload'
 
 fileRouter.get('/', async (req, res) => {
-  const cursor = bucket.find()
-  cursor.forEach(doc => console.log(doc))
   try {
      // Find all files in GridFS
     const files = await bucket.find().toArray();
 
     // Return the files as a response
     res.json(files);
-      
-      /*if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Failed to retrieve the file details from the database' });
-      }
-      if (!file) {
-        return res.status(404).json({ error: 'File not found' });
-      }*/
-
-    /*bucket.openDownloadStreamByName(fileName).pipe(res);*/
-    
-  
     
   } catch (error) {
     res.status(400).send('Error while getting list of files. Try again later.');
   }
+});
+
+fileRouter.get('/ebook', async (req, res) => {
+  const fileName = req.query.filename;
+    try {
+      const file = await bucket.openDownloadStreamByName(fileName);
+      file.on('error', () => {
+        return res.status(404).send("File not found.")
+      }
+      ) 
+      file.pipe(res)
+      
+    } catch (err) {
+      console.log(err)
+      return es.status(500).send('Failed to download file.');
+    }
 });
 
 fileRouter.post('/upload', auth, upload.single('file'), async (req, res) => {
@@ -46,14 +48,25 @@ fileRouter.post('/upload', auth, upload.single('file'), async (req, res) => {
 
 fileRouter.get('/download', auth, async (req, res) => {
     const fileName = req.query.filename;
-    bucket.openDownloadStreamByName(fileName).pipe(res);
+    try {
+      const file = await bucket.openDownloadStreamByName(fileName);
+      file.on('error', () => {
+        return res.status(404).send("File not found.")
+      }
+      ) 
+      file.pipe(res)
+      
+    } catch (err) {
+      console.log(err)
+      return es.status(500).send('Failed to download file.');
+    }
   })
 
 fileRouter.delete('/delete', auth, async (req, res) => {
   const filename = req.query.filename;
   const documents = await bucket.find({ filename }).toArray();
   if (documents.length === 0) {
-   res.send('File not found');
+   return res.status(404).send("File not found")
   }
    documents.map((doc) => {
     bucket.delete(doc._id);

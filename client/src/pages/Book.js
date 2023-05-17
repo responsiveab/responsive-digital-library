@@ -282,13 +282,54 @@ function Book(props) {
         setEditBookInfo(false)
     }
 
+    async function findFile() {
+        try {
+            const ebook = await axios.get(`http://localhost:8080/api/files/ebook`+'?filename='+book.filename, {responseType: 'blob'});
+            if (ebook) {
+                const blob = new Blob([ebook.data], { type: ebook.headers['content-type'] }); 
+                const url = window.URL.createObjectURL(blob);
+                window.open(url)
+                return ebook 
+            }
+        }
+        catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+    
+    async function uploadFile(formData) {
+        try {
+            const ebook = await axios.get(`http://localhost:8080/api/files/ebook`+'?filename='+book.filename, {responseType: 'blob'});
+            if (ebook) {
+                alert("Filen existerar redan.")
+                const blob = new Blob([ebook.data], { type: ebook.headers['content-type'] }); 
+                const url = window.URL.createObjectURL(blob);
+                window.open(url)
+                window.location.reload(true);
+                return ebook 
+            }
+        }
+        catch (error) {
+            await axios.post(`http://localhost:8080/api/files/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then (res => {
+                alert("Filen är uppladdad.")
+            })
+            .catch(err => alert(err))
+            window.location.reload(true);
+        }
+    }
+
     const downloadBook = async(event) => {
-        event.preventDefault();
-        console.log("a")
-        await axios.get(`http://localhost:8080/api/files/download`+'?filename='+book.filename, {responseType: 'blob'}).then(
+        try {
+            await axios.get(`http://localhost:8080/api/files/download`+'?filename='+book.filename, {responseType: 'blob'}).then(
             res => { 
-                console.log("a")
                 const blob = new Blob([res.data], { type: res.headers['content-type'] });
+                
                 const url = window.URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
@@ -296,43 +337,51 @@ function Book(props) {
                 document.body.appendChild(link);
                 link.click();
                 alert("Filen är nedladdad")
-            }).catch(err => console.log(err));
+            }).catch(err => alert("Filen finns inte."));
+                }
+        catch (error) {
+            console.log(error)
+            alert("Något fel har hänt.")
         }
+    }
 
 
     const handleOnSubmit = async (event) => {
         event.preventDefault();
-        const file = event.target.files[0];
-        console.log(file)
+        let file = event.target.files[0];
         try {
             if (file) {
                 const formData = new FormData();
-                formData.append('_id', id);
                 formData.append('file', file); 
-                // delete previous file
-                await axios.delete('http://localhost:8080/api/files/delete'+'?filename='+book.filename);
-                await axios.post(`http://localhost:8080/api/files/upload`, formData, {
-                  headers: {
-                    'Content-Type': 'multipart/form-data'
-                  }
-                });
-            const filename = "filename"
-            bookMod.filename = file.name
-            saveBook();
-        }}
-        catch (error) {
-            console.log(error); 
+               
+                uploadFile(formData);
+               
+                
+                bookMod.filename = file.name
+                saveBook();
+            }
         }
-        alert("Filen är uppladdad.")
-      };
-      
+        catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+
+              
 
     const deleteBook  = async(event) => {
-        event.preventDefault();
+        try {
         await axios.delete('http://localhost:8080/api/files/delete'+'?filename='+book.filename)
         .then(res=> {
             console.log(res)
-        });
+            
+            alert("Filen är borttagen.")
+        }).catch(err => alert("Filen existerar inte."));
+        }
+        catch (error) {
+            console.log(error); 
+        }
+
     }
 
     const handleChange = e => {
@@ -379,8 +428,9 @@ function Book(props) {
                     <div className ='E-Book'>
                         <input type="file" id="browse-button" onChange={handleOnSubmit}/>
 
+                        <button type='button' id="borrow-submit" onClick={findFile}>Visa e-bok</button>
                         <button type='button' id="borrow-submit" onClick={downloadBook}>Ladda ned bok</button>
-                        <button type='button' id="borrow-submit" onClick={deleteBook}>Delete ebok</button>
+                        <button type='button' id="borrow-submit" onClick={deleteBook}>Ta bort e-bok</button>
                     </div>
 
                 <div className ='Book-buttons'>
