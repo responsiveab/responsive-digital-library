@@ -25,11 +25,23 @@ const dbConnectionURL = {
 };
 
 mongoose.connect(dbConnectionURL.LOCAL_DB_URL, options);
+
 const db = mongoose.connection;
+let bucket;
 
 db.on('error', console.error.bind(console, 'Mongodb Connection Error:' + dbConnectionURL.LOCALURL));
-db.once('open', () => {
-     console.log('Mongodb Connection Successful');
+db.on('connected', () => {
+     var db = mongoose.connections[0].db;
+     bucket = new mongoose.mongo.GridFSBucket(db, {
+       bucketName: "newBucket"
+     });
+     console.log(bucket);
 });
 
-export default db;
+db.once('open', async() => {
+     console.log('Mongodb Connection Successful');
+
+});
+
+
+export { db, dbConnectionURL, bucket };

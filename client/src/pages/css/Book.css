@@ -43,6 +43,7 @@
     max-width: 192px;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 #Book-Title{
@@ -87,3 +88,24 @@
     flex-direction: column;
 }
 
+
+
+.E-book {
+    display: block;
+    padding: 10px;
+}
+    
+#browse-button
+{margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 300px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+input[type=file] {
+    cursor: pointer;
+  }

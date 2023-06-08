@@ -7,7 +7,8 @@ import {
 } from "react-router-dom";
 
 import React, {useEffect, useState} from 'react'
-import axios, * as others from 'axios';
+import axios, * as others from 'axios'
+// import { API_URL } from '../utils/constants';
 import HeaderWithoutSearch from '../components/headers/HeaderWithoutSearch';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
@@ -110,6 +111,7 @@ function Book(props) {
             console.log(err);
         })
     }
+
 
     function removeBorrowerFromBook(){
         let remove_from_borrower = {
@@ -236,14 +238,22 @@ function Book(props) {
                 console.log("Error:", err);
             });
         }
-    
     }
 
     function removeFunc(){
         removeBook();
         
         routeToIndex();
-    }
+    };
+
+    useEffect(() => {
+        axios.get(process.env.REACT_APP_API_URL + "/api/books/" + id)
+        .then(res => {
+            setBook(res.data.data)
+            setBookMod(res.data.data) // copy for modification
+        })
+        .catch(err => console.log(err))
+    }, [])
         
     const editBook = () => {
         setEditBookInfo(true)
@@ -272,6 +282,117 @@ function Book(props) {
         setEditBookInfo(false)
     }
 
+    async function findFile() {
+        try {
+            const ebook = await axios.get(`http://localhost:8080/api/files/ebook`+'?filename='+book.filename, {responseType: 'blob'});
+            if (ebook) {
+                const blob = new Blob([ebook.data], { type: ebook.headers['content-type'] }); 
+                const url = window.URL.createObjectURL(blob);
+                window.open(url)
+                return ebook 
+            }
+        }
+        catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+    
+    async function uploadFile(file, formData) {
+        try {
+            const ebook = await axios.get(`http://localhost:8080/api/files/ebook`+'?filename='+book.filename, {responseType: 'blob'});
+            if (ebook) {
+                alert("Filen existerar redan.")
+                const blob = new Blob([ebook.data], { type: ebook.headers['content-type'] }); 
+                const url = window.URL.createObjectURL(blob);
+                window.open(url)
+                window.location.reload(true);
+                return ebook 
+            }
+        }
+        catch (error) {
+            await axios.post(`http://localhost:8080/api/files/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then (res => {
+
+                bookMod.filename = file.name
+                saveBook();
+                alert("Filen är uppladdad.")
+            })
+            .catch(err => alert(err))
+            window.location.reload(true);
+        }
+    }
+
+    const downloadBook = async(event) => {
+        try {
+            await axios.get(`http://localhost:8080/api/files/download`+'?filename='+book.filename, {responseType: 'blob'}).then(
+            res => { 
+                const blob = new Blob([res.data], { type: res.headers['content-type'] });
+                
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', book.title);
+                document.body.appendChild(link);
+                link.click();
+                alert("Filen är nedladdad")
+            }).catch(err => alert("Filen finns inte."));
+                }
+        catch (error) {
+            console.log(error)
+            alert("Något fel har hänt.")
+        }
+    }
+
+
+    const handleOnSubmit = async (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];
+        try {
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file); 
+               
+                uploadFile(file, formData);
+               
+                
+            }
+        }
+        catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+
+              
+
+    const deleteBook  = async(event) => {
+        try {
+        await axios.delete('http://localhost:8080/api/files/delete'+'?filename='+book.filename)
+        .then(res=> {
+            console.log(res)
+            
+            alert("Filen är borttagen.")
+        }).catch(err => alert("Filen existerar inte."));
+        }
+        catch (error) {
+            console.log(error); 
+        }
+
+    }
+
+    const handleChange = e => {
+        const {title,textContent} = e.currentTarget
+        setBookMod({
+            ...bookMod,
+            [title]:textContent
+        })
+    }
+
     return (
     <>
         <HeaderWithoutSearch user={props.user}/>
@@ -285,11 +406,8 @@ function Book(props) {
                     )}
                     <div className='Book-Text'>
                         {/* TODO: Fix styling for longer book titles */}
-                        <EditTextarea id="Book-Title" name="title" rows={'auto'} defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
+                        <EditText id="Book-Title" name="title" defaultValue={bookMod.title} onSave={handleSave} inline readonly={!editBookInfo} placeholder={"Titel"}/>
                         <EditText id="Book-Title" name="borrower" defaultValue={<>[{book.borrower}]</>} onSave={handleSave} inline readonly={true} placeholder={"Lånad av"}/>
-                        <div className='Tags-Wrapper'>
-                            {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
-                        </div>
                         <br></br>
                         <EditText id="Book-Author" name='author' defaultValue={bookMod.author} inline onSave={handleSave}readonly={!editBookInfo}  placeholder={"Författare"}/>
                         <br></br>
@@ -299,11 +417,22 @@ function Book(props) {
                         <br></br>
                         <EditText id="Book-Publisher" name='publisher' defaultValue={bookMod.publisher} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Förlag"}/>
                         <br></br>
-                        <EditText id="book-id" defaultValue={bookMod._id} inline readonly={true} placeholder={"ISBN"}/>
                         <EditTextarea id="Book-Body" name='body' defaultValue={bookMod.body} rows={'auto'} inline onSave={handleSave} readonly={!editBookInfo} placeholder={"Beskrivning"}/>
+                        <EditText id="book-id" defaultValue={bookMod._id} inline readonly={true} placeholder={"ISBN"}/>
+                        <div className='Tags-Wrapper'>
+                            {book.tags && book.tags.map((tag) => <Tag key={tag} content={tag} isbn={book._id} show_rm={true}/>)}
+                        </div>
                     </div>
-
                 </div>
+
+
+                    <div className ='E-Book'>
+                        <input type="file" id="browse-button" onChange={handleOnSubmit}/>
+
+                        <button type='button' id="borrow-submit" onClick={findFile}>Visa e-bok</button>
+                        <button type='button' id="borrow-submit" onClick={downloadBook}>Ladda ned bok</button>
+                        <button type='button' id="borrow-submit" onClick={deleteBook}>Ta bort e-bok</button>
+                    </div>
 
                 <div className ='Book-buttons'>
                     { !book.borrowed ? (
