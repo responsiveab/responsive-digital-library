@@ -109,7 +109,7 @@ function Book(props) {
                 if (!res.data) {
                     console.log(res);
                 }
-                console.log(account_name + "added to borrower");
+                console.log(account_name + " added to borrower");
                 console.log(res);
                 setBook(res.data.data);
             })
@@ -155,9 +155,9 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                        "/api/users/" +
-                        user._id +
-                        "/loan-list-books",
+                    "/api/users/" +
+                    user._id +
+                    "/loan-list-books",
                     add_to_loanlist
                 )
                 .then((res) => {
@@ -187,10 +187,10 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                        "/api/users/" +
-                        user._id +
-                        "/loan-list-books/" +
-                        id,
+                    "/api/users/" +
+                    user._id +
+                    "/loan-list-books/" +
+                    id,
                     remove_from_loanlist
                 )
                 .then((res) => {
@@ -250,10 +250,10 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                        "/api/users/" +
-                        user._id +
-                        "/reading-list-books/" +
-                        id,
+                    "/api/users/" +
+                    user._id +
+                    "/reading-list-books/" +
+                    id,
                     remove_from_readlist
                 )
                 .then((res) => {
@@ -318,8 +318,8 @@ function Book(props) {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
-                    "?filename=" +
-                    book.filename,
+                "?filename=" +
+                book.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -340,8 +340,8 @@ function Book(props) {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
-                    "?filename=" +
-                    book.filename,
+                "?filename=" +
+                book.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -376,8 +376,8 @@ function Book(props) {
             await axios
                 .get(
                     `http://localhost:8080/api/files/download` +
-                        "?filename=" +
-                        book.filename,
+                    "?filename=" +
+                    book.filename,
                     { responseType: "blob" }
                 )
                 .then((res) => {
@@ -421,8 +421,8 @@ function Book(props) {
             await axios
                 .delete(
                     "http://localhost:8080/api/files/delete" +
-                        "?filename=" +
-                        book.filename
+                    "?filename=" +
+                    book.filename
                 )
                 .then((res) => {
                     console.log(res);
@@ -553,125 +553,138 @@ function Book(props) {
 
                     <div className="E-Book">
                         {!book.filename ? (
-                            <div>
-                                <label for="file">Ladda upp e-bok</label>
-                                <input
-                                    type="file"
-                                    id="browse-button"
-                                    onChange={handleOnSubmit}
-                                />
+                            <div className="Book-buttons">
+                                <h4>E-bok:&nbsp;</h4>
+                                <label for="browse-button"><div type="button" id="upload-button">Ladda upp e-bok</div>
+                                    <input
+                                        type="file"
+                                        id="browse-button"
+                                        onChange={handleOnSubmit}
+                                    />
+                                </label>
                             </div>
                         ) : (
-                            <div>
+                            <div className="Book-buttons">
+                                <h4>E-bok:</h4>
                                 <button
                                     type="button"
                                     id="borrow-submit"
                                     onClick={findFile}
                                 >
-                                    Visa e-bok
+                                    Visa
                                 </button>
                                 <button
                                     type="button"
                                     id="borrow-submit"
                                     onClick={downloadBook}
                                 >
-                                    Ladda ned e-bok
+                                    Ladda ned
                                 </button>
                                 <button
                                     type="button"
                                     id="borrow-submit"
                                     onClick={deleteBook}
                                 >
-                                    Ta bort e-bok
+                                    Ta bort
                                 </button>
                             </div>
                         )}
-                    </div>
+                    </div> {/* E-book */}
+
 
                     <div className="Book-buttons">
-                        {!book.borrowed ? (
-                            <div className="Borrow-Book">
-                                <button
-                                    type="button"
-                                    id="borrow-submit"
-                                    onClick={borrowBook}
-                                >
-                                    Låna bok
-                                </button>
-                            </div>
-                        ) : (
-                            book.borrower === props.user.name && (
-                                <div className="Return-Book">
+                        {!editBookInfo && (
+                            <div className="Book-buttons">
+                                <h4>Tryckt:</h4>
+                                {!book.borrowed ? (
+                                    <div className="Borrow-Book">
+                                        <button
+                                            type="button"
+                                            id="borrow-submit"
+                                            onClick={borrowBook}
+                                        >
+                                            Låna
+                                        </button>
+                                    </div>
+                                ) : (
+                                    book.borrower === props.user.name && (
+                                        <div className="Return-Book">
+                                            <button
+                                                type="button"
+                                                id="return-submit"
+                                                onClick={returnBook}
+                                            >
+                                                Lämna tillbaka
+                                            </button>
+                                        </div>
+                                    )
+                                )}
+
+                                {showReadList ? (
+                                    <div className="ReadList-Book">
+                                        <button
+                                            type="button"
+                                            id="readlist-submit"
+                                            onClick={addToReadList}
+                                        >
+                                            Lägg i läslistan
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="Remove-ReadList-Book">
+                                        <button
+                                            type="button"
+                                            id="readlist-remove"
+                                            onClick={removeFromReadList}
+                                        >
+                                            Ta bort från läslistan
+                                        </button>
+                                    </div>
+                                )}
+
+                                {!showResults && (
                                     <button
                                         type="button"
-                                        id="return-submit"
-                                        onClick={returnBook}
+                                        id="edit-book"
+                                        onClick={editBook}
                                     >
-                                        Lämna bok
+                                        Ändra
+                                    </button>
+                                )}
+                            </div>
+                        )}
+
+                        {editBookInfo && (
+                            <div className="Book-buttons">
+                                <div className="Align-h">
+                                    <button
+                                        type="button"
+                                        id="edit-book"
+                                        onClick={saveBook}
+                                    >
+                                        Spara
+                                    </button>
+                                    <button
+                                        type="button"
+                                        id="edit-book"
+                                        onClick={cancelBook}
+                                    >
+                                        Avbryt
                                     </button>
                                 </div>
-                            )
-                        )}
-
-                        {showReadList ? (
-                            <div className="ReadList-Book">
-                                <button
-                                    type="button"
-                                    id="readlist-submit"
-                                    onClick={addToReadList}
-                                >
-                                    Lägg till i läslista
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="Remove-ReadList-Book">
-                                <button
-                                    type="button"
-                                    id="readlist-remove"
-                                    onClick={removeFromReadList}
-                                >
-                                    Ta bort från läslista
-                                </button>
+                                <div className="Remove-Book">
+                                    <button
+                                        type="button"
+                                        id="isbn-remove"
+                                        onClick={removeFunc}
+                                    >
+                                        Ta bort
+                                    </button>
+                                </div>
                             </div>
                         )}
 
-                        {!showResults && (
-                            <button
-                                type="button"
-                                id="edit-book"
-                                onClick={editBook}
-                            >
-                                Ändra
-                            </button>
-                        )}
-                        {editBookInfo ? (
-                            <div className="Align-h">
-                                <button
-                                    type="button"
-                                    id="edit-book"
-                                    onClick={saveBook}
-                                >
-                                    Spara
-                                </button>
-                                <button
-                                    type="button"
-                                    id="edit-book"
-                                    onClick={cancelBook}
-                                >
-                                    Avbryt
-                                </button>
-                            </div>
-                        ) : null}
 
-                        <div className="Remove-Book">
-                            <button
-                                type="button"
-                                id="isbn-remove"
-                                onClick={removeFunc}
-                            >
-                                Ta bort bok
-                            </button>
-                        </div>
                     </div>
                 </main>
             }

@@ -36,7 +36,8 @@
 #isbn-remove,
 #readlist-submit,
 #readlist-remove,
-#return-submit {
+#return-submit,
+#upload-button {
     margin: 6px 6px;
     padding: 10px 20px;
     font-size: 16px;
@@ -101,17 +102,7 @@
     padding: 10px;
 }
 
+/* Hiding standard file input */
 #browse-button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    text-align: center;
-    max-width: 300px;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-input[type="file"] {
-    cursor: pointer;
+    display:none;
 }
