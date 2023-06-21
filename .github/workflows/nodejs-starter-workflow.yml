@@ -1,19 +1,19 @@
 name: Responsive Library Workflow
 
 on:
-  push:
-    branches:
-      - main
-      - PUM03-*
-  pull_request:
-    branches:
-      - main
+    push:
+        branches:
+            - main
+            - PUM03-*
+    pull_request:
+        branches:
+            - main
 
 jobs:
     build:
-      runs-on: ubuntu-latest # Responsive has Ubuntu 22.04
+        runs-on: ubuntu-latest # Responsive has Ubuntu 22.04
 
-      steps:
-       - uses: actions/checkout@v3
-       - name: Start containers
-         run: docker-compose up --build -d
+        steps:
+            - uses: actions/checkout@v3
+            - name: Start containers
+              run: docker-compose up --build -d

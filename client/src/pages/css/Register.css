@@ -1,4 +1,6 @@
-#create-account-name, #create-account-email,#create-account-pass{
+#create-account-name,
+#create-account-email,
+#create-account-pass {
     width: 100%;
     padding: 8px;
     margin-top: 8px;
@@ -16,7 +18,7 @@
     margin-top: 8px;
 }
 
-.Register-Wrapper{
+.Register-Wrapper {
     width: 50%;
     margin: auto;
     margin-top: 32px;

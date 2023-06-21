@@ -6,37 +6,37 @@
     padding: 8px;
     margin: 8px;
     /* width: 96%; */
-  }
-  
-  .MetaData-Wrapper {
+}
+
+.MetaData-Wrapper {
     flex: 1;
     text-align: left;
     padding-left: 8px;
-  }
-  
-  .MetaData-Wrapper hr {
+}
+
+.MetaData-Wrapper hr {
     margin-bottom: 8px;
     margin-top: 8px;
-  }
-  
-  .metatext {
+}
+
+.metatext {
     margin-top: 8px;
-  }
-  
-  .tags-wrapper {
+}
+
+.tags-wrapper {
     position: relative;
     bottom: 0;
-  }
-  
-  .MetaData-Wrapper a {
+}
+
+.MetaData-Wrapper a {
     text-decoration: none;
-  }
-  
-  .Expander {
+}
+
+.Expander {
     background-color: lightgray;
     margin-left: 2px;
     border-radius: 8px;
     padding: 2px;
     padding-left: 4px;
     padding-right: 4px;
-  }
+}

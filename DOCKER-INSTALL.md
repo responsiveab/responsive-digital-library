@@ -1,8 +1,8 @@
 # Installing docker
 
-1) go to https://download.docker.com/ and download packages suitable for your system
+1. go to https://download.docker.com/ and download packages suitable for your system
 
-2) install your packages
+2. install your packages
 
 <b>Example on isaks machine:</b><br>
 <code>sudo dpkg -i ./containerd.io_1.5.10-1_amd64.deb \\
@@ -13,9 +13,9 @@
 
 ## Testing installation
 
-1) sudo docker run hello-world
+1. sudo docker run hello-world
 
-2) service docker status
+2. service docker status
 
 ### Entering a container
 

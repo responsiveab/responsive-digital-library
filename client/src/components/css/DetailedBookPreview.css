@@ -1,7 +1,7 @@
 .Overlay {
     z-index: 1;
     background-color: rgba(100, 100, 100, 0.9);
-    position:fixed;
+    position: fixed;
     top: 0;
     width: 100%;
     height: 100%;

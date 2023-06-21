@@ -1,35 +1,35 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import router from '././routes';
-import bookRouter from './routes/book.routes';
-import userRouter from './routes/user.routes';
-import tagRouter from './routes/tag.routes';
-import fileRouter from './routes/file.routes';
-import './config/mongodb.config';
+import bodyParser from "body-parser";
+import express from "express";
+import router from "././routes";
+import bookRouter from "./routes/book.routes";
+import userRouter from "./routes/user.routes";
+import tagRouter from "./routes/tag.routes";
+import fileRouter from "./routes/file.routes";
+import "./config/mongodb.config";
 
-var cors = require('cors')
+var cors = require("cors");
 
 const app = express();
 const PORT = process.env.BUILD_PORT || 8080;
 
-app.use(cors())
+app.use(cors());
 app.use(
-  bodyParser.urlencoded({
-    extended: true,
-    limit: '10mb'
-  })
+    bodyParser.urlencoded({
+        extended: true,
+        limit: "10mb",
+    })
 );
 
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.json({ limit: "10mb" }));
 
-app.use('/api', router);
-app.use('/api/books', bookRouter);
-app.use('/api/users', userRouter);
-app.use('/api/tags', tagRouter);
-app.use('/api/files', fileRouter);
+app.use("/api", router);
+app.use("/api/books", bookRouter);
+app.use("/api/users", userRouter);
+app.use("/api/tags", tagRouter);
+app.use("/api/files", fileRouter);
 
-app.get('/', function(req, res){
-  res.send('Server: Hello!');
+app.get("/", function (req, res) {
+    res.send("Server: Hello!");
 });
 
 app.listen(PORT, function () {

@@ -1,55 +1,55 @@
-version: '3.9'
+version: "3.9"
 
 services:
-  server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    image: responsive-library-server
-    container_name: responsive-library-node-server
-    command: npm run test
-    volumes:
-      - ./server/:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - "127.0.0.1:8080:8080"
-      # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
-      # - "8080:8080"
-    depends_on:
-      - mongo
-    env_file: ./server/.env
-    environment:
-      - NODE_ENV=development
-    networks:
-      - responsive-library-network
-  mongo:
-    image: mongo:latest
-    volumes:
-      - data-volume:/data/db
-    ports:
-      - "127.0.0.1:27017:27017"
-      # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
-      # - "27017:27017" 
-    networks:
-      - responsive-library-network
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    image: responsive-library-client
-    container_name: responsive-library-react-client
-    command: npm run test
-    volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
-    depends_on:
-      - server
-    ports:
-      - "127.0.0.1:3000:3000"
-      # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
-      # - "3000:3000"
-    networks:
-      - responsive-library-network
+    server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        image: responsive-library-server
+        container_name: responsive-library-node-server
+        command: npm run test
+        volumes:
+            - ./server/:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - "127.0.0.1:8080:8080"
+            # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
+            # - "8080:8080"
+        depends_on:
+            - mongo
+        env_file: ./server/.env
+        environment:
+            - NODE_ENV=development
+        networks:
+            - responsive-library-network
+    mongo:
+        image: mongo:latest
+        volumes:
+            - data-volume:/data/db
+        ports:
+            - "127.0.0.1:27017:27017"
+            # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
+            # - "27017:27017"
+        networks:
+            - responsive-library-network
+    client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        image: responsive-library-client
+        container_name: responsive-library-react-client
+        command: npm run test
+        volumes:
+            - ./client/:/usr/app
+            - /usr/app/node_modules
+        depends_on:
+            - server
+        ports:
+            - "127.0.0.1:3000:3000"
+            # Uncomment the following line and replace the previous line if you want to access the container from outside localhost
+            # - "3000:3000"
+        networks:
+            - responsive-library-network
 
 networks:
     responsive-library-network:
@@ -59,4 +59,4 @@ volumes:
     data-volume:
     node_modules:
     web-root:
-      driver: local
+        driver: local

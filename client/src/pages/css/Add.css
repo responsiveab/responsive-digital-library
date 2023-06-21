@@ -1,4 +1,7 @@
-#isbn-input, #isbn-submit, #isbn-cancel, #tag-submit {
+#isbn-input,
+#isbn-submit,
+#isbn-cancel,
+#tag-submit {
     width: 100%;
     padding: 8px;
     margin-top: 8px;
@@ -16,14 +19,19 @@
     width: 100%;
 }
 
-#book-title{
+#book-title {
     font-size: 1.17em;
     margin: 0;
     font-weight: bold;
     width: fit-content;
 }
 
-#book-author, #book-category, #book-date, #book-publisher, #book-language, #book-isbn {
+#book-author,
+#book-category,
+#book-date,
+#book-publisher,
+#book-language,
+#book-isbn {
     font-size: 1em;
     margin: 0;
     margin-bottom: 100px;
@@ -55,15 +63,13 @@
     flex-direction: column;
 }
 
-
 @media screen and (min-width: 800px) {
     .add-book-form {
         width: 65%;
     }
-  }
+}
 @media screen and (max-width: 799px) {
     .add-book-form {
         width: 80%;
     }
 }
-
