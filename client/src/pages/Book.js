@@ -627,16 +627,6 @@ function Book(props) {
                             </div>
                         )}
 
-                        <div className="Remove-Book">
-                            <button
-                                type="button"
-                                id="isbn-remove"
-                                onClick={removeFunc}
-                            >
-                                Ta bort bok
-                            </button>
-                        </div>
-
                         {!showResults && (
                             <button
                                 type="button"
@@ -664,6 +654,16 @@ function Book(props) {
                                 </button>
                             </div>
                         ) : null}
+
+                        <div className="Remove-Book">
+                            <button
+                                type="button"
+                                id="isbn-remove"
+                                onClick={removeFunc}
+                            >
+                                Ta bort bok
+                            </button>
+                        </div>
                     </div>
                 </main>
             }
