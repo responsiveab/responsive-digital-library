@@ -426,7 +426,6 @@ function Book(props) {
                 )
                 .then((res) => {
                     console.log(res);
-
                     alert("Filen är borttagen.");
                 })
                 .catch((err) => alert("Filen existerar inte."));
@@ -553,33 +552,40 @@ function Book(props) {
                     </div>
 
                     <div className="E-Book">
-                        <input
-                            type="file"
-                            id="browse-button"
-                            onChange={handleOnSubmit}
-                        />
-
-                        <button
-                            type="button"
-                            id="borrow-submit"
-                            onClick={findFile}
-                        >
-                            Visa e-bok
-                        </button>
-                        <button
-                            type="button"
-                            id="borrow-submit"
-                            onClick={downloadBook}
-                        >
-                            Ladda ned bok
-                        </button>
-                        <button
-                            type="button"
-                            id="borrow-submit"
-                            onClick={deleteBook}
-                        >
-                            Ta bort e-bok
-                        </button>
+                        {!book.filename ? (
+                            <div>
+                                <label for="file">Ladda upp e-bok</label>
+                                <input
+                                    type="file"
+                                    id="browse-button"
+                                    onChange={handleOnSubmit}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                                <button
+                                    type="button"
+                                    id="borrow-submit"
+                                    onClick={findFile}
+                                >
+                                    Visa e-bok
+                                </button>
+                                <button
+                                    type="button"
+                                    id="borrow-submit"
+                                    onClick={downloadBook}
+                                >
+                                    Ladda ned e-bok
+                                </button>
+                                <button
+                                    type="button"
+                                    id="borrow-submit"
+                                    onClick={deleteBook}
+                                >
+                                    Ta bort e-bok
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     <div className="Book-buttons">
