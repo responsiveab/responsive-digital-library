@@ -40,7 +40,9 @@ function BookPreview(props) {
         <>
             <div className="BookPreview-Wrapper">
                 <div className="CoverImage-Wrapper">
-                    {<img src={props.img} width="128px" alt="cover"></img>}
+                    <Link to={"/books/" + props.id}>
+                        {<img src={props.img} width="128px" alt="cover"></img>}
+                    </Link>
                 </div>
                 <div className="MetaData-Wrapper">
                     <h3>
