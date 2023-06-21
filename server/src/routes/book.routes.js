@@ -98,7 +98,7 @@ bookRouter.post("/", auth, (req, res, next) => {
         publisher: req.body.publisher,
         published: req.body.date,
         imgstr: req.body.img,
-        borrower: "Ingen", //COMMENT: Hardcoded for now.
+        borrower: "i biblioteket",
         borrowed: false, // COMMENT: Hardcoded for now, since this
         digital: false, // behaviour isnt implemented yet
     };

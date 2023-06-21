@@ -120,7 +120,7 @@ function Book(props) {
 
     function removeBorrowerFromBook() {
         let remove_from_borrower = {
-            borrower: "ingen",
+            borrower: "i biblioteket",
             borrowed: false,
         };
         axios
@@ -245,7 +245,7 @@ function Book(props) {
             },
         };
         if (!user.reading_list_books.includes(id)) {
-            console.log("Boken ligger inte i läslistan");
+            console.log("Boken finns inte i läslistan");
         } else {
             axios
                 .patch(
@@ -641,7 +641,7 @@ function Book(props) {
                                 id="edit-book"
                                 onClick={editBook}
                             >
-                                Ändra metadata
+                                Ändra
                             </button>
                         )}
                         {editBookInfo ? (

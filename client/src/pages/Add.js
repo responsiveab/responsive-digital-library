@@ -49,7 +49,7 @@ function Add(props) {
                     language: "Skriv produktens språk",
                     publisher: "Skriv produktens förlag",
                     date: "Skriv produktens utgivningsdatum",
-                    borrower: "ingen",
+                    borrower: "i biblioteket",
                     borrowed: false,
                 };
                 setBook(newBook);
@@ -83,7 +83,7 @@ function Add(props) {
                     date: fetched_book.publishedDate
                         ? fetched_book.publishedDate
                         : "Okänt publiceringsdatum",
-                    borrower: "ingen",
+                    borrower: "i",
                     borrowed: false,
                 };
                 setBook(newBook);
