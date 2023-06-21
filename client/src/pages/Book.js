@@ -433,6 +433,8 @@ function Book(props) {
         } catch (error) {
             console.log(error);
         }
+        book.filename = null;
+        saveBook();
     };
 
     const handleChange = (e) => {
