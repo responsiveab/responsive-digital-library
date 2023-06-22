@@ -544,7 +544,9 @@ function Book(props) {
                                             key={tag}
                                             content={tag}
                                             isbn={book._id}
-                                            show_rm={true}
+                                            show_rm={
+                                                editBookInfo ? true : false
+                                            }
                                         />
                                     ))}
                             </div>
