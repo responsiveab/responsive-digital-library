@@ -474,7 +474,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Title"
                                 name="borrower"
-                                defaultValue={<>[{book.borrower}]</>}
+                                defaultValue={"["+book.borrower+"]"}
                                 onSave={handleSave}
                                 inline
                                 readonly={true}
@@ -555,7 +555,7 @@ function Book(props) {
                         {!book.filename ? (
                             <div className="Book-buttons">
                                 <h4>E-bok:&nbsp;</h4>
-                                <label for="browse-button">
+                                <label htmlFor="browse-button">
                                     <div type="button" id="upload-button">
                                         Ladda upp e-bok
                                     </div>
