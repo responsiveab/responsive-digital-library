@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import "./css/BookPreview.css";
 import Tag from "./Tag";
 
-import DetailedBookPreview from "./DetailedBookPreview";
 import { Link } from "react-router-dom";
 
 function trimString(string) {

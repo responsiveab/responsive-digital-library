@@ -6,7 +6,6 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// import { API_URL } from '../utils/constants';
 import HeaderWithoutSearch from "../components/headers/HeaderWithoutSearch";
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
