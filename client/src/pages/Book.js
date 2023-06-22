@@ -549,6 +549,7 @@ function Book(props) {
                                             }
                                         />
                                     ))}
+                                {editBookInfo && <Tag content="+" />}
                             </div>
                         </div>
                     </div>
