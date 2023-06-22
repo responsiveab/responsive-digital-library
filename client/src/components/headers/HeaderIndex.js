@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import { BiPlusCircle, BiUserCircle, BiSearch, BiFilter } from "react-icons/bi";
+import { BiPlusCircle, BiUserCircle, BiSearch } from "react-icons/bi";
 import ".././css/Header.css";
 import { useState } from "react";
-import Tag from "../Tag";
 import Index from "../../pages/Index";
 
 function HeaderIndex(props) {
@@ -14,13 +13,13 @@ function HeaderIndex(props) {
 
     function updateInputText(text) {
         let inputText = "";
-        if (document.getElementById("searchInput").value[0] == "#") {
-            //When we already are searching for tags
+        if (document.getElementById("searchInput").value[0] === "#") {
+            // When we already are searching for tags
             document.getElementById("searchInput").value =
                 document.getElementById("searchInput").value + "#" + text;
         } else {
-            //When it's the first tag we are looking for, either by clicking on a tag or by typing.
-            //If there is something typed before, this would be removed.
+            // When it's the first tag we are looking for, either by clicking on a tag or by typing.
+            // If there is something typed before, this would be removed.
             document.getElementById("searchInput").value = "#" + text;
         }
         inputText = document.getElementById("searchInput").value;

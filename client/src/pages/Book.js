@@ -5,7 +5,7 @@ import Tag from "../components/Tag";
 import { useParams, useNavigate } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
-import axios, * as others from "axios";
+import axios from "axios";
 // import { API_URL } from '../utils/constants';
 import HeaderWithoutSearch from "../components/headers/HeaderWithoutSearch";
 import { EditText, EditTextarea } from "react-edit-text";
@@ -14,6 +14,7 @@ import "react-edit-text/dist/index.css";
 function Book(props) {
     let { id } = useParams();
 
+    // eslint-disable-next-line
     const [showResults, setShowResults] = useState(undefined);
     const [showReadList, setShowReadList] = useState(undefined);
     const [book, setBook] = useState({});
@@ -155,9 +156,9 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                    "/api/users/" +
-                    user._id +
-                    "/loan-list-books",
+                        "/api/users/" +
+                        user._id +
+                        "/loan-list-books",
                     add_to_loanlist
                 )
                 .then((res) => {
@@ -187,10 +188,10 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                    "/api/users/" +
-                    user._id +
-                    "/loan-list-books/" +
-                    id,
+                        "/api/users/" +
+                        user._id +
+                        "/loan-list-books/" +
+                        id,
                     remove_from_loanlist
                 )
                 .then((res) => {
@@ -250,10 +251,10 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                    "/api/users/" +
-                    user._id +
-                    "/reading-list-books/" +
-                    id,
+                        "/api/users/" +
+                        user._id +
+                        "/reading-list-books/" +
+                        id,
                     remove_from_readlist
                 )
                 .then((res) => {
@@ -318,8 +319,8 @@ function Book(props) {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
-                "?filename=" +
-                book.filename,
+                    "?filename=" +
+                    book.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -340,8 +341,8 @@ function Book(props) {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
-                "?filename=" +
-                book.filename,
+                    "?filename=" +
+                    book.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -376,8 +377,8 @@ function Book(props) {
             await axios
                 .get(
                     `http://localhost:8080/api/files/download` +
-                    "?filename=" +
-                    book.filename,
+                        "?filename=" +
+                        book.filename,
                     { responseType: "blob" }
                 )
                 .then((res) => {
@@ -421,8 +422,8 @@ function Book(props) {
             await axios
                 .delete(
                     "http://localhost:8080/api/files/delete" +
-                    "?filename=" +
-                    book.filename
+                        "?filename=" +
+                        book.filename
                 )
                 .then((res) => {
                     console.log(res);
@@ -550,12 +551,14 @@ function Book(props) {
                             </div>
                         </div>
                     </div>
-
                     <div className="E-Book">
                         {!book.filename ? (
                             <div className="Book-buttons">
                                 <h4>E-bok:&nbsp;</h4>
-                                <label for="browse-button"><div type="button" id="upload-button">Ladda upp e-bok</div>
+                                <label for="browse-button">
+                                    <div type="button" id="upload-button">
+                                        Ladda upp e-bok
+                                    </div>
                                     <input
                                         type="file"
                                         id="browse-button"
@@ -589,9 +592,7 @@ function Book(props) {
                                 </button>
                             </div>
                         )}
-                    </div> {/* E-book */}
-
-
+                    </div>
                     <div className="Book-buttons">
                         {!editBookInfo && (
                             <div className="Book-buttons">
@@ -683,8 +684,6 @@ function Book(props) {
                                 </div>
                             </div>
                         )}
-
-
                     </div>
                 </main>
             }

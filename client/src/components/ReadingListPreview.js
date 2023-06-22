@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import "./css/ReadingListPreview.css";
 import Tag from "./Tag";
 
-import DetailedBookPreview from "./DetailedBookPreview";
 import { Link } from "react-router-dom";
 
 function trimString(string) {
@@ -25,7 +24,6 @@ function trimString(string) {
 function ReadingListPreview(props) {
     // eslint-disable-next-line
     const [tags, setTags] = useState([]);
-    const [active, setActive] = useState(false);
 
     const [count, setCount] = useState(5);
 

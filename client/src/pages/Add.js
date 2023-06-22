@@ -3,13 +3,11 @@ import axios from "axios";
 
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
-import { BiPlusCircle } from "react-icons/bi";
 
 import Tag from "../components/Tag";
 import cover_missing_img from "../media/cover_missing_img.png";
 
 import "./css/Add.css";
-import { useNavigate } from "react-router-dom";
 import HeaderWithoutSearch from "../components/headers/HeaderWithoutSearch";
 
 function Add(props) {
@@ -159,7 +157,7 @@ function Add(props) {
         // Makes sure it is not an empty tag
         if (tag) {
             if (!tags.includes(tag)) {
-                // Covers the event of trying to add a duplicate tag
+                // Unless it's a duplicate tag
                 tags.push(tag);
             }
             setTag("");
@@ -169,7 +167,7 @@ function Add(props) {
 
     const check_tag_exists = (t) => {
         for (let i = 0; i < dbTags.length; i++) {
-            if (dbTags[i]._id == t) {
+            if (dbTags[i]._id === t) {
                 return true;
             }
         }

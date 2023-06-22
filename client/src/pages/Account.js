@@ -6,6 +6,7 @@ import ReadingListPreview from "../components/ReadingListPreview";
 import LoanListPreview from "../components/LoanListPreview";
 
 function Account(props) {
+    // eslint-disable-next-line
     const [books, setBooks] = useState();
     const [user, setUser] = useState(undefined);
     const [loanBooks, setLoanBooks] = useState(undefined);

@@ -16,11 +16,6 @@ function Index(props) {
             .catch((error) => console.error(error));
         // eslint-disable-next-line
     }, []);
-    function splitTags(input) {
-        let tags = input.split("#");
-
-        return tags;
-    }
 
     function splitTags(input) {
         let tags = input.split("#");
