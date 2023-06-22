@@ -45,7 +45,13 @@ function Tag(props) {
             style={{ background: string_to_color(props.content) }}
         >
             {props.content && (
-                <a onClick={() => props.inputUpdate(props.content)}>
+                <a
+                    onClick={() =>
+                        props.inputUpdate
+                            ? props.inputUpdate(props.content)
+                            : null
+                    }
+                >
                     {" "}
                     {props.content}{" "}
                 </a>
