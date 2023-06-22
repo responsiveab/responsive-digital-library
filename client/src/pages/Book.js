@@ -473,7 +473,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Title"
                                 name="borrower"
-                                defaultValue={"["+book.borrower+"]"}
+                                defaultValue={"[" + book.borrower + "]"}
                                 onSave={handleSave}
                                 inline
                                 readonly={true}
@@ -592,7 +592,7 @@ function Book(props) {
                             </div>
                         )}
                     </div>
-                    <div className="Book-buttons">
+                    <div>
                         {!editBookInfo && (
                             <div className="Book-buttons">
                                 <h4>Tryckt:</h4>
