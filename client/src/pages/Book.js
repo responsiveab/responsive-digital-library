@@ -449,7 +449,7 @@ function Book(props) {
             <HeaderWithoutSearch user={props.user} />
             {
                 <main className="Book-Wrapper">
-                    <div className="Book-Header">
+                    <div className="Book-Info">
                         {book.imgstr !== "Bild saknas" && (
                             <div className="Book-Thumbnail">
                                 <img

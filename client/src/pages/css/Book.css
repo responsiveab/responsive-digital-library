@@ -90,7 +90,7 @@
     }
 }
 
-.Book-Header {
+.Book-Info {
     display: flex;
     flex-direction: column;
 }
