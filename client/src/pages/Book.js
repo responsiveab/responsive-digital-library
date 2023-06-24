@@ -553,52 +553,27 @@ function Book(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="E-Book">
-                        {!book.filename ? (
-                            <div className="Book-buttons">
-                                <h4>E-bok:&nbsp;</h4>
-                                <label htmlFor="browse-button">
-                                    <div type="button" id="upload-button">
-                                        Ladda upp e-bok
-                                    </div>
-                                    <input
-                                        type="file"
-                                        id="browse-button"
-                                        onChange={handleOnSubmit}
-                                    />
-                                </label>
-                            </div>
-                        ) : (
-                            <div className="Book-buttons">
-                                <h4>E-bok:</h4>
-                                <button
-                                    type="button"
-                                    id="borrow-submit"
-                                    onClick={findFile}
-                                >
-                                    Visa
-                                </button>
-                                <button
-                                    type="button"
-                                    id="borrow-submit"
-                                    onClick={downloadBook}
-                                >
-                                    Ladda ned
-                                </button>
-                                <button
-                                    type="button"
-                                    id="borrow-submit"
-                                    onClick={deleteBook}
-                                >
-                                    Ta bort
-                                </button>
-                            </div>
-                        )}
-                    </div>
                     <div>
                         {!editBookInfo && (
                             <div className="Book-buttons">
-                                <h4>Tryckt:</h4>
+                                {book.filename && (
+                                    <div className="Book-buttons">
+                                        <button
+                                            type="button"
+                                            id="borrow-submit"
+                                            onClick={findFile}
+                                        >
+                                            Visa e-bok
+                                        </button>
+                                        <button
+                                            type="button"
+                                            id="borrow-submit"
+                                            onClick={downloadBook}
+                                        >
+                                            Ladda ned e-bok
+                                        </button>
+                                    </div>
+                                )}
                                 {!book.borrowed ? (
                                     <div className="Borrow-Book">
                                         <button
@@ -659,6 +634,31 @@ function Book(props) {
 
                         {editBookInfo && (
                             <div className="Book-buttons">
+                                {!book.filename ? (
+                                    <div>
+                                        <label htmlFor="browse-button">
+                                            <div
+                                                type="button"
+                                                id="upload-button"
+                                            >
+                                                Ladda upp e-bok
+                                            </div>
+                                            <input
+                                                type="file"
+                                                id="browse-button"
+                                                onChange={handleOnSubmit}
+                                            />
+                                        </label>
+                                    </div>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        id="borrow-submit"
+                                        onClick={deleteBook}
+                                    >
+                                        Ta bort e-bok
+                                    </button>
+                                )}
                                 <div className="Align-h">
                                     <button
                                         type="button"
@@ -681,7 +681,7 @@ function Book(props) {
                                         id="isbn-remove"
                                         onClick={removeFunc}
                                     >
-                                        Ta bort
+                                        Ta bort bok
                                     </button>
                                 </div>
                             </div>
