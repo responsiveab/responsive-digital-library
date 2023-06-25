@@ -65,14 +65,26 @@
     margin: 0;
     margin-bottom: 0.4em;
     width: fit-content;
+    font-style: italic;
 }
 
 #Book-Body {
     font-size: 1em;
-    margin: 0;
+    margin: 5px;
     margin-bottom: 0.4em;
     margin-top: 12px;
-    font-style: italic;
+}
+
+#Book-Body li {
+    margin-left: 1em;
+}
+
+#Book-Body p {
+    margin-top: 0.5em;
+}
+
+#Book-Body h4 {
+    margin-top: 1em;
 }
 
 #book-id {

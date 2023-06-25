@@ -7,8 +7,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HeaderWithoutSearch from "../components/headers/HeaderWithoutSearch";
-import { EditText, EditTextarea } from "react-edit-text";
+import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
+import { Editor } from "@tinymce/tinymce-react";
 
 function Book(props) {
     let { id } = useParams();
@@ -436,14 +437,6 @@ function Book(props) {
         saveBook();
     };
 
-    const handleChange = (e) => {
-        const { title, textContent } = e.currentTarget;
-        setBookMod({
-            ...bookMod,
-            [title]: textContent,
-        });
-    };
-
     return (
         <>
             <HeaderWithoutSearch user={props.user} />
@@ -520,16 +513,29 @@ function Book(props) {
                                 placeholder={"Förlag"}
                             />
                             <br></br>
-                            <EditTextarea
-                                id="Book-Body"
-                                name="body"
-                                defaultValue={bookMod.body}
-                                rows={"auto"}
-                                inline
-                                onSave={handleSave}
-                                readonly={!editBookInfo}
-                                placeholder={"Beskrivning"}
-                            />
+                            {!editBookInfo ? (
+                                <div
+                                    id="Book-Body"
+                                    dangerouslySetInnerHTML={{
+                                        __html: bookMod.body,
+                                    }}
+                                />
+                            ) : (
+                                <Editor
+                                    api-key="r7juf1sqhlfm1lhb72goyuqokl24opmld6egjhatq2w3tugm"
+                                    initialValue={bookMod.body}
+                                    init={{
+                                        plugins: ["lists"],
+                                        toolbar:
+                                            "undo redo | blocks | bold italic | bullist | alignleft aligncenter alignright alignjustify | outdent indent",
+                                        menubar:
+                                            "edit insert format table help",
+                                    }}
+                                    onEditorChange={(newText) =>
+                                        (bookMod.body = newText)
+                                    }
+                                />
+                            )}
                             <EditText
                                 id="book-id"
                                 defaultValue={bookMod._id}

@@ -35,6 +35,22 @@ function BookPreview(props) {
         setCount(count + 5);
     }
 
+    const asText = (html) => {
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const walker = document.createTreeWalker(
+            doc.body,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        const texts = [];
+        let node;
+        while ((node = walker.nextNode())) {
+            texts.push(node.nodeValue);
+        }
+        return texts.join(" ");
+    };
+
     return (
         <>
             <div className="BookPreview-Wrapper">
@@ -52,7 +68,9 @@ function BookPreview(props) {
 
                     {props.author ? (
                         <div className="metatext">
-                            <p>{props.author}</p>
+                            <p>
+                                <i>{props.author}</i>
+                            </p>
                         </div>
                     ) : (
                         <></>
@@ -82,9 +100,7 @@ function BookPreview(props) {
                     }
                     {props.body ? (
                         <div className="metatext">
-                            <p>
-                                <i>{trimString(props.body)}</i>
-                            </p>
+                            <p>{trimString(asText(props.body))}</p>
                         </div>
                     ) : (
                         <></>
