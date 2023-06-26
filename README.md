@@ -45,7 +45,10 @@ chmod +x user_setup.sh
 6. Follow the script to create a user account. Note: there are no admin accounts with special priveleges (yet).
 7. Access the application in your web browser at http://localhost:3000 and login with the credentials you just created.
 
-## Below are helpful documents for the project
+## Development
+
+Debugging is straight-forward in VSCode.
+Start the docker containers as per above, and then lauch the available launch configuration will give you a browser with breakpoint capabilities.
 
 ### [Docker install](DOCKER-INSTALL.md)
 
@@ -53,10 +56,10 @@ chmod +x user_setup.sh
 
 ### [Docker troubleshooting](DOCKER-TROUBLESHOOTING.md)
 
-### [License](LICENSE)
-
 ### [Unit testing guide](UNIT-TEST-GUIDE.md)
 
 ## License
+
+### [License](LICENSE)
 
 The Responsive Digital Library is open-source software released under the MIT License. Feel free to use, modify, and distribute the code as per the terms of the license.
