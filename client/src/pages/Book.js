@@ -522,7 +522,7 @@ function Book(props) {
                                 />
                             ) : (
                                 <Editor
-                                    api-key="r7juf1sqhlfm1lhb72goyuqokl24opmld6egjhatq2w3tugm"
+                                    apiKey="r7juf1sqhlfm1lhb72goyuqokl24opmld6egjhatq2w3tugm"
                                     initialValue={bookMod.body}
                                     init={{
                                         plugins: ["lists"],
