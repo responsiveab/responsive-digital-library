@@ -36,6 +36,7 @@
     margin: 0;
     margin-bottom: 100px;
     width: fit-content;
+    font-style: italic;
 }
 
 #isbn {
@@ -46,7 +47,6 @@
     font-size: 1em;
     margin: 0;
     margin: 12px 0px 4px 0px;
-    font-style: italic;
 }
 
 .add-book-form {
