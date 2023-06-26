@@ -38,12 +38,12 @@ docker-compose up --build
    Go to root directory and run:
 
 ```shell
-chmod +x admin_setup.sh
-./admin_setup.sh
+chmod +x user_setup.sh
+./user_setup.sh
 ```
 
-6. Follow the script to create an account. Note: admin account don't have special priveleges (yet).
-7. Access the application in your web browser at http://localhost:3000 and login with your credentials.
+6. Follow the script to create a user account. Note: there are no admin accounts with special priveleges (yet).
+7. Access the application in your web browser at http://localhost:3000 and login with the credentials you just created.
 
 ## Below are helpful documents for the project
 
