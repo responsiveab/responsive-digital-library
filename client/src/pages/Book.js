@@ -325,7 +325,7 @@ function Book(props) {
             );
             if (ebook) {
                 const blob = new Blob([ebook.data], {
-                    type: ebook.headers["content-type"],
+                    type: "application/pdf", //ebook.headers["content-type"],
                 });
                 const url = window.URL.createObjectURL(blob);
                 window.open(url);
@@ -347,8 +347,9 @@ function Book(props) {
             );
             if (ebook) {
                 alert("Filen existerar redan.");
+                // TODO Why do we do this?
                 const blob = new Blob([ebook.data], {
-                    type: ebook.headers["content-type"],
+                    type: "application/pdf", //ebook.headers["content-type"],
                 });
                 const url = window.URL.createObjectURL(blob);
                 window.open(url);
@@ -383,7 +384,7 @@ function Book(props) {
                 )
                 .then((res) => {
                     const blob = new Blob([res.data], {
-                        type: res.headers["content-type"],
+                        type: "application/pdf", //res.headers["content-type"],
                     });
 
                     const url = window.URL.createObjectURL(blob);
