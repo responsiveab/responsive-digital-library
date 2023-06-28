@@ -3,7 +3,6 @@ import { BiPlusCircle, BiUserCircle, BiSearch } from "react-icons/bi";
 import ".././css/Header.css";
 import { useState } from "react";
 import Index from "../../pages/Index";
-import Tag from "../../components/Tag";
 
 function HeaderIndex(props) {
     const [searchText, setSearchText] = useState("");
@@ -54,6 +53,7 @@ function HeaderIndex(props) {
                     <Link to="/">
                         {/* Placeholder for Responsive AB logo */}
                         <img
+                            alt="logo"
                             src={process.env.PUBLIC_URL + "/logo-rdl.png"}
                             className="img-icon"
                         />
@@ -73,17 +73,6 @@ function HeaderIndex(props) {
                 </div>
                 <hr />
             </header>
-
-            <div id="extraTags">
-                {[
-                    "Andra etiketter",
-                    "som de filterade böckerna har",
-                    "ska visas här",
-                    "så man kan lägga till dom i sökningen",
-                ].map((tag) => (
-                    <Tag key={tag} name={tag} />
-                ))}
-            </div>
 
             <div className="Index">
                 <Index input={searchText} updateSearch={updateSearchText} />
