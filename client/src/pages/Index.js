@@ -84,7 +84,7 @@ function Index(props) {
                             date={book.published}
                             img={book.imgstr}
                             taglis={book.tags}
-                            inputUpdate={props.inputUpdate}
+                            updateSearch={props.updateSearch}
                         />
                     </span>
                 ))

@@ -82,7 +82,7 @@ function BookPreview(props) {
                                     <Tag
                                         key={tag}
                                         content={tag}
-                                        inputUpdate={props.inputUpdate}
+                                        updateSearch={props.updateSearch}
                                     />
                                 ))}
                                 {count < tags.length && (

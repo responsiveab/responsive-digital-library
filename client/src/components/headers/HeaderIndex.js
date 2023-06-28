@@ -12,7 +12,7 @@ function HeaderIndex(props) {
         setInputText(e.target.value);
     };
 
-    function updateInputText(text) {
+    function updateSearchText(text) {
         let inputText = "";
         if (document.getElementById("searchInput").value[0] === "#") {
             // When we already are searching for tags
@@ -86,7 +86,7 @@ function HeaderIndex(props) {
             </div>
 
             <div className="Index">
-                <Index input={inputText} inputUpdate={updateInputText} />
+                <Index input={inputText} updateSearch={updateSearchText} />
             </div>
         </main>
     );

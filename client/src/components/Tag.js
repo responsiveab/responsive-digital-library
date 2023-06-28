@@ -47,8 +47,8 @@ function Tag(props) {
             {props.content && (
                 <a
                     onClick={() =>
-                        props.inputUpdate
-                            ? props.inputUpdate(props.content)
+                        props.updateSearch
+                            ? props.updateSearch(props.content)
                             : null
                     }
                 >
