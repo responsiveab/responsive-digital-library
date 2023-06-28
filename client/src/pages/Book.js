@@ -549,14 +549,14 @@ function Book(props) {
                                     book.tags.map((tag) => (
                                         <Tag
                                             key={tag}
-                                            content={tag}
+                                            name={tag}
                                             isbn={book._id}
                                             show_rm={
                                                 editBookInfo ? true : false
                                             }
                                         />
                                     ))}
-                                {editBookInfo && <Tag content="+" />}
+                                {editBookInfo && <Tag name="+" />}
                             </div>
                         </div>
                     </div>

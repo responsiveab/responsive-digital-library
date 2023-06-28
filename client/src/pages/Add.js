@@ -347,7 +347,7 @@ function Add(props) {
                             {tags ? (
                                 <div>
                                     {tags.map((t) => (
-                                        <Tag key={t} content={t} />
+                                        <Tag key={t} name={t} />
                                     ))}
                                 </div>
                             ) : (

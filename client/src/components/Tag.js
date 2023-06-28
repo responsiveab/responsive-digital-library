@@ -29,7 +29,7 @@ function Tag(props) {
                     "/api/tags/" +
                     props.isbn +
                     "/" +
-                    props.content
+                    props.name
             )
             .then((res) => {
                 console.log(res);
@@ -42,18 +42,18 @@ function Tag(props) {
     return (
         <div
             className="Tag-Wrapper"
-            style={{ background: string_to_color(props.content) }}
+            style={{ background: string_to_color(props.name) }}
         >
-            {props.content && (
+            {props.name && (
                 <a
                     onClick={() =>
                         props.updateSearch
-                            ? props.updateSearch(props.content)
+                            ? props.updateSearch(props.name)
                             : null
                     }
                 >
                     {" "}
-                    {props.content}{" "}
+                    {props.name}{" "}
                 </a>
             )}
             {props.show_rm && (

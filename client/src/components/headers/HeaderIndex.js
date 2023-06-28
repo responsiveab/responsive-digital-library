@@ -81,7 +81,7 @@ function HeaderIndex(props) {
                     "ska visas här",
                     "så man kan lägga till dom i sökningen",
                 ].map((tag) => (
-                    <Tag key={tag} content={tag} />
+                    <Tag key={tag} name={tag} />
                 ))}
             </div>
 

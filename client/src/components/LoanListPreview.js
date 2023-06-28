@@ -55,7 +55,7 @@ function LoanListPreview(props) {
                                 {tags.slice(0, count).map((tag) => (
                                     <Tag
                                         key={tag}
-                                        content={tag}
+                                        name={tag}
                                         updateSearch={props.updateSearch}
                                     />
                                 ))}
