@@ -6,14 +6,14 @@ import Index from "../../pages/Index";
 import Tag from "../../components/Tag";
 
 function HeaderIndex(props) {
-    const [inputText, setInputText] = useState("");
+    const [searchText, setSearchText] = useState("");
 
     let inputHandler = (e) => {
-        setInputText(e.target.value);
+        setSearchText(e.target.value);
     };
 
     function updateSearchText(text) {
-        let inputText = "";
+        let searchText = "";
         if (document.getElementById("searchInput").value[0] === "#") {
             // When we already are searching for tags
             document.getElementById("searchInput").value =
@@ -23,8 +23,8 @@ function HeaderIndex(props) {
             // If there is something typed before, this would be removed.
             document.getElementById("searchInput").value = "#" + text;
         }
-        inputText = document.getElementById("searchInput").value;
-        setInputText(inputText);
+        searchText = document.getElementById("searchInput").value;
+        setSearchText(searchText);
     }
 
     return (
@@ -86,7 +86,7 @@ function HeaderIndex(props) {
             </div>
 
             <div className="Index">
-                <Index input={inputText} updateSearch={updateSearchText} />
+                <Index input={searchText} updateSearch={updateSearchText} />
             </div>
         </main>
     );
