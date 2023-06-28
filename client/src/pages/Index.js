@@ -1,4 +1,5 @@
 import BookPreview from "../components/BookPreview";
+import Tag from "../components/Tag";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -23,6 +24,13 @@ function Index(props) {
         // Did not work without, help by chatGPT with this
         tags = tags.filter((tag) => tag !== "");
         return tags;
+    }
+
+    function extraTags(books, usedTags) {
+        let allTags = books.map((book) => {
+            return book.tags;
+        });
+        return allTags.flat(1);
     }
 
     useEffect(() => {
@@ -67,6 +75,13 @@ function Index(props) {
 
     return (
         <main className="App-content">
+            {input.startsWith("#") && (
+                <div id="extraTags">
+                    {extraTags(filteredBooks, []).map((tag) => (
+                        <Tag key={tag} name={tag} />
+                    ))}
+                </div>
+            )}
             {filteredBooks ? (
                 filteredBooks.map((book) => (
                     <span key={book._id}>
