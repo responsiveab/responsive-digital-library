@@ -80,7 +80,7 @@ function Index(props) {
             {searchText.startsWith("#") && (
                 <div id="extraTags">
                     {extraTags(filteredBooks, splitTags(searchText)).map((tag) => (
-                        <Tag key={tag} name={tag} />
+                        <Tag key={tag} name={tag} updateSearch={props.updateSearch} />
                     ))}
                 </div>
             )}
