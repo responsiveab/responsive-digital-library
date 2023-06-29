@@ -60,6 +60,9 @@ function Add(props) {
                     title: fetched_book.title
                         ? fetched_book.title
                         : "Titel saknas",
+                    subtitle: fetched_book.subtitle
+                        ? fetched_book.subtitle
+                        : "Undertitle saknas",
                     body: fetched_book.description
                         ? fetched_book.description
                         : "Beskrivning saknas",
