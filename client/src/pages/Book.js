@@ -526,6 +526,13 @@ function Book(props) {
                                 readonly={!editBookInfo}
                                 placeholder={"Förlag"}
                             />
+                            <EditText
+                                id="book-id"
+                                defaultValue={bookMod._id}
+                                inline
+                                readonly={true}
+                                placeholder={"ISBN"}
+                            />
                             <div className="Tags-Wrapper">
                                 {book.tags &&
                                     book.tags.map((tag) => (
@@ -584,13 +591,6 @@ function Book(props) {
                                     }
                                 />
                             )}
-                            <EditText
-                                id="book-id"
-                                defaultValue={bookMod._id}
-                                inline
-                                readonly={true}
-                                placeholder={"ISBN"}
-                            />
                         </div>
                     </div>
                     <div>
