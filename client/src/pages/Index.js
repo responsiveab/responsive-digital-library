@@ -30,7 +30,9 @@ function Index(props) {
         let allTags = books.map((book) => {
             return book.tags;
         });
-        return allTags.flat(1);
+        let flat = allTags.flat(1);
+        let filtered = usedTags.length ? flat.filter(tag => !usedTags.has(tag)) : flat;
+        return filtered;
     }
 
     useEffect(() => {
