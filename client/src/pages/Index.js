@@ -31,7 +31,7 @@ function Index(props) {
             return book.tags;
         });
         let flat = allTags.flat(1);
-        let filtered = usedTags.length ? flat.filter(tag => !usedTags.has(tag)) : flat;
+        let filtered = usedTags.length ? flat.filter(tag => !usedTags.includes(tag)) : flat;
         return filtered;
     }
 
@@ -79,7 +79,7 @@ function Index(props) {
         <main className="App-content">
             {searchText.startsWith("#") && (
                 <div id="extraTags">
-                    {extraTags(filteredBooks, []).map((tag) => (
+                    {extraTags(filteredBooks, splitTags(searchText)).map((tag) => (
                         <Tag key={tag} name={tag} />
                     ))}
                 </div>
