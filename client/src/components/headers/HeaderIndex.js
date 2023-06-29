@@ -12,17 +12,19 @@ function HeaderIndex(props) {
     };
 
     function updateSearchText(text) {
-        let searchText = "";
-        if (document.getElementById("searchInput").value[0] === "#") {
-            // When we already are searching for tags
-            document.getElementById("searchInput").value =
-                document.getElementById("searchInput").value + "#" + text;
+        let searchText = document.getElementById("searchInput").value;
+        if (searchText[0] === "#") {
+            // We are already searching for tags
+            const searchedTags = searchText.split("#");
+            if (!searchedTags.includes(text)) {
+                searchText = searchText + "#" + text;
+            }
         } else {
             // When it's the first tag we are looking for, either by clicking on a tag or by typing.
-            // If there is something typed before, this would be removed.
-            document.getElementById("searchInput").value = "#" + text;
+            // Reset any other search text
+            searchText = "#" + text;
         }
-        searchText = document.getElementById("searchInput").value;
+        document.getElementById("searchInput").value = searchText;
         setSearchText(searchText);
     }
 
