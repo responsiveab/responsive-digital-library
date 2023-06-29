@@ -20,6 +20,7 @@ function Book(props) {
     const [book, setBook] = useState({});
     const [user, setUser] = useState(undefined);
     const [editBookInfo, setEditBookInfo] = useState(false);
+    const [tag, setTag] = useState(undefined);
 
     const [bookMod, setBookMod] = useState({
         id: id,
@@ -438,6 +439,18 @@ function Book(props) {
         saveBook();
     };
 
+    const appendTag = () => {
+        // Makes sure it is not an empty tag
+        if (tag) {
+            if (!book.tags.includes(tag)) {
+                // Unless it's a duplicate tag
+                book.tags.push(tag);
+            }
+            setTag("");
+            document.getElementById("tag-input").value = "";
+        }
+    };
+
     return (
         <>
             <HeaderWithoutSearch user={props.user} />
@@ -556,7 +569,27 @@ function Book(props) {
                                             }
                                         />
                                     ))}
-                                {editBookInfo && <Tag name="+" />}
+
+                                {editBookInfo && (
+                                    <div>
+                                        <input
+                                            type="text"
+                                            id="tag-input"
+                                            name="tag"
+                                            placeholder="ny tagg"
+                                            onInput={(e) =>
+                                                setTag(e.target.value)
+                                            }
+                                        />
+                                        <button
+                                            type="button"
+                                            id="tag-submit"
+                                            onClick={appendTag}
+                                        >
+                                            Lägg till tagg
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
