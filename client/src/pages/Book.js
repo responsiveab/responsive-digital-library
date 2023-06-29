@@ -526,37 +526,6 @@ function Book(props) {
                                 readonly={!editBookInfo}
                                 placeholder={"Förlag"}
                             />
-                            <br></br>
-                            {!editBookInfo ? (
-                                <div
-                                    id="Book-Body"
-                                    dangerouslySetInnerHTML={{
-                                        __html: bookMod.body,
-                                    }}
-                                />
-                            ) : (
-                                <Editor
-                                    apiKey="r7juf1sqhlfm1lhb72goyuqokl24opmld6egjhatq2w3tugm"
-                                    initialValue={bookMod.body}
-                                    init={{
-                                        plugins: ["lists"],
-                                        toolbar:
-                                            "undo redo | blocks | bold italic | bullist | alignleft aligncenter alignright alignjustify | outdent indent",
-                                        menubar:
-                                            "edit insert format table help",
-                                    }}
-                                    onEditorChange={(newText) =>
-                                        (bookMod.body = newText)
-                                    }
-                                />
-                            )}
-                            <EditText
-                                id="book-id"
-                                defaultValue={bookMod._id}
-                                inline
-                                readonly={true}
-                                placeholder={"ISBN"}
-                            />
                             <div className="Tags-Wrapper">
                                 {book.tags &&
                                     book.tags.map((tag) => (
@@ -591,6 +560,37 @@ function Book(props) {
                                     </div>
                                 )}
                             </div>
+                            <br></br>
+                            {!editBookInfo ? (
+                                <div
+                                    id="Book-Body"
+                                    dangerouslySetInnerHTML={{
+                                        __html: bookMod.body,
+                                    }}
+                                />
+                            ) : (
+                                <Editor
+                                    apiKey="r7juf1sqhlfm1lhb72goyuqokl24opmld6egjhatq2w3tugm"
+                                    initialValue={bookMod.body}
+                                    init={{
+                                        plugins: ["lists"],
+                                        toolbar:
+                                            "undo redo | blocks | bold italic | bullist | alignleft aligncenter alignright alignjustify | outdent indent",
+                                        menubar:
+                                            "edit insert format table help",
+                                    }}
+                                    onEditorChange={(newText) =>
+                                        (bookMod.body = newText)
+                                    }
+                                />
+                            )}
+                            <EditText
+                                id="book-id"
+                                defaultValue={bookMod._id}
+                                inline
+                                readonly={true}
+                                placeholder={"ISBN"}
+                            />
                         </div>
                     </div>
                     <div>
