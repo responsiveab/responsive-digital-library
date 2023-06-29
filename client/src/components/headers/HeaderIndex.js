@@ -7,7 +7,7 @@ import Index from "../../pages/Index";
 function HeaderIndex(props) {
     const [searchText, setSearchText] = useState("");
 
-    let inputHandler = (e) => {
+    let searchHandler = (e) => {
         setSearchText(e.target.value);
     };
 
@@ -66,7 +66,7 @@ function HeaderIndex(props) {
                         id="searchInput"
                         type="search"
                         name="search"
-                        onChange={inputHandler}
+                        onChange={searchHandler}
                     />
                     {/* Meant to initially support multiple filter functions for the search */
                     /* <BiFilter className="icon" id="search-right"/> */}
@@ -75,7 +75,7 @@ function HeaderIndex(props) {
             </header>
 
             <div className="Index">
-                <Index input={searchText} updateSearch={updateSearchText} />
+                <Index searchText={searchText} updateSearch={updateSearchText} />
             </div>
         </main>
     );

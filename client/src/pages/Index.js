@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 function Index(props) {
     const [books, setBooks] = useState(undefined);
     const [filteredBooks, setFilteredBooks] = useState([]);
-    const input = props.input.toLowerCase();
+    const searchText = props.searchText.toLowerCase();
     useEffect(() => {
         axios
             .get(process.env.REACT_APP_API_URL + "/api/books/")
@@ -37,8 +37,8 @@ function Index(props) {
 
     useEffect(() => {
         if (books) {
-            if (input.startsWith("#")) {
-                const tags = splitTags(input);
+            if (searchText.startsWith("#")) {
+                const tags = splitTags(searchText);
                 setFilteredBooks(
                     // Filter the books that include all of the tags
                     // This filter function is by the help of chatGPT
@@ -57,27 +57,27 @@ function Index(props) {
                 setFilteredBooks(
                     books.filter(
                         (book) =>
-                            book._id.includes(input) ||
-                            book.title.toLowerCase().includes(input) ||
+                            book._id.includes(searchText) ||
+                            book.title.toLowerCase().includes(searchText) ||
                             (book.tags &&
                                 book.tags.some((tag) =>
-                                    tag.toLowerCase().includes(input)
+                                    tag.toLowerCase().includes(searchText)
                                 )) ||
                             (book.body &&
-                                book.body.toLowerCase().includes(input)) ||
+                                book.body.toLowerCase().includes(searchText)) ||
                             (book.author &&
-                                book.author.toLowerCase().includes(input)) ||
+                                book.author.toLowerCase().includes(searchText)) ||
                             (book.category &&
-                                book.category.toLowerCase().includes(input))
+                                book.category.toLowerCase().includes(searchText))
                     )
                 );
             }
         }
-    }, [books, input]);
+    }, [books, searchText]);
 
     return (
         <main className="App-content">
-            {input.startsWith("#") && (
+            {searchText.startsWith("#") && (
                 <div id="extraTags">
                     {extraTags(filteredBooks, []).map((tag) => (
                         <Tag key={tag} name={tag} />
