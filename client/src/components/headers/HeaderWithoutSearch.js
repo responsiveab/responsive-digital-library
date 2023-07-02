@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { BiPlusCircle, BiUserCircle } from "react-icons/bi";
+import { logout } from "../../utils/utils";
+import { useNavigate } from "react-router-dom";
 import ".././css/HeaderWithoutSearch.css";
 
 function HeaderWithoutSearch(props) {
-
+    const navigate = useNavigate("");
     return (
         <header className="App-header">
             <div style={{ float: "left" }}>
@@ -23,7 +25,14 @@ function HeaderWithoutSearch(props) {
                             </p>
                             <Link to="/account">Profil</Link>
                             <a href="#">Mina Böcker</a>
-                            <a href="#">Logga ut</a>
+                            <a
+                                href="/"
+                                onClick={() => {
+                                    logout();
+                                }}
+                            >
+                                Logga ut
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ function Login({ setAccount }) {
         name: "",
         password: "",
     });
+    const [prompt, setPrompt] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,14 +21,21 @@ function Login({ setAccount }) {
         axios
             .post(process.env.REACT_APP_API_URL + "/api/users/login", user)
             .then((res) => {
-                setAccount(res.data.user);
-                window.localStorage.setItem(
-                    "account",
-                    JSON.stringify(res.data.user)
-                );
-                window.localStorage.setItem("token", res.data.token);
+                if (res.data.message === "login unsuccessful")
+                    setPrompt("User credentials invalid, please try again.");
+                else {
+                    setAccount(res.data.user);
+                    window.localStorage.setItem(
+                        "account",
+                        JSON.stringify(res.data.user)
+                    );
+                    window.localStorage.setItem("token", res.data.token);
+                }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.error(err);
+                setPrompt("Failed to login.");
+            });
     };
 
     return (
@@ -56,6 +64,7 @@ function Login({ setAccount }) {
                     </button>
                 </form>
             </div>
+            <p id="loginPrompt">{prompt}</p>
         </main>
     );
 }
