@@ -526,6 +526,7 @@ function Book(props) {
                                 readonly={!editBookInfo}
                                 placeholder={"Förlag"}
                             />
+                            <br></br>
                             <EditText
                                 id="book-id"
                                 defaultValue={bookMod._id}
