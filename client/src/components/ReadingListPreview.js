@@ -68,7 +68,7 @@ function ReadingListPreview(props) {
                                 ))}
                                 {count < tags.length && (
                                     <span className="Expander">
-                                        <a href="#" onClick={increaseCount}>
+                                        <a href="/" onClick={increaseCount}>
                                             ...
                                         </a>
                                     </span>

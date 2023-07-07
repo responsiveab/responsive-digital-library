@@ -3,7 +3,6 @@ import { BiPlusCircle, BiUserCircle } from "react-icons/bi";
 import ".././css/HeaderWithoutSearch.css";
 
 function HeaderWithoutSearch(props) {
-
     return (
         <header className="App-header">
             <div style={{ float: "left" }}>
@@ -22,8 +21,8 @@ function HeaderWithoutSearch(props) {
                                 Hej {props.user.name}
                             </p>
                             <Link to="/account">Profil</Link>
-                            <a href="#">Mina Böcker</a>
-                            <a href="#">Logga ut</a>
+                            <a href="/">Mina Böcker</a>
+                            <a href="/">Logga ut</a>
                         </div>
                     </div>
                 </div>
@@ -32,6 +31,7 @@ function HeaderWithoutSearch(props) {
                     <img
                         src={process.env.PUBLIC_URL + "/logo-rdl.png"}
                         className="img-icon"
+                        alt=""
                     />
                 </Link>
             </div>

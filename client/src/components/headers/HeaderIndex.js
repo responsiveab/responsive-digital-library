@@ -47,8 +47,8 @@ function HeaderIndex(props) {
                                     Hej {props.user.name}
                                 </p>
                                 <Link to="/account">Profil</Link>
-                                <a href="#">Mina Böcker</a>
-                                <a href="#">Logga ut</a>
+                                <a href="/">Mina Böcker</a>
+                                <a href="/">Logga ut</a>
                             </div>
                         </div>
                     </div>

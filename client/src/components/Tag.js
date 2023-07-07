@@ -51,13 +51,14 @@ function Tag(props) {
                             ? props.updateSearch(props.name)
                             : null
                     }
+                    href="/"
                 >
                     {" "}
                     {props.name}{" "}
                 </a>
             )}
             {props.show_rm && (
-                <a href="#" onClick={removeTag}>
+                <a href="/" onClick={removeTag}>
                     <BiX />
                 </a>
             )}
