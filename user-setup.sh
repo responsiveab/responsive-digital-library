@@ -1,9 +1,10 @@
-read -p "Enter admin name: " adminName
-read -p "Enter admin email: " adminEmail
-read -p "Enter admin password: " adminPassword
+read -p "Enter user name: " userName
+read -p "Enter user email: " userEmail
+read -p "Enter user password: " userPassword
+read -p "Enter full URL to application: " URL
 
-user='{ "name": "'"$adminName"'", "email": "'"$adminEmail"'", "password": "'"$adminPassword"'" }'
+user='{ "name": "'"$userName"'", "email": "'"$userEmail"'", "password": "'"$userPassword"'" }'
 curl --header "Content-Type: application/json" \
      --request POST \
      --data "$user" \
-     http://localhost:8080/api/users/register
+     "$URL"/api/users/register
