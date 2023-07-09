@@ -27,14 +27,15 @@ function Index(props) {
     }
 
     function extraTags(books, usedTags) {
-        let allTags = books.map((book) => {
+        const allTags = books.map((book) => {
             return book.tags;
         });
-        let flat = allTags.flat(1);
-        let filtered = usedTags.length
+        const flat = allTags.flat(1);
+        const filtered = usedTags.length
             ? flat.filter((tag) => !usedTags.includes(tag))
             : flat;
-        return filtered;
+        const unique = [...new Set(filtered)];
+        return unique;
     }
 
     useEffect(() => {
