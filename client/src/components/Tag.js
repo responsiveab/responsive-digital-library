@@ -51,7 +51,6 @@ function Tag(props) {
                             ? props.updateSearch(props.name)
                             : null
                     }
-                    href="/"
                 >
                     {" "}
                     {props.name}{" "}
