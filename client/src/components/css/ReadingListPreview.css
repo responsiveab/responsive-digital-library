@@ -36,6 +36,13 @@ a:visited {
     margin-top: 100px;
 }
 
+div.bodytext {
+    margin-top: 10px;
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+}
+
 .tags {
     width: max-content;
 }

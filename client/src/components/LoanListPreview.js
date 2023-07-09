@@ -5,20 +5,15 @@ import Tag from "./Tag";
 
 import { Link } from "react-router-dom";
 
-function trimString(string) {
-    var textLength = 100;
-    var trimmedString = string.substr(0, textLength);
-    if (string.length <= trimmedString.length) {
-        trimmedString += " ";
-    }
-    trimmedString = trimmedString.substr(
-        0,
-        Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))
-    );
-    if (string.length > trimmedString.length) {
-        trimmedString += "...";
-    }
-    return trimmedString;
+function toText(html) {
+    // Create a new div element
+    var tempDivElement = document.createElement("div");
+
+    // Set the HTML content with the given value
+    tempDivElement.innerHTML = html;
+
+    // Retrieve the text property of the element
+    return tempDivElement.textContent || tempDivElement.innerText || "";
 }
 
 function LoanListPreview(props) {
@@ -72,14 +67,8 @@ function LoanListPreview(props) {
                         )
                         // TODO: Hide some tags if there are too many
                     }
-                    {props.body ? (
-                        <div className="metatext">
-                            <p>
-                                <i>{trimString(props.body)}</i>
-                            </p>
-                        </div>
-                    ) : (
-                        <></>
+                    {props.body && (
+                        <div className="bodytext">{toText(props.body)}</div>
                     )}
                 </div>
             </div>

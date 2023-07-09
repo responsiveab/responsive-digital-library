@@ -5,22 +5,6 @@ import Tag from "./Tag";
 
 import { Link } from "react-router-dom";
 
-function trimString(string) {
-    var textLength = 200;
-    var trimmedString = string.substr(0, textLength);
-    if (string.length <= trimmedString.length) {
-        trimmedString += " ";
-    }
-    trimmedString = trimmedString.substr(
-        0,
-        Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))
-    );
-    if (string.length > trimmedString.length) {
-        trimmedString += "...";
-    }
-    return trimmedString;
-}
-
 function BookPreview(props) {
     // eslint-disable-next-line
     const [tags, setTags] = useState([]);
@@ -76,7 +60,7 @@ function BookPreview(props) {
                         <></>
                     )}
                     {
-                        tags ? (
+                        tags && (
                             <div className="tags">
                                 {tags.slice(0, count).map((tag) => (
                                     <Tag
@@ -93,15 +77,11 @@ function BookPreview(props) {
                                     </span>
                                 )}
                             </div>
-                        ) : (
-                            <></>
                         )
                         // TODO: Hide some tags if there are too many
                     }
                     {props.body ? (
-                        <div className="metatext">
-                            <p>{trimString(asText(props.body))}</p>
-                        </div>
+                        <div className="bodytext">{asText(props.body)}</div>
                     ) : (
                         <></>
                     )}
