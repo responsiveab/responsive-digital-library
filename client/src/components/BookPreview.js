@@ -19,21 +19,16 @@ function BookPreview(props) {
         setCount(count + 5);
     }
 
-    const asText = (html) => {
-        const doc = new DOMParser().parseFromString(html, "text/html");
-        const walker = document.createTreeWalker(
-            doc.body,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-        const texts = [];
-        let node;
-        while ((node = walker.nextNode())) {
-            texts.push(node.nodeValue);
-        }
-        return texts.join(" ");
-    };
+    function toText(html) {
+        // Create a new div element
+        var tempDivElement = document.createElement("div");
+
+        // Set the HTML content with the given value
+        tempDivElement.innerHTML = html;
+
+        // Retrieve the text property of the element
+        return tempDivElement.textContent || tempDivElement.innerText || "";
+    }
 
     return (
         <>
@@ -79,7 +74,7 @@ function BookPreview(props) {
                         // TODO: Hide some tags if there are too many
                     }
                     {props.body && (
-                        <div className="bodytext">{asText(props.body)}</div>
+                        <div className="bodytext">{toText(props.body)}</div>
                     )}
                 </div>
             </div>
