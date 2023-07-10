@@ -20,9 +20,9 @@ function Book(props) {
     const [book, setBook] = useState({});
     const [user, setUser] = useState(undefined);
     const [editBookInfo, setEditBookInfo] = useState(false);
-    const [tag, setTag] = useState(undefined);
+    const [typedTag, setTypedTag] = useState(undefined);
 
-    const [bookMod, setBookMod] = useState({
+    const [modifiedBook, setModifiedBook] = useState({
         id: id,
         title: "",
         subtitle: "",
@@ -61,7 +61,7 @@ function Book(props) {
             .get(process.env.REACT_APP_API_URL + "/api/books/" + id)
             .then((res) => {
                 setBook(res.data.data);
-                setBookMod(res.data.data); // copy for modification
+                setModifiedBook(res.data.data); // copy for modification
             })
             .catch((err) => console.log(err));
     }, []);
@@ -283,7 +283,7 @@ function Book(props) {
             .get(process.env.REACT_APP_API_URL + "/api/books/" + id)
             .then((res) => {
                 setBook(res.data.data);
-                setBookMod(res.data.data); // copy for modification
+                setModifiedBook(res.data.data); // copy for modification
             })
             .catch((err) => console.log(err));
     }, []);
@@ -293,26 +293,29 @@ function Book(props) {
     };
 
     const cancelBook = () => {
-        setBookMod(book);
+        setModifiedBook(book);
         setEditBookInfo(false);
     };
 
     const handleSave = ({ name, value }) => {
-        setBookMod({
-            ...bookMod,
+        setModifiedBook({
+            ...modifiedBook,
             [name]: value,
         });
     };
 
     const saveBook = () => {
-        console.log(bookMod);
+        console.log(modifiedBook);
         axios
-            .patch(process.env.REACT_APP_API_URL + "/api/books/" + id, bookMod)
+            .patch(
+                process.env.REACT_APP_API_URL + "/api/books/" + id,
+                modifiedBook
+            )
             .then((res) => {
                 console.log(res);
             })
             .catch((err) => console.log(err));
-        setBook(bookMod);
+        setBook(modifiedBook);
         setEditBookInfo(false);
     };
 
@@ -365,7 +368,7 @@ function Book(props) {
                     },
                 })
                 .then((res) => {
-                    bookMod.filename = file.name;
+                    modifiedBook.filename = file.name;
                     saveBook();
                     alert("Filen är uppladdad.");
                 })
@@ -441,12 +444,12 @@ function Book(props) {
 
     const appendTag = () => {
         // Makes sure it is not an empty tag
-        if (tag) {
-            if (!book.tags.includes(tag)) {
+        if (typedTag) {
+            if (!book.tags.includes(typedTag)) {
                 // Unless it's a duplicate tag
-                book.tags.push(tag);
+                book.tags.push(typedTag);
             }
-            setTag("");
+            setTypedTag("");
             document.getElementById("tag-input").value = "";
         }
     };
@@ -471,7 +474,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Title"
                                 name="title"
-                                defaultValue={bookMod.title}
+                                defaultValue={modifiedBook.title}
                                 onSave={handleSave}
                                 inline
                                 readonly={!editBookInfo}
@@ -490,7 +493,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Author"
                                 name="author"
-                                defaultValue={bookMod.author}
+                                defaultValue={modifiedBook.author}
                                 inline
                                 onSave={handleSave}
                                 readonly={!editBookInfo}
@@ -500,7 +503,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Date"
                                 name="published"
-                                defaultValue={bookMod.published}
+                                defaultValue={modifiedBook.published}
                                 inline
                                 onSave={handleSave}
                                 readonly={!editBookInfo}
@@ -510,7 +513,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Category"
                                 name="category"
-                                defaultValue={bookMod.category}
+                                defaultValue={modifiedBook.category}
                                 inline
                                 onSave={handleSave}
                                 readonly={!editBookInfo}
@@ -520,7 +523,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Publisher"
                                 name="publisher"
-                                defaultValue={bookMod.publisher}
+                                defaultValue={modifiedBook.publisher}
                                 inline
                                 onSave={handleSave}
                                 readonly={!editBookInfo}
@@ -529,7 +532,7 @@ function Book(props) {
                             <br></br>
                             <EditText
                                 id="book-id"
-                                defaultValue={bookMod._id}
+                                defaultValue={modifiedBook._id}
                                 inline
                                 readonly={true}
                                 placeholder={"ISBN"}
@@ -555,7 +558,7 @@ function Book(props) {
                                             name="tag"
                                             placeholder="ny tagg"
                                             onInput={(e) =>
-                                                setTag(e.target.value)
+                                                setTypedTag(e.target.value)
                                             }
                                         />
                                         <button
@@ -573,13 +576,13 @@ function Book(props) {
                                 <div
                                     id="Book-Body"
                                     dangerouslySetInnerHTML={{
-                                        __html: bookMod.body,
+                                        __html: modifiedBook.body,
                                     }}
                                 />
                             ) : (
                                 <Editor
                                     apiKey="r7juf1sqhlfm1lhb72goyuqokl24opmld6egjhatq2w3tugm"
-                                    initialValue={bookMod.body}
+                                    initialValue={modifiedBook.body}
                                     init={{
                                         plugins: ["lists"],
                                         toolbar:
@@ -588,7 +591,7 @@ function Book(props) {
                                             "edit insert format table help",
                                     }}
                                     onEditorChange={(newText) =>
-                                        (bookMod.body = newText)
+                                        (modifiedBook.body = newText)
                                     }
                                 />
                             )}
