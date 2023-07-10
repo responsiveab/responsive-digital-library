@@ -83,7 +83,7 @@ function Book(props) {
         }
     }
 
-    function removeBook() {
+    function eraseBookFromDB() {
         axios
             .delete(process.env.REACT_APP_API_URL + "/api/books/" + id)
             .then((res) => {
@@ -273,7 +273,7 @@ function Book(props) {
     }
 
     function removeBook() {
-        removeBook();
+        eraseBookFromDB();
 
         routeToIndex();
     }
