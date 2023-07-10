@@ -25,7 +25,7 @@ function Book(props) {
     const [bookMod, setBookMod] = useState({
         id: id,
         title: "",
-        subtitle: "", // ANVÄNDS INTE?
+        subtitle: "",
         body: "",
         published: "",
         author: "",
@@ -272,7 +272,7 @@ function Book(props) {
         }
     }
 
-    function removeFunc() {
+    function removeBook() {
         removeBook();
 
         routeToIndex();
@@ -316,7 +316,7 @@ function Book(props) {
         setEditBookInfo(false);
     };
 
-    async function findFile() {
+    async function showEbook() {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
@@ -338,7 +338,7 @@ function Book(props) {
         }
     }
 
-    async function uploadFile(file, formData) {
+    async function uploadEbookFile(file, formData) {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
@@ -374,7 +374,7 @@ function Book(props) {
         }
     }
 
-    const downloadBook = async (event) => {
+    const downloadEbookFile = async (event) => {
         try {
             await axios
                 .get(
@@ -403,7 +403,7 @@ function Book(props) {
         }
     };
 
-    const handleOnSubmit = async (event) => {
+    const handleUploadEbookFile = async (event) => {
         event.preventDefault();
         const file = event.target.files[0];
         try {
@@ -411,7 +411,7 @@ function Book(props) {
                 const formData = new FormData();
                 formData.append("file", file);
 
-                uploadFile(file, formData);
+                uploadEbookFile(file, formData);
             }
         } catch (error) {
             console.log(error);
@@ -419,7 +419,7 @@ function Book(props) {
         }
     };
 
-    const deleteBook = async (event) => {
+    const deleteEbookFile = async (event) => {
         try {
             await axios
                 .delete(
@@ -602,14 +602,14 @@ function Book(props) {
                                         <button
                                             type="button"
                                             id="borrow-submit"
-                                            onClick={findFile}
+                                            onClick={showEbook}
                                         >
                                             Visa e-bok
                                         </button>
                                         <button
                                             type="button"
                                             id="borrow-submit"
-                                            onClick={downloadBook}
+                                            onClick={downloadEbookFile}
                                         >
                                             Ladda ned e-bok
                                         </button>
@@ -687,7 +687,7 @@ function Book(props) {
                                             <input
                                                 type="file"
                                                 id="browse-button"
-                                                onChange={handleOnSubmit}
+                                                onChange={handleUploadEbookFile}
                                             />
                                         </label>
                                     </div>
@@ -695,7 +695,7 @@ function Book(props) {
                                     <button
                                         type="button"
                                         id="borrow-submit"
-                                        onClick={deleteBook}
+                                        onClick={deleteEbookFile}
                                     >
                                         Ta bort e-bok
                                     </button>
@@ -720,7 +720,7 @@ function Book(props) {
                                     <button
                                         type="button"
                                         id="isbn-remove"
-                                        onClick={removeFunc}
+                                        onClick={removeBook}
                                     >
                                         Ta bort bok
                                     </button>
