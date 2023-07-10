@@ -50,14 +50,12 @@ function BookPreview(props) {
                         </b>
                     </h3>
 
-                    {props.author ? (
+                    {props.author && (
                         <div className="metatext">
                             <p>
                                 <i>{props.author}</i>
                             </p>
                         </div>
-                    ) : (
-                        <></>
                     )}
                     {
                         tags && (
@@ -80,10 +78,8 @@ function BookPreview(props) {
                         )
                         // TODO: Hide some tags if there are too many
                     }
-                    {props.body ? (
+                    {props.body && (
                         <div className="bodytext">{asText(props.body)}</div>
-                    ) : (
-                        <></>
                     )}
                 </div>
             </div>

@@ -62,7 +62,7 @@ function Add(props) {
                         : "Titel saknas",
                     subtitle: fetched_book.subtitle
                         ? fetched_book.subtitle
-                        : "Undertitle saknas",
+                        : "Undertitel saknas",
                     body: fetched_book.description
                         ? fetched_book.description
                         : "Beskrivning saknas",
@@ -347,14 +347,12 @@ function Add(props) {
                                     placeholder={"Beskrivning"}
                                 />
                             </div>
-                            {tags ? (
+                            {tags && (
                                 <div>
                                     {tags.map((t) => (
                                         <Tag key={t} name={t} />
                                     ))}
                                 </div>
-                            ) : (
-                                <></>
                             )}
                             <input
                                 type="text"

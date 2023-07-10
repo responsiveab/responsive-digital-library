@@ -44,15 +44,13 @@ function ReadingListPreview(props) {
                         <Link to={"/books/" + props.id}>{props.title}</Link>
                     </h3>
 
-                    {props.author ? (
+                    {props.author && (
                         <div className="metatext">
                             <p>{props.author}</p>
                         </div>
-                    ) : (
-                        <></>
                     )}
                     {
-                        tags ? (
+                        tags && (
                             <div className="tags">
                                 {tags.slice(0, count).map((tag) => (
                                     <Tag
@@ -69,8 +67,6 @@ function ReadingListPreview(props) {
                                     </span>
                                 )}
                             </div>
-                        ) : (
-                            <></>
                         )
                         // TODO: Hide some tags if there are too many
                     }
