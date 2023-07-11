@@ -274,7 +274,6 @@ function Book(props) {
 
     function removeBook() {
         eraseBookFromDB();
-
         routeToIndex();
     }
 
@@ -482,7 +481,7 @@ function Book(props) {
                             />
                             <br></br>
                             {(modifiedBook.subtitle || editBookInfo) && (
-                                <div className="Book-SubTitle">
+                                <>
                                     <EditText
                                         id="Book-SubTitle"
                                         name="subtitle"
@@ -493,7 +492,7 @@ function Book(props) {
                                         placeholder={"Undertitel"}
                                     />
                                     <br />
-                                </div>
+                                </>
                             )}
                             <EditText
                                 id="Book-Borrower"
