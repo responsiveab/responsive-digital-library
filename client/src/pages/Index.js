@@ -27,12 +27,15 @@ function Index(props) {
     }
 
     function extraTags(books, usedTags) {
-        let allTags = books.map((book) => {
+        const allTags = books.map((book) => {
             return book.tags;
         });
-        let flat = allTags.flat(1);
-        let filtered = usedTags.length ? flat.filter(tag => !usedTags.includes(tag)) : flat;
-        return filtered;
+        const flat = allTags.flat(1);
+        const filtered = usedTags.length
+            ? flat.filter((tag) => !usedTags.includes(tag))
+            : flat;
+        const unique = [...new Set(filtered)];
+        return unique;
     }
 
     useEffect(() => {
@@ -66,9 +69,13 @@ function Index(props) {
                             (book.body &&
                                 book.body.toLowerCase().includes(searchText)) ||
                             (book.author &&
-                                book.author.toLowerCase().includes(searchText)) ||
+                                book.author
+                                    .toLowerCase()
+                                    .includes(searchText)) ||
                             (book.category &&
-                                book.category.toLowerCase().includes(searchText))
+                                book.category
+                                    .toLowerCase()
+                                    .includes(searchText))
                     )
                 );
             }
@@ -79,9 +86,18 @@ function Index(props) {
         <main className="App-content">
             {searchText.startsWith("#") && (
                 <div id="extraTags">
-                    {extraTags(filteredBooks, splitTags(searchText)).map((tag) => (
-                        <Tag key={tag} name={tag} updateSearch={props.updateSearch} />
-                    ))}
+                    <p>
+                        Andra taggar:&nbsp;
+                        {extraTags(filteredBooks, splitTags(searchText)).map(
+                            (tag) => (
+                                <Tag
+                                    key={tag}
+                                    name={tag}
+                                    updateSearch={props.updateSearch}
+                                />
+                            )
+                        )}
+                    </p>
                 </div>
             )}
             {filteredBooks ? (

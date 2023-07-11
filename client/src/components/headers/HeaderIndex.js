@@ -45,10 +45,10 @@ function HeaderIndex(props) {
                         <div className="item-list-wrapper">
                             <div className="dropdown-content">
                                 <p className="dropdown-header">
-                                    Hej {props.user.name}
+                                    Hej {props.user.name}!
                                 </p>
                                 <Link to="/account">Profil</Link>
-                                <a href="#">Mina Böcker</a>
+                                <a href="/">Mina Böcker</a>
                                 <a
                                     href="/"
                                     onClick={() => {

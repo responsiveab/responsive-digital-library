@@ -5,22 +5,6 @@ import Tag from "./Tag";
 
 import { Link } from "react-router-dom";
 
-function trimString(string) {
-    var textLength = 200;
-    var trimmedString = string.substr(0, textLength);
-    if (string.length <= trimmedString.length) {
-        trimmedString += " ";
-    }
-    trimmedString = trimmedString.substr(
-        0,
-        Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))
-    );
-    if (string.length > trimmedString.length) {
-        trimmedString += "...";
-    }
-    return trimmedString;
-}
-
 function BookPreview(props) {
     // eslint-disable-next-line
     const [tags, setTags] = useState([]);
@@ -35,21 +19,16 @@ function BookPreview(props) {
         setCount(count + 5);
     }
 
-    const asText = (html) => {
-        const doc = new DOMParser().parseFromString(html, "text/html");
-        const walker = document.createTreeWalker(
-            doc.body,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-        const texts = [];
-        let node;
-        while ((node = walker.nextNode())) {
-            texts.push(node.nodeValue);
-        }
-        return texts.join(" ");
-    };
+    function toText(html) {
+        // Create a new div element
+        var tempDivElement = document.createElement("div");
+
+        // Set the HTML content with the given value
+        tempDivElement.innerHTML = html;
+
+        // Retrieve the text property of the element
+        return tempDivElement.textContent || tempDivElement.innerText || "";
+    }
 
     return (
         <>
@@ -66,17 +45,15 @@ function BookPreview(props) {
                         </b>
                     </h3>
 
-                    {props.author ? (
+                    {props.author && (
                         <div className="metatext">
                             <p>
                                 <i>{props.author}</i>
                             </p>
                         </div>
-                    ) : (
-                        <></>
                     )}
                     {
-                        tags ? (
+                        tags && (
                             <div className="tags">
                                 {tags.slice(0, count).map((tag) => (
                                     <Tag
@@ -87,23 +64,17 @@ function BookPreview(props) {
                                 ))}
                                 {count < tags.length && (
                                     <span className="Expander">
-                                        <a href="#" onClick={increaseCount}>
+                                        <a href="/" onClick={increaseCount}>
                                             ...
                                         </a>
                                     </span>
                                 )}
                             </div>
-                        ) : (
-                            <></>
                         )
                         // TODO: Hide some tags if there are too many
                     }
-                    {props.body ? (
-                        <div className="metatext">
-                            <p>{trimString(asText(props.body))}</p>
-                        </div>
-                    ) : (
-                        <></>
+                    {props.body && (
+                        <div className="bodytext">{toText(props.body)}</div>
                     )}
                 </div>
             </div>

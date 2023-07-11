@@ -57,7 +57,7 @@ function Tag(props) {
                 </a>
             )}
             {props.show_rm && (
-                <a href="#" onClick={removeTag}>
+                <a href="/" onClick={removeTag}>
                     <BiX />
                 </a>
             )}

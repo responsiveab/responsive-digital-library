@@ -5,20 +5,15 @@ import Tag from "./Tag";
 
 import { Link } from "react-router-dom";
 
-function trimString(string) {
-    var textLength = 200;
-    var trimmedString = string.substr(0, textLength);
-    if (string.length <= trimmedString.length) {
-        trimmedString += " ";
-    }
-    trimmedString = trimmedString.substr(
-        0,
-        Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))
-    );
-    if (string.length > trimmedString.length) {
-        trimmedString += "...";
-    }
-    return trimmedString;
+function toText(html) {
+    // Create a new div element
+    var tempDivElement = document.createElement("div");
+
+    // Set the HTML content with the given value
+    tempDivElement.innerHTML = html;
+
+    // Retrieve the text property of the element
+    return tempDivElement.textContent || tempDivElement.innerText || "";
 }
 
 function ReadingListPreview(props) {
@@ -49,15 +44,13 @@ function ReadingListPreview(props) {
                         <Link to={"/books/" + props.id}>{props.title}</Link>
                     </h3>
 
-                    {props.author ? (
+                    {props.author && (
                         <div className="metatext">
                             <p>{props.author}</p>
                         </div>
-                    ) : (
-                        <></>
                     )}
                     {
-                        tags ? (
+                        tags && (
                             <div className="tags">
                                 {tags.slice(0, count).map((tag) => (
                                     <Tag
@@ -68,27 +61,19 @@ function ReadingListPreview(props) {
                                 ))}
                                 {count < tags.length && (
                                     <span className="Expander">
-                                        <a href="#" onClick={increaseCount}>
+                                        <a href="/" onClick={increaseCount}>
                                             ...
                                         </a>
                                     </span>
                                 )}
                             </div>
-                        ) : (
-                            <></>
                         )
                         // TODO: Hide some tags if there are too many
                     }
-                    {props.body ? (
-                        <div className="metatext">
-                            <p>
-                                <i>{trimString(props.body)}</i>
-                            </p>
-                        </div>
-                    ) : (
-                        <></>
-                    )}
                 </div>
+                {props.body && (
+                    <div className="bodytext">{toText(props.body)}</div>
+                )}
             </div>
         </>
     );
