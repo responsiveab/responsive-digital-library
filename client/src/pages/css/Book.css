@@ -55,6 +55,21 @@
     width: fit-content;
 }
 
+#Book-SubTitle {
+    font-size: 1em;
+    margin: 0;
+    font-weight: bold;
+    width: fit-content;
+}
+
+#Book-Borrower {
+    font-size: 1em;
+    margin: 0;
+    font-style: italic;
+    font-weight: bold;
+    width: fit-content;
+}
+
 #Book-Author,
 #Book-Category,
 #Book-Date,

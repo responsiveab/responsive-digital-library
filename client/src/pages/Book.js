@@ -480,8 +480,23 @@ function Book(props) {
                                 readonly={!editBookInfo}
                                 placeholder={"Titel"}
                             />
+                            <br></br>
+                            {(modifiedBook.subtitle || editBookInfo) && (
+                                <div className="Book-SubTitle">
+                                    <EditText
+                                        id="Book-SubTitle"
+                                        name="subtitle"
+                                        defaultValue={modifiedBook.subtitle}
+                                        onSave={handleSave}
+                                        inline
+                                        readonly={!editBookInfo}
+                                        placeholder={"Undertitel"}
+                                    />
+                                    <br />
+                                </div>
+                            )}
                             <EditText
-                                id="Book-Title"
+                                id="Book-Borrower"
                                 name="borrower"
                                 defaultValue={"[" + book.borrower + "]"}
                                 onSave={handleSave}
