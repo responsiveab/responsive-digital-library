@@ -17,7 +17,7 @@ function Book(props) {
     // eslint-disable-next-line
     const [showResults, setShowResults] = useState(undefined);
     const [showReadList, setShowReadList] = useState(undefined);
-    const [book, setBook] = useState({});
+    const [originalBook, setOriginalBook] = useState({});
     const [user, setUser] = useState(undefined);
     const [editBookInfo, setEditBookInfo] = useState(false);
     const [typedTag, setTypedTag] = useState(undefined);
@@ -60,7 +60,7 @@ function Book(props) {
         axios
             .get(process.env.REACT_APP_API_URL + "/api/books/" + id)
             .then((res) => {
-                setBook(res.data.data);
+                setOriginalBook(res.data.data);
                 setModifiedBook(res.data.data); // copy for modification
             })
             .catch((err) => console.log(err));
@@ -113,7 +113,7 @@ function Book(props) {
                 }
                 console.log(account_name + " added to borrower");
                 console.log(res);
-                setBook(res.data.data);
+                setOriginalBook(res.data.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -136,7 +136,7 @@ function Book(props) {
                 }
                 console.log("removed borrower");
                 console.log(res);
-                setBook(res.data.data);
+                setOriginalBook(res.data.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -281,7 +281,7 @@ function Book(props) {
         axios
             .get(process.env.REACT_APP_API_URL + "/api/books/" + id)
             .then((res) => {
-                setBook(res.data.data);
+                setOriginalBook(res.data.data);
                 setModifiedBook(res.data.data); // copy for modification
             })
             .catch((err) => console.log(err));
@@ -292,7 +292,7 @@ function Book(props) {
     };
 
     const cancelBook = () => {
-        setModifiedBook(book);
+        setModifiedBook(originalBook);
         setEditBookInfo(false);
     };
 
@@ -314,7 +314,7 @@ function Book(props) {
                 console.log(res);
             })
             .catch((err) => console.log(err));
-        setBook(modifiedBook);
+        setOriginalBook(modifiedBook);
         setEditBookInfo(false);
     };
 
@@ -323,7 +323,7 @@ function Book(props) {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
                     "?filename=" +
-                    book.filename,
+                    originalBook.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -345,7 +345,7 @@ function Book(props) {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
                     "?filename=" +
-                    book.filename,
+                    originalBook.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -382,7 +382,7 @@ function Book(props) {
                 .get(
                     `http://localhost:8080/api/files/download` +
                         "?filename=" +
-                        book.filename,
+                        originalBook.filename,
                     { responseType: "blob" }
                 )
                 .then((res) => {
@@ -393,7 +393,7 @@ function Book(props) {
                     const url = window.URL.createObjectURL(blob);
                     const link = document.createElement("a");
                     link.href = url;
-                    link.setAttribute("download", book.title);
+                    link.setAttribute("download", originalBook.title);
                     document.body.appendChild(link);
                     link.click();
                     alert("Filen är nedladdad");
@@ -427,7 +427,7 @@ function Book(props) {
                 .delete(
                     "http://localhost:8080/api/files/delete" +
                         "?filename=" +
-                        book.filename
+                        originalBook.filename
                 )
                 .then((res) => {
                     console.log(res);
@@ -437,7 +437,7 @@ function Book(props) {
         } catch (error) {
             console.log(error);
         }
-        book.filename = null;
+        originalBook.filename = null;
         saveBook();
     };
 
@@ -459,10 +459,10 @@ function Book(props) {
             {
                 <main className="Book-Wrapper">
                     <div className="Book-Info">
-                        {book.imgstr !== "Bild saknas" && (
+                        {originalBook.imgstr !== "Bild saknas" && (
                             <div className="Book-Thumbnail">
                                 <img
-                                    src={book.imgstr}
+                                    src={originalBook.imgstr}
                                     width="128px"
                                     alt="thumbnail"
                                 ></img>
@@ -497,7 +497,7 @@ function Book(props) {
                             <EditText
                                 id="Book-Borrower"
                                 name="borrower"
-                                defaultValue={"[" + book.borrower + "]"}
+                                defaultValue={"[" + originalBook.borrower + "]"}
                                 onSave={handleSave}
                                 inline
                                 readonly={true}
@@ -557,6 +557,7 @@ function Book(props) {
                                         <Tag
                                             key={tag}
                                             name={tag}
+                                            isbn={originalBook._id}
                                             isbn={book._id}
                                             show_rm={
                                                 editBookInfo ? true : false
@@ -614,7 +615,7 @@ function Book(props) {
                     <div>
                         {!editBookInfo && (
                             <div className="Book-buttons">
-                                {book.filename && (
+                                {originalBook.filename && (
                                     <div className="Book-buttons">
                                         <button
                                             type="button"
@@ -632,7 +633,7 @@ function Book(props) {
                                         </button>
                                     </div>
                                 )}
-                                {!book.borrowed ? (
+                                {!originalBook.borrowed ? (
                                     <div className="Borrow-Book">
                                         <button
                                             type="button"
@@ -643,7 +644,8 @@ function Book(props) {
                                         </button>
                                     </div>
                                 ) : (
-                                    book.borrower === props.user.name && (
+                                    originalBook.borrower ===
+                                        props.user.name && (
                                         <div className="Return-Book">
                                             <button
                                                 type="button"
@@ -692,7 +694,7 @@ function Book(props) {
 
                         {editBookInfo && (
                             <div className="Book-buttons">
-                                {!book.filename ? (
+                                {!originalBook.filename ? (
                                     <div>
                                         <label htmlFor="browse-button">
                                             <div
