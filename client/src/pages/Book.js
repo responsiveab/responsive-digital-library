@@ -444,14 +444,22 @@ function Book(props) {
     const appendTag = () => {
         // Makes sure it is not an empty tag
         if (typedTag) {
-            if (!book.tags.includes(typedTag)) {
+            if (!modifiedBook.tags.includes(typedTag)) {
                 // Unless it's a duplicate tag
-                book.tags.push(typedTag);
+                modifiedBook.tags.push(typedTag);
             }
+            setModifiedBook(modifiedBook);
             setTypedTag("");
             document.getElementById("tag-input").value = "";
         }
     };
+
+    function deleteTag(tag) {
+        console.log("delete tag: " + tag);
+        modifiedBook.tags = modifiedBook.tags.filter((t) => t !== tag);
+        setModifiedBook(modifiedBook);
+        setTypedTag(""); // Trigger reactivity
+    }
 
     return (
         <>
@@ -552,16 +560,14 @@ function Book(props) {
                                 placeholder={"ISBN"}
                             />
                             <div className="Tags-Wrapper">
-                                {book.tags &&
-                                    book.tags.map((tag) => (
+                                {modifiedBook.tags &&
+                                    modifiedBook.tags.map((tag) => (
                                         <Tag
                                             key={tag}
                                             name={tag}
                                             isbn={originalBook._id}
-                                            isbn={book._id}
-                                            show_rm={
-                                                editBookInfo ? true : false
-                                            }
+                                            rm={editBookInfo ? deleteTag : null}
+                                            tag={tag}
                                         />
                                     ))}
 

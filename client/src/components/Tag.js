@@ -22,23 +22,6 @@ function Tag(props) {
         return color;
     };
 
-    function removeTag() {
-        axios
-            .delete(
-                process.env.REACT_APP_API_URL +
-                    "/api/tags/" +
-                    props.isbn +
-                    "/" +
-                    props.name
-            )
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-
     return (
         <div
             className="Tag-Wrapper"
@@ -56,8 +39,12 @@ function Tag(props) {
                     {props.name}{" "}
                 </a>
             )}
-            {props.show_rm && (
-                <a href="/" onClick={removeTag}>
+            {props.rm && (
+                <a
+                    onClick={() => {
+                        props.rm(props.tag);
+                    }}
+                >
                     <BiX />
                 </a>
             )}
