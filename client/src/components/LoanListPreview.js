@@ -22,7 +22,7 @@ function LoanListPreview(props) {
     const [count, setCount] = useState(5);
 
     useEffect(() => {
-        setTags(props.taglis);
+        setTags(props.taglist);
         // eslint-disable-next-line
     }, []);
 

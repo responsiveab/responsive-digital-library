@@ -116,7 +116,7 @@ function Account(props) {
                                                             author={book.author}
                                                             body={book.body}
                                                             img={book.imgstr}
-                                                            taglis={book.tags}
+                                                            taglist={book.tags}
                                                         />
                                                     </span>
                                                 ))
@@ -137,7 +137,7 @@ function Account(props) {
                                                         title={book.title}
                                                         author={book.author}
                                                         body={book.body}
-                                                        taglis={book.tags}
+                                                        taglist={book.tags}
                                                     />
                                                 </span>
                                             ))

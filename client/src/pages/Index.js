@@ -100,7 +100,7 @@ function Index(props) {
                     </p>
                 </div>
             )}
-            {filteredBooks ? (
+            {filteredBooks &&
                 filteredBooks.map((book) => (
                     <span key={book._id}>
                         <BookPreview
@@ -116,14 +116,11 @@ function Index(props) {
                             borrowed={book.borrowed}
                             date={book.published}
                             img={book.imgstr}
-                            taglis={book.tags}
+                            taglist={book.tags}
                             updateSearch={props.updateSearch}
                         />
                     </span>
-                ))
-            ) : (
-                <></>
-            )}
+                ))}
         </main>
     );
 }
