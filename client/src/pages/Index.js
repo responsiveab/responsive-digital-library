@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 function Index(props) {
     const [books, setBooks] = useState(undefined);
     const [filteredBooks, setFilteredBooks] = useState([]);
-    const searchText = props.searchText?props.searchText.toLowerCase():"";
+    const searchText = props.searchText ? props.searchText.toLowerCase() : "";
     useEffect(() => {
         axios
             .get(process.env.REACT_APP_API_URL + "/api/books/")
@@ -62,6 +62,7 @@ function Index(props) {
                         (book) =>
                             book._id.includes(searchText) ||
                             book.title.toLowerCase().includes(searchText) ||
+                            book.subtitle.toLowerCase().includes(searchText) ||
                             (book.tags &&
                                 book.tags.some((tag) =>
                                     tag.toLowerCase().includes(searchText)
