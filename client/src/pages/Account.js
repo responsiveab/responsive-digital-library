@@ -107,7 +107,7 @@ function Account(props) {
                                             <h1 className="section-header">
                                                 Läslista
                                             </h1>
-                                            {readBooks ? (
+                                            {readBooks &&
                                                 readBooks.map((book) => (
                                                     <span key={book._id}>
                                                         <ReadingListPreview
@@ -119,17 +119,14 @@ function Account(props) {
                                                             taglist={book.tags}
                                                         />
                                                     </span>
-                                                ))
-                                            ) : (
-                                                <></>
-                                            )}
+                                                ))}
                                         </div>
                                     </div>
                                     <div className="loan-list">
                                         <h1 className="section-header">
                                             Mina Lån
                                         </h1>
-                                        {loanBooks ? (
+                                        {loanBooks && (
                                             loanBooks.map((book) => (
                                                 <span key={book._id}>
                                                     <LoanListPreview
@@ -141,8 +138,6 @@ function Account(props) {
                                                     />
                                                 </span>
                                             ))
-                                        ) : (
-                                            <></>
                                         )}
                                     </div>
                                 </div>

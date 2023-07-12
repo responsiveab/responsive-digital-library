@@ -37,12 +37,10 @@ function LoanListPreview(props) {
                     <h3>
                         <Link to={"/books/" + props.id}>{props.title}</Link>
                     </h3>
-                    {props.author ? (
+                    {props.author && (
                         <div className="metatext">
                             <p>{props.author}</p>
                         </div>
-                    ) : (
-                        <></>
                     )}
                     {
                         tags ? (
