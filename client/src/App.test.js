@@ -13,10 +13,6 @@ import Index from "./pages/Index";
 
 /* This is a test that is testing the Index page. */
 describe("Index", () => {
-    it("Sample Test", () => {
-        expect(true).toBe(true);
-    });
-
     test("EF1: Renders a list of books", async () => {
         // Mock the axios.get method to return a list of books
         const mockAxios = new MockAdapter(axios);
