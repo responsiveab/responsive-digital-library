@@ -441,14 +441,13 @@ function Book(props) {
         saveBook();
     };
 
-    const appendTag = () => {
+    const addTag = () => {
         // Makes sure it is not an empty tag
         if (typedTag) {
             if (!modifiedBook.tags.includes(typedTag)) {
                 // Unless it's a duplicate tag
                 modifiedBook.tags.push(typedTag);
             }
-            setModifiedBook(modifiedBook);
             setTypedTag("");
             document.getElementById("tag-input").value = "";
         }
@@ -585,7 +584,7 @@ function Book(props) {
                                         <button
                                             type="button"
                                             id="tag-submit"
-                                            onClick={appendTag}
+                                            onClick={addTag}
                                         >
                                             Lägg till tagg
                                         </button>
