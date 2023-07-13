@@ -62,7 +62,10 @@ function Index(props) {
                         (book) =>
                             book._id.includes(searchText) ||
                             book.title.toLowerCase().includes(searchText) ||
-                            book.subtitle.toLowerCase().includes(searchText) ||
+                            (book.subtitle &&
+                                book.subtitle
+                                    .toLowerCase()
+                                    .includes(searchText)) ||
                             (book.tags &&
                                 book.tags.some((tag) =>
                                     tag.toLowerCase().includes(searchText)
