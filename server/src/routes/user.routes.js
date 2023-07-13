@@ -155,7 +155,7 @@ userRouter.post("/login", (req, res) => {
                 res.send({ message: "login unsuccessful" });
             }
         } else {
-            res.send("not registered");
+            res.send({ message: "login unsuccessful" });
         }
     });
 });

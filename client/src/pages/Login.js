@@ -34,7 +34,7 @@ function Login({ setAccount }) {
             })
             .catch((err) => {
                 console.error(err);
-                setPrompt("Failed to login.");
+                setPrompt("Wrong email or password. Login failed.");
             });
     };
 
