@@ -21,7 +21,6 @@ function Index(props) {
     function splitTags(input) {
         let tags = input.split("#");
         // Remove any empty tags resulting from consecutive "#" characters
-        // Did not work without, help by chatGPT with this
         tags = tags.filter((tag) => tag !== "");
         return tags;
     }

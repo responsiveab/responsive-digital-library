@@ -504,7 +504,11 @@ function Book(props) {
                             <EditText
                                 id="Book-Borrower"
                                 name="borrower"
-                                defaultValue={"[" + originalBook.borrower + "]"}
+                                defaultValue={
+                                    originalBook.filename
+                                        ? "[E-bok]"
+                                        : "[" + originalBook.borrower + "]"
+                                }
                                 onSave={handleSave}
                                 inline
                                 readonly={true}
@@ -638,30 +642,31 @@ function Book(props) {
                                         </button>
                                     </div>
                                 )}
-                                {!originalBook.borrowed ? (
-                                    <div className="Borrow-Book">
-                                        <button
-                                            type="button"
-                                            id="borrow-submit"
-                                            onClick={borrowBook}
-                                        >
-                                            Låna
-                                        </button>
-                                    </div>
-                                ) : (
-                                    originalBook.borrower ===
-                                        props.user.name && (
-                                        <div className="Return-Book">
+                                {!originalBook.filename &&
+                                    (!originalBook.borrowed ? (
+                                        <div className="Borrow-Book">
                                             <button
                                                 type="button"
-                                                id="return-submit"
-                                                onClick={returnBook}
+                                                id="borrow-submit"
+                                                onClick={borrowBook}
                                             >
-                                                Lämna tillbaka
+                                                Låna
                                             </button>
                                         </div>
-                                    )
-                                )}
+                                    ) : (
+                                        originalBook.borrower ===
+                                            props.user.name && (
+                                            <div className="Return-Book">
+                                                <button
+                                                    type="button"
+                                                    id="return-submit"
+                                                    onClick={returnBook}
+                                                >
+                                                    Lämna tillbaka
+                                                </button>
+                                            </div>
+                                        )
+                                    ))}
 
                                 {showReadList ? (
                                     <div className="ReadList-Book">
