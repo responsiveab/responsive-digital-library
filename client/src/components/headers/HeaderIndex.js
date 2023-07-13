@@ -3,6 +3,7 @@ import { BiPlusCircle, BiUserCircle, BiSearch } from "react-icons/bi";
 import ".././css/Header.css";
 import { useState } from "react";
 import Index from "../../pages/Index";
+import { logout } from "../../utils/utils";
 
 function HeaderIndex(props) {
     const [searchText, setSearchText] = useState("");
@@ -48,7 +49,14 @@ function HeaderIndex(props) {
                                 </p>
                                 <Link to="/account">Profil</Link>
                                 <a href="/">Mina Böcker</a>
-                                <a href="/">Logga ut</a>
+                                <a
+                                    href="/"
+                                    onClick={() => {
+                                        logout();
+                                    }}
+                                >
+                                    Logga ut
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -77,7 +85,10 @@ function HeaderIndex(props) {
             </header>
 
             <div className="Index">
-                <Index searchText={searchText} updateSearch={updateSearchText} />
+                <Index
+                    searchText={searchText}
+                    updateSearch={updateSearchText}
+                />
             </div>
         </main>
     );

@@ -22,3 +22,9 @@
     margin: auto;
     margin-top: 32px;
 }
+
+#loginPrompt {
+    text-align: center;
+    margin: 1rem auto;
+    font-size: 1rem;
+}
