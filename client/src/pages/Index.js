@@ -89,18 +89,16 @@ function Index(props) {
         <main className="App-content">
             {searchText.startsWith("#") && (
                 <div id="extraTags">
-                    <p>
-                        Andra taggar:&nbsp;
-                        {extraTags(filteredBooks, splitTags(searchText)).map(
-                            (tag) => (
-                                <Tag
-                                    key={tag}
-                                    name={tag}
-                                    updateSearch={props.updateSearch}
-                                />
-                            )
-                        )}
-                    </p>
+                    <p>Andra taggar:&nbsp;</p>
+                    {extraTags(filteredBooks, splitTags(searchText)).map(
+                        (tag) => (
+                            <Tag
+                                key={tag}
+                                name={tag}
+                                updateSearch={props.updateSearch}
+                            />
+                        )
+                    )}
                 </div>
             )}
             {filteredBooks &&

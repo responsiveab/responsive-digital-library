@@ -1,26 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { BiPlusCircle, BiUserCircle, BiSearch } from "react-icons/bi";
 import ".././css/Header.css";
 import { useEffect, useState } from "react";
 import Index from "../../pages/Index";
 import { logout } from "../../utils/utils";
 
-function HeaderIndex(props) {
-    const [searchText, setSearchText] = useState("");
-    const [showSearch, setShowSearch] = useState(false);
+function HeaderIndex({ user, searchText, setSearchText }) {
+    // const [searchText, setSearchText] = useState("");
+    const location = useLocation();
+    useEffect(() => {
+        // searchHandler(location.state ? location.state.searchText : searchText);
+        const locationSearchText = location.state?.searchText;
+        if (locationSearchText) {
+            document.getElementById("searchInput").value += locationSearchText;
+            updateSearchText(locationSearchText);
+        }
+    }, []);
 
     let searchHandler = (e) => {
-        setSearchText(e.target.value);
+        setSearchText(e.target?.value);
     };
-
-    useEffect(() => {
-        const hr = document.getElementsByTagName("hr")[0];
-        const search = document.getElementsByClassName("searchbar")[0];
-
-        search.classList.toggle("hidden");
-        hr.classList.toggle("hr-without-search");
-        setShowSearch((showSearch) => !setShowSearch);
-    }, showSearch);
 
     function updateSearchText(text) {
         let searchText = document.getElementById("searchInput").value;
@@ -35,7 +34,7 @@ function HeaderIndex(props) {
             // Reset any other search text
             searchText = "#" + text;
         }
-        document.getElementById("searchInput").value = searchText;
+        // document.getElementById("searchInput").value = searchText;
         setSearchText(searchText);
     }
 
@@ -55,7 +54,7 @@ function HeaderIndex(props) {
                         <div className="item-list-wrapper">
                             <div className="dropdown-content">
                                 <p className="dropdown-header">
-                                    Hej {props.user.name}!
+                                    Hej {user.name}!
                                 </p>
                                 <Link to="/account">Profil</Link>
                                 <a href="/">Mina Böcker</a>
@@ -79,7 +78,7 @@ function HeaderIndex(props) {
                         />
                     </Link>
                 </div>
-                <div className="searchbar hidden">
+                <div className="searchbar">
                     <BiSearch className="icon" id="search-left" />
                     {/* <input type="text" id="search" name="search" onKeyPress={handleChange}/> */}
                     <input
@@ -91,14 +90,14 @@ function HeaderIndex(props) {
                     {/* Meant to initially support multiple filter functions for the search */
                     /* <BiFilter className="icon" id="search-right"/> */}
                 </div>
-
-                <hr className="hr-without-search" />
+                <hr />
             </header>
 
             <div className="Index">
                 <Index
                     searchText={searchText}
                     updateSearch={updateSearchText}
+                    setSearchText={setSearchText}
                 />
             </div>
         </main>

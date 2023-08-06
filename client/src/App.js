@@ -13,6 +13,7 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
     const [account, setAccount] = useState(); //TODO: Remove this
+    const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
         try {
@@ -36,7 +37,13 @@ function App() {
                     <Routes>
                         <Route
                             path="/"
-                            element={<HeaderIndex user={account} />}
+                            element={
+                                <HeaderIndex
+                                    user={account}
+                                    searchText={searchText}
+                                    setSearchText={setSearchText}
+                                />
+                            }
                         />
                         <Route
                             path="/account"
