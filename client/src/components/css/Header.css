@@ -37,6 +37,7 @@
 
 hr {
     margin-top: 8px;
+    /* display: block; */
 }
 
 .Tag-Search-Area {
@@ -99,4 +100,8 @@ hr {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
+}
+
+.hidden {
+    display: none;
 }

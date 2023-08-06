@@ -1,16 +1,26 @@
 import { Link } from "react-router-dom";
 import { BiPlusCircle, BiUserCircle, BiSearch } from "react-icons/bi";
 import ".././css/Header.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Index from "../../pages/Index";
 import { logout } from "../../utils/utils";
 
 function HeaderIndex(props) {
     const [searchText, setSearchText] = useState("");
+    const [showSearch, setShowSearch] = useState(false);
 
     let searchHandler = (e) => {
         setSearchText(e.target.value);
     };
+
+    useEffect(() => {
+        const hr = document.getElementsByTagName("hr")[0];
+        const search = document.getElementsByClassName("searchbar")[0];
+
+        search.classList.toggle("hidden");
+        hr.classList.toggle("hr-without-search");
+        setShowSearch((showSearch) => !setShowSearch);
+    }, showSearch);
 
     function updateSearchText(text) {
         let searchText = document.getElementById("searchInput").value;
@@ -69,7 +79,7 @@ function HeaderIndex(props) {
                         />
                     </Link>
                 </div>
-                <div className="searchbar">
+                <div className="searchbar hidden">
                     <BiSearch className="icon" id="search-left" />
                     {/* <input type="text" id="search" name="search" onKeyPress={handleChange}/> */}
                     <input
@@ -81,7 +91,8 @@ function HeaderIndex(props) {
                     {/* Meant to initially support multiple filter functions for the search */
                     /* <BiFilter className="icon" id="search-right"/> */}
                 </div>
-                <hr />
+
+                <hr className="hr-without-search" />
             </header>
 
             <div className="Index">
