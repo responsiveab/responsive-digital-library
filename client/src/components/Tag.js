@@ -4,6 +4,8 @@ import { BiX } from "react-icons/bi";
 
 import axios from "axios";
 
+import { Link } from "react-router-dom";
+
 function Tag(props) {
     var string_to_color = function (str) {
         var hash = 0;
@@ -27,18 +29,23 @@ function Tag(props) {
             className="Tag-Wrapper"
             style={{ background: string_to_color(props.name) }}
         >
-            {props.name && (
-                <a
-                    onClick={() =>
-                        props.updateSearch
-                            ? props.updateSearch(props.name)
-                            : null
-                    }
-                >
-                    {" "}
-                    {props.name}{" "}
-                </a>
-            )}
+            {props.name &&
+                (props.updateSearch ? (
+                    <a
+                        onClick={() =>
+                            props.updateSearch
+                                ? props.updateSearch(props.name)
+                                : null
+                        }
+                    >
+                        {props.name}
+                    </a>
+                ) : (
+                    <Link to="/" state={{ searchText: `${props.name}` }}>
+                        {" "}
+                        {props.name}
+                    </Link>
+                ))}
             {props.rm && (
                 <a
                     onClick={() => {

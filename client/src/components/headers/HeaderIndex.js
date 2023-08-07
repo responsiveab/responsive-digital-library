@@ -1,15 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { BiPlusCircle, BiUserCircle, BiSearch } from "react-icons/bi";
 import ".././css/Header.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Index from "../../pages/Index";
 import { logout } from "../../utils/utils";
 
-function HeaderIndex(props) {
+function HeaderIndex({ user }) {
     const [searchText, setSearchText] = useState("");
+    const location = useLocation();
+    useEffect(() => {
+        // searchHandler(location.state ? location.state.searchText : searchText);
+        const locationSearchText = location.state?.searchText;
+        if (locationSearchText) {
+            // Search text clicked in a book. Start over the search with searchText.
+            setSearchText("");
+            document.getElementById("searchInput").value = locationSearchText;
+            updateSearchText(locationSearchText);
+        }
+    }, []);
 
     let searchHandler = (e) => {
-        setSearchText(e.target.value);
+        setSearchText(e.target?.value);
     };
 
     function updateSearchText(text) {
@@ -45,7 +56,7 @@ function HeaderIndex(props) {
                         <div className="item-list-wrapper">
                             <div className="dropdown-content">
                                 <p className="dropdown-header">
-                                    Hej {props.user.name}!
+                                    Hej {user.name}!
                                 </p>
                                 <Link to="/account">Profil</Link>
                                 <a href="/">Mina Böcker</a>
@@ -77,6 +88,7 @@ function HeaderIndex(props) {
                         type="search"
                         name="search"
                         onChange={searchHandler}
+                        value={searchText}
                     />
                     {/* Meant to initially support multiple filter functions for the search */
                     /* <BiFilter className="icon" id="search-right"/> */}
@@ -88,6 +100,7 @@ function HeaderIndex(props) {
                 <Index
                     searchText={searchText}
                     updateSearch={updateSearchText}
+                    setSearchText={setSearchText}
                 />
             </div>
         </main>
