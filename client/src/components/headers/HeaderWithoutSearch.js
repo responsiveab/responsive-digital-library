@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
 import { BiPlusCircle, BiUserCircle } from "react-icons/bi";
 import { logout } from "../../utils/utils";
-import { useNavigate } from "react-router-dom";
 import ".././css/HeaderWithoutSearch.css";
 
 function HeaderWithoutSearch(props) {
-    const navigate = useNavigate("");
-
     return (
         <header className="App-header">
             <div style={{ float: "left" }}>
@@ -37,7 +34,7 @@ function HeaderWithoutSearch(props) {
                         </div>
                     </div>
                 </div>
-                <Link to="/">
+                <Link to="/" state={{ searchText: "" }}>
                     {/* Placeholder for Responsive logo */}
                     <img
                         src={process.env.PUBLIC_URL + "/logo-rdl.png"}

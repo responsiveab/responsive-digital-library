@@ -5,14 +5,16 @@ import { useEffect, useState } from "react";
 import Index from "../../pages/Index";
 import { logout } from "../../utils/utils";
 
-function HeaderIndex({ user, searchText, setSearchText }) {
-    // const [searchText, setSearchText] = useState("");
+function HeaderIndex({ user }) {
+    const [searchText, setSearchText] = useState("");
     const location = useLocation();
     useEffect(() => {
         // searchHandler(location.state ? location.state.searchText : searchText);
         const locationSearchText = location.state?.searchText;
         if (locationSearchText) {
-            document.getElementById("searchInput").value += locationSearchText;
+            // Search text clicked in a book. Start over the search with searchText.
+            setSearchText("");
+            document.getElementById("searchInput").value = locationSearchText;
             updateSearchText(locationSearchText);
         }
     }, []);
@@ -34,7 +36,7 @@ function HeaderIndex({ user, searchText, setSearchText }) {
             // Reset any other search text
             searchText = "#" + text;
         }
-        // document.getElementById("searchInput").value = searchText;
+        document.getElementById("searchInput").value = searchText;
         setSearchText(searchText);
     }
 
@@ -86,6 +88,7 @@ function HeaderIndex({ user, searchText, setSearchText }) {
                         type="search"
                         name="search"
                         onChange={searchHandler}
+                        value={searchText}
                     />
                     {/* Meant to initially support multiple filter functions for the search */
                     /* <BiFilter className="icon" id="search-right"/> */}

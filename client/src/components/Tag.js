@@ -29,25 +29,23 @@ function Tag(props) {
             className="Tag-Wrapper"
             style={{ background: string_to_color(props.name) }}
         >
-            {props.name && (
-                <a
-                    onClick={() =>
-                        props.updateSearch
-                            ? props.updateSearch(props.name)
-                            : null
-                    }
-                >
-                    {" "}
-                    {props.updateSearch ? (
-                        props.name
-                    ) : (
-                        <Link to="/" state={{ searchText: `#${props.name}` }}>
-                            {" "}
-                            {props.name}
-                        </Link>
-                    )}{" "}
-                </a>
-            )}
+            {props.name &&
+                (props.updateSearch ? (
+                    <a
+                        onClick={() =>
+                            props.updateSearch
+                                ? props.updateSearch(props.name)
+                                : null
+                        }
+                    >
+                        {props.name}
+                    </a>
+                ) : (
+                    <Link to="/" state={{ searchText: `${props.name}` }}>
+                        {" "}
+                        {props.name}
+                    </Link>
+                ))}
             {props.rm && (
                 <a
                     onClick={() => {
