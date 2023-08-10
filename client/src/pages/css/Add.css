@@ -26,6 +26,13 @@
     width: fit-content;
 }
 
+#book-subtitle {
+    font-size: 1em;
+    margin: 0;
+    font-weight: bold;
+    width: fit-content;
+}
+
 #book-author,
 #book-category,
 #book-date,

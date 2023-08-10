@@ -39,14 +39,15 @@ function Add(props) {
                 console.log("Book not found. Add the book manually.", err);
                 let newBook = {
                     id: isbnNr,
-                    title: "Skriv produktens titel",
-                    body: "Skriv beskrivning av produkten",
-                    author: "Skriv författare av produkten",
-                    category: "Skriv kategori av produkten",
+                    title: "titel",
+                    subtitle: "undertitel",
+                    body: "beskrivning",
+                    author: "författare",
+                    category: "kategori",
                     img: cover_missing_img,
-                    language: "Skriv produktens språk",
-                    publisher: "Skriv produktens förlag",
-                    date: "Skriv produktens utgivningsdatum",
+                    language: "språk",
+                    publisher: "förlag",
+                    date: "utgivningsdatum",
                     borrower: "i biblioteket",
                     borrowed: false,
                 };
@@ -290,6 +291,15 @@ function Add(props) {
                                     inline
                                     onSave={handleSave}
                                     placeholder={"Titel"}
+                                />
+                                <EditTextarea
+                                    id="book-subtitle"
+                                    name="subtitle"
+                                    rows={"auto"}
+                                    defaultValue={book.subtitle}
+                                    inline
+                                    onSave={handleSave}
+                                    placeholder={"Undertitel"}
                                 />
                                 <EditText
                                     id="book-author"
