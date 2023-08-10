@@ -11,12 +11,19 @@ function Index(props) {
         axios
             .get(process.env.REACT_APP_API_URL + "/api/books/")
             .then((res) => {
-                setBooks(res.data.data);
+                setBooks(randomizeBooks(res.data.data));
                 // console.log(res.data.data)
             })
             .catch((error) => console.error(error));
         // eslint-disable-next-line
     }, []);
+
+    function randomizeBooks(books) {
+        return books
+            .map((value) => ({ value, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ value }) => value);
+    }
 
     function splitTags(input) {
         let tags = input.split("#");
