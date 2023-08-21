@@ -86,9 +86,11 @@ bookRouter.get("/:book_id", (req, res, next) => {
 
 // Add Single Book
 bookRouter.post("/", auth, (req, res, next) => {
+    console.log(req.body);
     let newBook = {
         _id: req.body.id,
         title: req.body.title,
+        subtitle: req.body.subtitle,
         body: req.body.body,
         author: req.body.author,
         shelf: "H1", // COMMENT: Hardcoded for now, since this
