@@ -63,10 +63,10 @@ function Add(props) {
                         : "Titel saknas",
                     subtitle: fetched_book.subtitle
                         ? fetched_book.subtitle
-                        : "Undertitel saknas",
+                        : "",
                     body: fetched_book.description
                         ? fetched_book.description
-                        : "Beskrivning saknas",
+                        : "",
                     author: fetched_book.authors
                         ? fetched_book.authors[0]
                         : "Okänd författare",
