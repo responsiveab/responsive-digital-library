@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
+import { Editor } from "@tinymce/tinymce-react";
 
 import Tag from "../components/Tag";
 import cover_missing_img from "../media/cover_missing_img.png";
@@ -347,14 +348,19 @@ function Add(props) {
                                     placeholder={"ISBN"}
                                 />
                                 <br></br>
-                                <EditTextarea
-                                    id="book-body"
-                                    name="body"
-                                    defaultValue={book.body}
-                                    rows={"auto"}
-                                    inline
-                                    onSave={handleSave}
-                                    placeholder={"Beskrivning"}
+                                <Editor
+                                    apiKey="r7juf1sqhlfm1lhb72goyuqokl24opmld6egjhatq2w3tugm"
+                                    initialValue={book.body}
+                                    init={{
+                                        plugins: ["lists"],
+                                        toolbar:
+                                            "undo redo | blocks | bold italic | bullist | alignleft aligncenter alignright alignjustify | outdent indent",
+                                        menubar:
+                                            "edit insert format table help",
+                                    }}
+                                    onEditorChange={(newText) =>
+                                        (book.body = newText)
+                                    }
                                 />
                             </div>
                             {tags && (
