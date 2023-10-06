@@ -39,15 +39,15 @@ function Add(props) {
                 console.log("Book not found. Add the book manually.", err);
                 let newBook = {
                     id: isbnNr,
-                    title: "titel",
-                    subtitle: "undertitel",
-                    body: "beskrivning",
-                    author: "författare",
-                    category: "kategori",
+                    title: "",
+                    subtitle: "",
+                    body: "",
+                    author: "",
+                    category: "",
                     img: cover_missing_img,
-                    language: "språk",
-                    publisher: "förlag",
-                    date: "utgivningsdatum",
+                    language: "",
+                    publisher: "",
+                    date: "",
                     borrower: "i biblioteket",
                     borrowed: false,
                 };
