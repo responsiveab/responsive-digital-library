@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
         "@tinymce/tinymce-react": "^4.3.0",
-        "axios": "^1.7.0",
+        "axios": "^1.7.1",
         "node-isbn": "^1.6.1",
         "react": "^17.0.1",
         "react-contenteditable": "^3.3.7",
