@@ -43,7 +43,7 @@ function Book(props) {
         }
 
         fetchData();
-    }, []);
+    }, [props.user._id]);
 
     useEffect(() => {
         // Comment: If this causes an error, you probably have an invalid account
@@ -54,7 +54,7 @@ function Book(props) {
                 setShowReadList(true);
             }
         }
-    }, [user]);
+    }, [user, id]);
 
     useEffect(() => {
         axios
@@ -64,7 +64,7 @@ function Book(props) {
                 setModifiedBook(res.data.data); // copy for modification
             })
             .catch((err) => console.log(err));
-    }, []);
+    }, [id]);
 
     let navigate = useNavigate();
     const routeToIndex = () => {
@@ -285,7 +285,7 @@ function Book(props) {
                 setModifiedBook(res.data.data); // copy for modification
             })
             .catch((err) => console.log(err));
-    }, []);
+    }, [id]);
 
     const editBook = () => {
         setEditBookInfo(true);
