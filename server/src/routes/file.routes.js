@@ -34,7 +34,7 @@ fileRouter.get("/ebook", async (req, res) => {
 
 fileRouter.post(
     "/upload",
-    auth,
+    //auth,
     upload.single("file"),
     async (req, res) => {
         try {
