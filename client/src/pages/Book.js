@@ -341,6 +341,7 @@ function Book(props) {
     }
 
     async function uploadEbookFile(file, formData) {
+        console.log(axios.VERSION);
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
