@@ -14,6 +14,8 @@ jobs:
               run: |
                   cp server/src/index.prod.js server/src/index.js
                   cp client/.env-prod client/.env
+            - name: List project structure for debugging
+              run: ls -R
             - name: Install dependencies
               run: |
                   cd server
