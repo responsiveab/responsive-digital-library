@@ -5,7 +5,7 @@
     "main": "src/index.js",
     "scripts": {
         "build": "webpack-cli --config webpack/webpack.dev.js",
-        "start": "npm run build && nodemon dist/main.js",
+        "start": "sh -c 'if [ \"$NODE_ENV\" = \"production\" ]; then node dist/main.js; else nodemon dist/main.js; fi'",
         "dev": "webpack-dev-server --open --config webpack/webpack.dev.js",
         "test": "jest --detectOpenHandles"
     },
