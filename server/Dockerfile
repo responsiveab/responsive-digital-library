@@ -15,4 +15,5 @@ COPY . .
 EXPOSE 8080
 EXPOSE 9292
 
-CMD ["npm","start"]
+#CMD ["npm","start"]
+CMD [ "node", "dist/main.js" ]
