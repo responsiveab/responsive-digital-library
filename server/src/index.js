@@ -32,6 +32,11 @@ app.get("/", function (req, res) {
     res.send("Server: Hello!");
 });
 
+app.use((req, res, next) => {
+    console.log(`Incoming request: ${req.method} ${req.url}`);
+    next();
+});
+
 app._router.stack.forEach((r) => {
     if (r.route && r.route.path) {
         console.log(`Registered route: ${r.route.path}`);
