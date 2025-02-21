@@ -361,7 +361,7 @@ function Book(props) {
             }
         } catch (error) {
             await axios
-                .post(`${window.location.origin}`, formData, {
+                .post(`${window.location.origin}/api/files/upload`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
