@@ -32,6 +32,12 @@ app.get("/", function (req, res) {
     res.send("Server: Hello!");
 });
 
+app._router.stack.forEach((r) => {
+    if (r.route && r.route.path) {
+        console.log(`Registered route: ${r.route.path}`);
+    }
+});
+
 app.listen(PORT, function () {
     console.log(`Server Listening on ${PORT}`);
 });
