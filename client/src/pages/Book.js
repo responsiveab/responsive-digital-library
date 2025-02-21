@@ -320,8 +320,7 @@ function Book(props) {
 
     async function showEbook() {
         try {
-            const ebook = await axios.get(
-                `http://localhost:8080/api/files/ebook` +
+            const ebook = await axios.get(process.env.REACT_APP_API_URL + `/api/files/ebook` +
                 "?filename=" +
                 originalBook.filename,
                 { responseType: "blob" }
@@ -342,8 +341,7 @@ function Book(props) {
 
     async function uploadEbookFile(file, formData) {
         try {
-            const ebook = await axios.get(
-                `http://localhost:8080/api/files/ebook` +
+            const ebook = await axios.get(process.env.REACT_APP_API_URL + `/api/files/ebook` +
                 "?filename=" +
                 originalBook.filename,
                 { responseType: "blob" }
@@ -361,7 +359,7 @@ function Book(props) {
             }
         } catch (error) {
             await axios
-                .post(`${window.location.origin}/api/files/upload`, formData, {
+                .post(process.env.REACT_APP_API_URL + `/api/files/upload`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -379,8 +377,7 @@ function Book(props) {
     const downloadEbookFile = async (event) => {
         try {
             await axios
-                .get(
-                    `http://localhost:8080/api/files/download` +
+                .get(process.env.REACT_APP_API_URL + `/api/files/download` +
                     "?filename=" +
                     originalBook.filename,
                     { responseType: "blob" }
@@ -424,8 +421,7 @@ function Book(props) {
     const deleteEbookFile = async (event) => {
         try {
             await axios
-                .delete(
-                    "http://localhost:8080/api/files/delete" +
+                .delete(process.env.REACT_APP_API_URL + "/api/files/delete" +
                     "?filename=" +
                     originalBook.filename
                 )
