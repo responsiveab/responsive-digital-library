@@ -341,7 +341,6 @@ function Book(props) {
     }
 
     async function uploadEbookFile(file, formData) {
-        console.log(axios.VERSION);
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
@@ -361,9 +360,8 @@ function Book(props) {
                 return ebook;
             }
         } catch (error) {
-            console.log(axios.VERSION);
             await axios
-                .post(`http://localhost:8080/api/files/upload`, formData, {
+                .post(`${window.location.origin}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
