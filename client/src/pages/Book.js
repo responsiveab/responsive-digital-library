@@ -157,9 +157,9 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                        "/api/users/" +
-                        user._id +
-                        "/loan-list-books",
+                    "/api/users/" +
+                    user._id +
+                    "/loan-list-books",
                     add_to_loanlist
                 )
                 .then((res) => {
@@ -189,10 +189,10 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                        "/api/users/" +
-                        user._id +
-                        "/loan-list-books/" +
-                        id,
+                    "/api/users/" +
+                    user._id +
+                    "/loan-list-books/" +
+                    id,
                     remove_from_loanlist
                 )
                 .then((res) => {
@@ -252,10 +252,10 @@ function Book(props) {
             axios
                 .patch(
                     process.env.REACT_APP_API_URL +
-                        "/api/users/" +
-                        user._id +
-                        "/reading-list-books/" +
-                        id,
+                    "/api/users/" +
+                    user._id +
+                    "/reading-list-books/" +
+                    id,
                     remove_from_readlist
                 )
                 .then((res) => {
@@ -322,8 +322,8 @@ function Book(props) {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
-                    "?filename=" +
-                    originalBook.filename,
+                "?filename=" +
+                originalBook.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -344,8 +344,8 @@ function Book(props) {
         try {
             const ebook = await axios.get(
                 `http://localhost:8080/api/files/ebook` +
-                    "?filename=" +
-                    originalBook.filename,
+                "?filename=" +
+                originalBook.filename,
                 { responseType: "blob" }
             );
             if (ebook) {
@@ -360,6 +360,7 @@ function Book(props) {
                 return ebook;
             }
         } catch (error) {
+            console.log(axios.VERSION);
             await axios
                 .post(`http://localhost:8080/api/files/upload`, formData, {
                     headers: {
@@ -381,8 +382,8 @@ function Book(props) {
             await axios
                 .get(
                     `http://localhost:8080/api/files/download` +
-                        "?filename=" +
-                        originalBook.filename,
+                    "?filename=" +
+                    originalBook.filename,
                     { responseType: "blob" }
                 )
                 .then((res) => {
@@ -426,8 +427,8 @@ function Book(props) {
             await axios
                 .delete(
                     "http://localhost:8080/api/files/delete" +
-                        "?filename=" +
-                        originalBook.filename
+                    "?filename=" +
+                    originalBook.filename
                 )
                 .then((res) => {
                     console.log(res);
@@ -655,7 +656,7 @@ function Book(props) {
                                         </div>
                                     ) : (
                                         originalBook.borrower ===
-                                            props.user.name && (
+                                        props.user.name && (
                                             <div className="Return-Book">
                                                 <button
                                                     type="button"
