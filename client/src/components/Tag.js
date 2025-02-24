@@ -2,8 +2,6 @@ import "./css/Tag.css";
 
 import { BiX } from "react-icons/bi";
 
-import axios from "axios";
-
 import { Link } from "react-router-dom";
 
 function Tag(props) {

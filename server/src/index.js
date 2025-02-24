@@ -29,7 +29,7 @@ app.use("/api/tags", tagRouter);
 app.use("/api/files", fileRouter);
 
 app.get("/", function (req, res) {
-    res.send("Server: Hello!");
+    res.send("Server: Hello from Responsive Digital Library!");
 });
 
 app.use((req, res, next) => {
@@ -39,9 +39,16 @@ app.use((req, res, next) => {
 
 app._router.stack.forEach((r) => {
     if (r.route && r.route.path) {
-        console.log(`Registered route: ${r.route.path}`);
+        console.log(`Route ${r.route.path} is registered`);
     }
 });
+
+app._router.stack
+  .filter(r => r.route)
+  .forEach(r => {
+    const methods = Object.keys(r.route.methods).join(",").toUpperCase();
+    console.log(`Route ${methods} ${r.route.path} is registered`);
+  });
 
 app.listen(PORT, function () {
     console.log(`Server Listening on ${PORT}`);

@@ -38,13 +38,16 @@ fileRouter.post(
     upload.single("file"),
     async (req, res) => {
         try {
+            console.log("Upload received!", req.file);
             res.send("file uploaded successfully.");
         } catch (error) {
+            console.log("Upload failed!", req.file);
             res.status(400).send("file not uploaded");
         }
     },
     (error, req, res, next) => {
         if (error) {
+            console.log("Upload failed!", req.file);
             res.status(500).send(error.message);
         }
     }
