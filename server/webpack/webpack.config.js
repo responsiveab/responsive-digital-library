@@ -1,5 +1,5 @@
-const path = require("path");
-const webpack = require("webpack");
+import path from "path";
+import webpack from "webpack";
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -23,7 +23,7 @@ const webpack = require("webpack");
  *
  */
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 /*
  * We've enabled TerserPlugin for you! This minifies your app
@@ -33,7 +33,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
  *
  */
 
-const TerserPlugin = require("terser-webpack-plugin");
+import TerserPlugin from "terser-webpack-plugin";
 
 module.exports = {
     mode: "development",

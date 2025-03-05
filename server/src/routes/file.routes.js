@@ -1,8 +1,10 @@
 import path from "path";
 import express from "express";
+import { upload, bucket } from "../middleware/upload.js";
+import auth from "../middleware/auth.js";
+
+
 const fileRouter = express.Router();
-const auth = require("../middleware/auth");
-import { upload, bucket } from "../middleware/upload";
 
 fileRouter.get("/", async (req, res) => {
     try {

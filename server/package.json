@@ -2,11 +2,12 @@
     "name": "server",
     "version": "1.0.1",
     "description": "Responsive Digital Library",
+    "type": "module",
     "main": "src/index.js",
     "scripts": {
         "build": "webpack-cli --config webpack/webpack.dev.js",
         "start": "sh -c 'if [ \"$NODE_ENV\" = \"production\" ]; then node dist/main.js; else nodemon dist/main.js; fi'",
-        "dev": "webpack-dev-server --open --config webpack/webpack.dev.js",
+        "dev": "node src/index.js & webpack-dev-server --config webpack/webpack.dev.js",
         "test": "jest --detectOpenHandles"
     },
     "author": "PUM03",
@@ -56,7 +57,7 @@
         "supertest": "^6.3.3",
         "webpack": "^5.11.1",
         "webpack-cli": "^4.3.1",
-        "webpack-dev-server": "^3.11.1",
+        "webpack-dev-server": "^4.15.2",
         "webpack-node-externals": "^2.5.2"
     }
 }

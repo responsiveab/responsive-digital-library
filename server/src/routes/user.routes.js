@@ -1,8 +1,11 @@
 import express from "express";
-import User from "../models/user.model";
-const userRouter = express.Router();
+import User from "../models/user.model.js";
+import auth from "../middleware/auth.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const auth = require("../middleware/auth");
+
+const userRouter = express.Router();
 
 //TODO: Ta bort detta, använder det för testning  nu.
 userRouter.get("/", (req, res, next) => {
@@ -135,8 +138,7 @@ userRouter.patch(
     }
 );
 
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+
 userRouter.post("/login", (req, res) => {
     const { email, password } = req.body;
     User.findOne({ email: email }, async (err, user) => {

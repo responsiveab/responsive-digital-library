@@ -1,4 +1,5 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
+
 const config = process.env;
 
 const verify = (req, res, next) => {
@@ -17,4 +18,4 @@ const verify = (req, res, next) => {
     return next();
 };
 
-module.exports = verify;
+export default verify;

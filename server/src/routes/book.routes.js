@@ -1,7 +1,7 @@
 import express from "express";
-import Book from "../models/book.model";
+import Book from "../models/book.model.js";
+import auth from "../middleware/auth.js";
 
-const auth = require("../middleware/auth");
 
 const bookRouter = express.Router();
 

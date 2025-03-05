@@ -1,8 +1,14 @@
-const path = require("path");
-const webpack = require("webpack");
+import path from "path";
+import webpack from "webpack";
+
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 // const nodeExternals = require('webpack-node-externals');
 // const HtmlWebpackPlugin = require('html-webpack-plugin'); // for webpack
-module.exports = {
+export default {
     entry: "./src/index.js",
     target: "node", // in order to ignore built-in modules like path, fs, etc.
     mode: "development",
@@ -30,4 +36,5 @@ module.exports = {
             },
         ],
     },
+    ignoreWarnings: [/Critical dependency:/],
 };

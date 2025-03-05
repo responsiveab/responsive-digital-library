@@ -1,6 +1,6 @@
 import { GridFsStorage } from "multer-gridfs-storage";
 import multer from "multer";
-import { dbConnectionURL, bucket } from "../config/mongodb.config";
+import { dbConnectionURL, bucket } from "../config/mongodb.config.js";
 
 // Create new GridFsStorage instance
 const storage = new GridFsStorage({

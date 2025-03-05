@@ -1,6 +1,6 @@
 import express from "express";
-import Tag from "../models/tag.model";
-import Book from "../models/book.model";
+import Tag from "../models/tag.model.js";
+import Book from "../models/book.model.js";
 const tagRouter = express.Router();
 
 // Get all Tags
