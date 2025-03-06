@@ -33,8 +33,8 @@ function Add(props) {
             });
     }, []);
 
-    function fetchBook() {
-        var isbn = require("node-isbn");
+    async function fetchBook() {
+        const isbn = await import("node-isbn");
         isbn.resolve(isbnNr, function (err, fetched_book) {
             if (err) {
                 console.log("Book not found. Add the book manually.", err);

@@ -1,0 +1,7 @@
+services:
+  server:
+    command: sh -c "npm install && node --inspect=0.0.0.0:9229 src/index.js"
+    ports:
+      - "9229:9229" # Expose the debug port
+    environment:
+      - NODE_ENV=development

@@ -26,19 +26,18 @@ The [Responsive] Digital Library is built using:
 To run the project locally, it's easiest with Docker Desktop app:
 
 1. Install Docker on your machine: [Install Docker Desktop](https://www.docker.com/products/docker-desktop/).
-2. Clone the project repository and navigate to the root directory.
-3. Run Docker Desktop
-4. Build the Docker image and start the containers:
+1. Clone the project repository and navigate to the root directory.
+1. Run Docker Desktop
+1. Build the Docker image and start the containers:
 
 ```shell
-docker-compose up --build
+docker compose up --build
 ```
 
 5. When it is done building, create an account.
    Go to root directory and run:
 
 ```shell
-chmod +x user_setup.sh
 ./user_setup.sh
 ```
 

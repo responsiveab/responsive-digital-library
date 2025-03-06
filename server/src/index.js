@@ -22,6 +22,12 @@ app.use(
 
 app.use(bodyParser.json({ limit: "10mb" }));
 
+app.use("/api", router);
+app.use("/api/books", bookRouter);
+app.use("/api/users", userRouter);
+app.use("/api/tags", tagRouter);
+app.use("/api/files", fileRouter);
+
 app.get("/", function (req, res) {
     res.send("Server: Hello from Responsive Digital Library!");
 });

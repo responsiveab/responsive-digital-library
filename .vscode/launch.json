@@ -5,15 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Attach to Node.js (Docker)",
+            "type": "node",
+            "request": "attach",
+            "restart": true,
+            "port": 9229,
+            "timeout": 10000,
+            "localRoot": "${workspaceFolder}/server",
+            "remoteRoot": "/usr/src/app",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
             "name": "Launch Chrome",
             "request": "launch",
             "type": "chrome",
             "url": "http://localhost:3000",
+            "port": 9222,
             "webRoot": "${workspaceFolder}/client/src",
             "sourceMapPathOverrides": {
-                "meteor://💻app/*": "${workspaceFolder}/*",
-                "webpack:///./~/*": "${workspaceFolder}/client/node_modules/*",
-                "webpack://?:*/*": "${workspaceFolder}/client/*",
+                "webpack:///./src/*": "${workspaceFolder}/client/src/*",
+                "webpack:///*": "${workspaceFolder}/client/*",
                 "/usr/app": "${workspaceFolder}/client"
             }
         }
