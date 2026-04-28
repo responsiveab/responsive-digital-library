@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const bookSchema = new mongoose.Schema({
-    _id: String,
+    _id: { type: String, required: true },
     title: {
         type: String,
         required: true,
@@ -46,7 +46,7 @@ const bookSchema = new mongoose.Schema({
             ref: "Tag",
         },
     ],
-});
+}, {_id: false});
 
 const Book = mongoose.model("Book", bookSchema);
 export default Book;

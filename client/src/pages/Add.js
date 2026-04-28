@@ -34,117 +34,108 @@ function Add(props) {
     }, []);
 
     async function fetchBook() {
-        const isbn = await import("node-isbn");
-        isbn.resolve(isbnNr, function (err, fetched_book) {
-            if (err) {
-                console.log("Book not found. Add the book manually.", err);
-                let newBook = {
-                    id: isbnNr,
-                    title: "",
-                    subtitle: "",
-                    body: "",
-                    author: "",
-                    category: "",
-                    img: cover_missing_img,
-                    language: "",
-                    publisher: "",
-                    date: "",
-                    borrower: "i biblioteket",
-                    borrowed: false,
-                };
-                setBook(newBook);
-                alert(
-                    `Boken med ISBN-nummer: ${newBook.id} hittades inte i databasen, vär vänlig och fyll i uppgifterna manuellt.`
-                );
-            } else {
-                let newBook = {
-                    id: isbnNr,
-                    title: fetched_book.title
-                        ? fetched_book.title
-                        : "Titel saknas",
-                    subtitle: fetched_book.subtitle
-                        ? fetched_book.subtitle
-                        : "",
-                    body: fetched_book.description
-                        ? fetched_book.description
-                        : "",
-                    author: fetched_book.authors
-                        ? fetched_book.authors[0]
-                        : "Okänd författare",
-                    category: fetched_book.categories
-                        ? fetched_book.categories[0]
-                        : "Okategoriserad",
-                    img: fetched_book.imageLinks
-                        ? fetched_book.imageLinks.thumbnail
-                        : cover_missing_img,
-                    language: fetched_book.language
-                        ? fetched_book.language
-                        : "Okänt språk",
-                    publisher: fetched_book.publisher
-                        ? fetched_book.publisher
-                        : "Okänt förlag",
-                    date: fetched_book.publishedDate
-                        ? fetched_book.publishedDate
-                        : "Okänt publiceringsdatum",
-                    borrower: "i",
-                    borrowed: false,
-                };
-                setBook(newBook);
-            }
+        try {
+            const isbn = (await import("node-isbn")).default;
+            
+            const fetched_book = await isbn.resolve(isbnNr);
+    
+            // Clone the book data to avoid modifying a possibly frozen object
+            let newBook = {
+                id: isbnNr,
+                title: fetched_book.title || "Titel saknas",
+                subtitle: fetched_book.subtitle || "",
+                body: fetched_book.description || "",
+                author: fetched_book.authors?.[0] || "Okänd författare",
+                category: fetched_book.categories?.[0] || "Okategoriserad",
+                img: fetched_book.imageLinks?.thumbnail || cover_missing_img,
+                language: fetched_book.language || "Okänt språk",
+                publisher: fetched_book.publisher || "Okänt förlag",
+                date: fetched_book.publishedDate || "Okänt publiceringsdatum",
+                borrower: "i",
+                borrowed: false,
+            };
+    
+            setBook(newBook);
+            
             // Hide input field
             document.getElementById("isbn-input").style.display = "none";
-        });
+    
+        } catch (err) {
+            console.log("Book not found. Add the book manually.", err);
+            
+            let newBook = {
+                id: isbnNr,
+                title: "",
+                subtitle: "",
+                body: "",
+                author: "",
+                category: "",
+                img: cover_missing_img,
+                language: "",
+                publisher: "",
+                date: "",
+                borrower: "i biblioteket",
+                borrowed: false,
+            };
+    
+            setBook(newBook);
+            
+            alert(
+                `Boken med ISBN-nummer: ${newBook.id} hittades inte i databasen, var vänlig och fyll i uppgifterna manuellt.`
+            );
+        }
     }
+
+    const postNewBook = () => {
+        if (!book) {
+            alert("invalid input");
+            return;
+        }
+        axios.defaults.headers.common["x-access-token"] =
+            localStorage.getItem("token");
+        axios
+            .post(process.env.REACT_APP_API_URL + "/api/books/", book)
+            .then((res) => {
+                console.log(res);
+                for (var i = 0; i < tags.length; i++) {
+                    addTag(tags[i]);
+                }
+                setTags([]);
+
+                // make submit button green and wait 0.5s before resetting state and input fields
+                document.getElementById(
+                    "isbn-submit"
+                ).style.backgroundColor = "#77DD77";
+                setTimeout(() => {
+                    setBook(undefined);
+                    setIsbnNr(undefined);
+                    setTag(undefined);
+                    document.getElementById("isbn-input").value = "";
+                    document.getElementById(
+                        "isbn-input"
+                    ).style.display = "block";
+                    document.getElementById("isbn-input").focus();
+                }, 500);
+            })
+            .catch((err) => console.log(err));
+    };
 
     const addBook = () => {
         axios
             .get(process.env.REACT_APP_API_URL + "/api/books/" + isbnNr)
             .then((res) => {
-                if (!res.data.data) {
-                    if (book) {
-                        axios.defaults.headers.common["x-access-token"] =
-                            localStorage.getItem("token");
-                        axios
-                            .post(
-                                process.env.REACT_APP_API_URL + "/api/books/",
-                                book
-                            )
-                            .then((res) => {
-                                console.log(res);
-                                for (var i = 0; i < tags.length; i++) {
-                                    addTag(tags[i]);
-                                }
-                                setTags([]);
-
-                                // make submit button green and wait 0.5s before resetting state and input fields
-                                document.getElementById(
-                                    "isbn-submit"
-                                ).style.backgroundColor = "#77DD77";
-                                setTimeout(() => {
-                                    setBook(undefined);
-                                    setIsbnNr(undefined);
-                                    setTag(undefined);
-                                    document.getElementById(
-                                        "isbn-input"
-                                    ).value = "";
-                                    document.getElementById(
-                                        "isbn-input"
-                                    ).style.display = "block";
-                                    document
-                                        .getElementById("isbn-input")
-                                        .focus();
-                                }, 500);
-                            })
-                            .catch((err) => console.log(err));
-                    } else {
-                        alert("invalid input");
-                    }
-                } else {
+                if (res.data.data) {
                     alert("Boken finns redan i databasen");
+                } else {
+                    postNewBook();
                 }
             })
             .catch((err) => {
-                console.log(err);
+                if (err.response?.status === 404) {
+                    postNewBook();
+                } else {
+                    console.log(err);
+                }
             });
     };
 
@@ -163,7 +154,7 @@ function Add(props) {
         if (tag) {
             if (!tags.includes(tag)) {
                 // Unless it's a duplicate tag
-                tags.push(tag);
+                setTags([...tags, tag]);
             }
             setTag("");
             document.getElementById("tag-input").value = "";

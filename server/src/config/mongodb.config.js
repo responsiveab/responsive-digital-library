@@ -4,13 +4,7 @@ import mongoose from "mongoose";
 dotenv.config();
 
 const options = {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
     autoIndex: false,
-    poolSize: 10,
-    bufferMaxEntries: 0,
 };
 
 const { MONGO_HOSTNAME, MONGO_DB, MONGO_PORT } = process.env;
@@ -33,11 +27,9 @@ db.on(
     )
 );
 db.on("connected", () => {
-    var db = mongoose.connections[0].db;
-    bucket = new mongoose.mongo.GridFSBucket(db, {
+    bucket = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
         bucketName: "newBucket",
     });
-    console.log(bucket);
 });
 
 db.once("open", async () => {

@@ -6,20 +6,22 @@ import auth from "../middleware/auth.js";
 const bookRouter = express.Router();
 
 // Get all Books
-bookRouter.get("/", (req, res, next) => {
-    //TODO: Add auth
-    Book.find({}, function (err, result) {
-        if (err) {
-            res.status(400).send({
-                success: false,
-                error: err.message,
-            });
-        }
-        res.status(200).send({
+bookRouter.get("/", async (req, res, next) => {
+    try {
+        // TODO: Add auth if needed
+        const books = await Book.find({});
+
+        return res.status(200).send({
             success: true,
-            data: result,
+            data: books,
         });
-    });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 // bookRouter.get('/list', (req,res,next) => {
 //   Book.find({_id: {$in:idList}}, function(err,result){
@@ -36,7 +38,7 @@ bookRouter.get("/", (req, res, next) => {
 //   });
 // });
 
-bookRouter.get("/list", (req, res, next) => {
+bookRouter.get("/list", async (req, res, next) => {
     const idList = req.query.ids.split(",");
     if (!idList || idList.length === 0) {
         return res.status(400).send({
@@ -44,50 +46,59 @@ bookRouter.get("/list", (req, res, next) => {
             error: "No book IDs specified",
         });
     }
-    Book.find({ _id: { $in: idList } }, function (err, result) {
-        if (err) {
-            console.error(err);
-            return res.status(500).send({
-                success: false,
-                error: err.message,
-            });
-        }
+    try {
+        const result = await Book.find({ _id: { $in: idList } });
+    
         if (!result || result.length === 0) {
             return res.status(404).send({
                 success: false,
                 error: "No books found with the specified IDs",
             });
         }
+    
         console.log(result);
-
         return res.status(200).send({
             success: true,
             data: result,
         });
-    });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 // Get Single Book
-bookRouter.get("/:book_id", (req, res, next) => {
+bookRouter.get("/:book_id", async (req, res, next) => {
     //TODO: Add auth
-    Book.findById(req.params.book_id, function (err, result) {
-        if (err) {
-            res.status(400).send({
+    try {
+        const result = await Book.findById({_id : req.params.book_id}).exec();
+    
+        if (!result) {
+            return res.status(404).send({
                 success: false,
-                error: err.message,
+                error: "Book not found",
             });
         }
-        res.status(200).send({
+    
+        return res.status(200).send({
             success: true,
             data: result,
         });
-    });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 // Add Single Book
-bookRouter.post("/", auth, (req, res, next) => {
-    console.log(req.body);
-    let newBook = {
+bookRouter.post("/", auth, async (req, res, next) => {
+    const newBook = {
         _id: req.body.id,
         title: req.body.title,
         subtitle: req.body.subtitle,
@@ -104,59 +115,76 @@ bookRouter.post("/", auth, (req, res, next) => {
         borrowed: false, // COMMENT: Hardcoded for now, since this
         digital: false, // behaviour isnt implemented yet
     };
-    Book.create(newBook, function (err, result) {
-        if (err) {
-            res.status(400).send({
-                success: false,
-                error: err.message,
-            });
-        }
+    try {
+        const result = await Book.create(newBook);
         res.status(201).send({
             success: true,
             data: result,
             message: "Book created successfully",
         });
-    });
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 // Edit Single Book
-bookRouter.patch("/:book_id", auth, (req, res, next) => {
-    let fieldsToUpdate = req.body;
-    Book.findByIdAndUpdate(
-        req.params.book_id,
-        { $set: fieldsToUpdate },
-        { new: true },
-        function (err, result) {
-            if (err) {
-                res.status(400).send({
-                    success: false,
-                    error: err.message,
-                });
-            }
-            res.status(200).send({
-                success: true,
-                data: result,
-                message: "Book updated successfully",
+bookRouter.patch("/:book_id", auth, async (req, res, next) => {
+    try {
+        const fieldsToUpdate = req.body;
+        const result = await Book.findByIdAndUpdate(
+            req.params.book_id,
+            { $set: fieldsToUpdate },
+            { new: true }
+        );
+
+        if (!result) {
+            return res.status(404).send({
+                success: false,
+                error: "Book not found",
             });
         }
-    );
+
+        return res.status(200).send({
+            success: true,
+            data: result,
+            message: "Book updated successfully",
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 // Delete Single Book
-bookRouter.delete("/:book_id", auth, (req, res, next) => {
-    Book.findByIdAndDelete(req.params.book_id, function (err, result) {
-        if (err) {
-            res.status(400).send({
+bookRouter.delete("/:book_id", auth, async (req, res, next) => {
+    try {
+        const result = await Book.findByIdAndDelete(req.params.book_id);
+
+        if (!result) {
+            return res.status(404).send({
                 success: false,
-                error: err.message,
+                error: "Book not found",
             });
         }
-        res.status(200).send({
+
+        return res.status(200).send({
             success: true,
             data: result,
             message: "Book deleted successfully",
         });
-    });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 export default bookRouter;

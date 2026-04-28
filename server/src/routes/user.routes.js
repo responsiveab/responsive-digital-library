@@ -8,30 +8,31 @@ import jwt from "jsonwebtoken";
 const userRouter = express.Router();
 
 //TODO: Ta bort detta, använder det för testning  nu.
-userRouter.get("/", (req, res, next) => {
-    User.find({}, function (err, result) {
-        if (err) {
-            res.status(400).send({
-                success: false,
-                error: err.message,
-            });
-        }
+userRouter.get("/", async (req, res, next) => {
+    try {
+        const result = await User.find({});
         res.status(200).send({
             success: true,
             data: result,
         });
-    });
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 // Get Single User
 
 //Get user by id
-userRouter.get("/:user_id", auth, (req, res, next) => {
-    User.findById(req.params.user_id, function (err, result) {
-        if (err) {
-            res.status(400).send({
+userRouter.get("/:user_id", auth, async (req, res, next) => {
+    try {
+        const result = await User.findById(req.params.user_id);
+        if (!result) {
+            return res.status(404).send({
                 success: false,
-                error: err.message,
+                error: "User not found",
             });
         }
         res.status(200).send({
@@ -39,152 +40,194 @@ userRouter.get("/:user_id", auth, (req, res, next) => {
             data: result,
             message: "User successfully fetched",
         });
-    });
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 // Add single book to user reading list
-userRouter.patch("/:user_id", auth, (req, res, next) => {
-    User.findByIdAndUpdate(
-        req.params.user_id,
-        { $push: { reading_list_books: req.body.book._id } },
-        { new: true, useFindAndModify: false },
-        function (err, result) {
-            if (err) {
-                res.status(400).send({
-                    success: false,
-                    error: err.message,
-                });
-            }
-            res.status(200).send({
-                success: true,
-                data: result,
-                message: "Book successfully added to reading list",
+userRouter.patch("/:user_id", auth, async (req, res, next) => {
+    try {
+        const result = await User.findByIdAndUpdate(
+            req.params.user_id,
+            { $push: { reading_list_books: req.body.book._id } },
+            { new: true }
+        );
+        if (!result) {
+            return res.status(404).send({
+                success: false,
+                error: "User not found",
             });
         }
-    );
+        res.status(200).send({
+            success: true,
+            data: result,
+            message: "Book successfully added to reading list",
+        });
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 //Delete a single book from user reading list
 userRouter.patch(
     "/:user_id/reading-list-books/:book_id",
     auth,
-    (req, res, next) => {
-        User.findByIdAndUpdate(
-            req.params.user_id,
-            { $pull: { reading_list_books: req.params.book_id } },
-            { new: true, useFindAndModify: false },
-            function (err, result) {
-                if (err) {
-                    res.status(400).send({
-                        success: false,
-                        error: err.message,
-                    });
-                }
-                res.status(200).send({
-                    success: true,
-                    data: result,
-                    message: "Book successfully removed from reading list",
-                });
-            }
-        );
-    }
-);
-
-// Add single book to user loan list
-userRouter.patch("/:user_id/loan-list-books", auth, (req, res, next) => {
-    User.findByIdAndUpdate(
-        req.params.user_id,
-        { $push: { loan_list_books: req.body.book._id } },
-        { new: true, useFindAndModify: false },
-        function (err, result) {
-            if (err) {
-                res.status(400).send({
+    async (req, res, next) => {
+        try {
+            const result = await User.findByIdAndUpdate(
+                req.params.user_id,
+                { $pull: { reading_list_books: req.params.book_id } },
+                { new: true }
+            );
+            if (!result) {
+                return res.status(404).send({
                     success: false,
-                    error: err.message,
+                    error: "User not found",
                 });
             }
             res.status(200).send({
                 success: true,
                 data: result,
-                message: "Book successfully added to loan list",
+                message: "Book successfully removed from reading list",
+            });
+        } catch (err) {
+            res.status(400).send({
+                success: false,
+                error: err.message,
             });
         }
-    );
+    }
+);
+
+// Add single book to user loan list
+userRouter.patch("/:user_id/loan-list-books", auth, async (req, res, next) => {
+    try {
+        const result = await User.findByIdAndUpdate(
+            req.params.user_id,
+            { $push: { loan_list_books: req.body.book._id } },
+            { new: true }
+        );
+        if (!result) {
+            return res.status(404).send({
+                success: false,
+                error: "User not found",
+            });
+        }
+        res.status(200).send({
+            success: true,
+            data: result,
+            message: "Book successfully added to loan list",
+        });
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            error: err.message,
+        });
+    }
 });
 
 // Delete a single book from user loan list
 userRouter.patch(
     "/:user_id/loan-list-books/:book_id",
     auth,
-    (req, res, next) => {
-        User.findByIdAndUpdate(
-            req.params.user_id,
-            { $pull: { loan_list_books: req.params.book_id } },
-            { new: true, useFindAndModify: false },
-            function (err, result) {
-                if (err) {
-                    res.status(400).send({
-                        success: false,
-                        error: err.message,
-                    });
-                }
-                res.status(200).send({
-                    success: true,
-                    data: result,
-                    message: "Book successfully removed from loan list",
+    async (req, res, next) => {
+        try {
+            const result = await User.findByIdAndUpdate(
+                req.params.user_id,
+                { $pull: { loan_list_books: req.params.book_id } },
+                { new: true }
+            );
+            if (!result) {
+                return res.status(404).send({
+                    success: false,
+                    error: "User not found",
                 });
             }
-        );
+            res.status(200).send({
+                success: true,
+                data: result,
+                message: "Book successfully removed from loan list",
+            });
+        } catch (err) {
+            res.status(400).send({
+                success: false,
+                error: err.message,
+            });
+        }
     }
 );
 
 
-userRouter.post("/login", (req, res) => {
-    const { email, password } = req.body;
-    User.findOne({ email: email }, async (err, user) => {
-        if (user) {
-            if (await bcrypt.compare(password, user.encrypted_password)) {
-                const token = jwt.sign(
-                    { user_id: user._id, email },
-                    process.env.TOKEN_KEY
-                );
-                res.send({
-                    message: "login successful",
-                    user: user,
-                    token: token,
-                });
-            } else {
-                res.send({ message: "login unsuccessful" });
-            }
-        } else {
-            res.send({ message: "login unsuccessful" });
+userRouter.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Find user by email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: "Login unsuccessful" });
         }
-    });
+
+        // Compare passwords
+        const isPasswordValid = await bcrypt.compare(password, user.encrypted_password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Login unsuccessful" });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { user_id: user._id, email },
+            process.env.TOKEN_KEY
+        );
+
+        res.status(200).json({
+            message: "Login successful",
+            user,
+            token,
+        });
+
+    } catch (err) {
+        res.status(500).json({ message: "Error logging in", error: err.message });
+    }
 });
 
-userRouter.post("/register", (req, res) => {
-    const { name, email, password } = req.body;
-    User.findOne({ email: email }, async (err, user) => {
-        if (user) {
-            res.send({ message: "user already exist" });
-        } else {
-            const encrypted_password = await bcrypt.hash(password, 10);
-            const user = new User({ name, email, encrypted_password });
+userRouter.post("/register", async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
 
-            const token = jwt.sign(
-                { user_id: user._id, email },
-                process.env.TOKEN_KEY
-            );
-
-            user.save((err) => {
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.send({ message: "register successful", token: token });
-                }
-            });
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists" });
         }
-    });
+
+        // Hash the password
+        const encrypted_password = await bcrypt.hash(password, 10);
+
+        // Create new user
+        const user = new User({ name, email, encrypted_password });
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { user_id: user._id, email },
+            process.env.TOKEN_KEY
+        );
+
+        // Save user to database
+        await user.save();
+
+        res.status(201).json({ message: "Register successful", token: token });
+
+    } catch (err) {
+        res.status(500).json({ message: "Error registering user", error: err.message });
+    }
 });
 
 userRouter.delete("/delete", async (req, res) => {
