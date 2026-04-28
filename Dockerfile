@@ -26,5 +26,4 @@ ENV PORT 8080
 
 EXPOSE 8080
 
-#CMD ["npm", "start"]ä
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/main.cjs" ]

@@ -1,6 +1,6 @@
 .eslintcache
 .DS_Store
 client/.eslintcache
-server/dist/main.js
+server/dist/
 */node_modules
 */package-lock.json

@@ -12,6 +12,11 @@ export default {
     entry: "./src/index.js",
     target: "node", // in order to ignore built-in modules like path, fs, etc.
     mode: "development",
+    output: {
+        // .cjs so Node treats the bundle as CommonJS even though package.json is "type": "module"
+        filename: "main.cjs",
+        path: path.resolve(__dirname, "..", "dist"),
+    },
     // externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
     // devServer: {
     //     contentBase:  path.join(__dirname, 'dist'),
