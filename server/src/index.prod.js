@@ -6,7 +6,7 @@ import userRouter from "./routes/user.routes.js";
 import tagRouter from "./routes/tag.routes.js";
 import fileRouter from "./routes/file.routes.js";
 import path from "path";
-import "./config/mongodb.config";
+import "./config/mongodb.config.js";
 
 import cors from "cors";
 
