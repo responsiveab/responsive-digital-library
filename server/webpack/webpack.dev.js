@@ -41,5 +41,14 @@ export default {
             },
         ],
     },
-    ignoreWarnings: [/Critical dependency:/],
+    ignoreWarnings: [
+        /Critical dependency:/,
+        // mongodb references optional native/cloud drivers (kerberos, snappy,
+        // aws4, gcp-metadata, etc.) that we don't use; webpack flags them as
+        // unresolved but they're meant to be optional.
+        {
+            module: /node_modules\/mongodb\/lib\/deps\.js/,
+            message: /Can't resolve/,
+        },
+    ],
 };
