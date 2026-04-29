@@ -23,7 +23,6 @@ WORKDIR /usr/src/app/server/
 COPY --from=server-build /app/package*.json ./
 COPY --from=server-build /app/node_modules/ ./node_modules/
 COPY --from=server-build /app/dist/ ./dist/
-COPY --from=server-build /app/.env ./.env
 
 EXPOSE 8080
 

@@ -4,3 +4,7 @@ client/.eslintcache
 server/dist/
 */node_modules
 */package-lock.json
+
+# Local secrets, never commit. Use .env.example as a template.
+/.env
+/server/.env

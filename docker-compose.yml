@@ -15,9 +15,13 @@ services:
             # - "8080:8080"
         depends_on:
             - mongo
-        env_file: ./server/.env
         environment:
             - NODE_ENV=production
+            - MONGO_HOSTNAME=mongo
+            - MONGO_DB=responsive_library_db
+            - MONGO_PORT=27017
+            - BUILD_PORT=8080
+            - TOKEN_KEY=${TOKEN_KEY:?TOKEN_KEY is required - copy .env.example to .env and fill in}
         networks:
             - responsive-library-network
     mongo:
