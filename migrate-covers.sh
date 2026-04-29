@@ -5,7 +5,7 @@
 # normalizeImgstr in server/src/routes/book.routes.js. Safe to re-run.
 # Run from the directory containing the docker-compose.yml of the running stack.
 
-docker compose exec -T web node -e '
+docker compose run --rm --no-deps -T web node -e '
 const axios = require("axios");
 const { MongoClient } = require("mongodb");
 
