@@ -21,6 +21,7 @@ function Book(props) {
     const [user, setUser] = useState(undefined);
     const [editBookInfo, setEditBookInfo] = useState(false);
     const [typedTag, setTypedTag] = useState(undefined);
+    const [dbTags, setDbTags] = useState([]);
 
     const [modifiedBook, setModifiedBook] = useState({
         id: id,
@@ -65,6 +66,13 @@ function Book(props) {
             })
             .catch((err) => console.log(err));
     }, [id]);
+
+    useEffect(() => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/api/tags")
+            .then((res) => setDbTags(res.data.data || []))
+            .catch((err) => console.log(err));
+    }, []);
 
     let navigate = useNavigate();
     const routeToIndex = () => {
@@ -577,10 +585,26 @@ function Book(props) {
                                             id="tag-input"
                                             name="tag"
                                             placeholder="ny tagg"
+                                            list="tag-suggestions"
                                             onInput={(e) =>
                                                 setTypedTag(e.target.value)
                                             }
                                         />
+                                        <datalist id="tag-suggestions">
+                                            {dbTags
+                                                .filter(
+                                                    (t) =>
+                                                        !modifiedBook.tags?.includes(
+                                                            t._id
+                                                        )
+                                                )
+                                                .map((t) => (
+                                                    <option
+                                                        key={t._id}
+                                                        value={t._id}
+                                                    />
+                                                ))}
+                                        </datalist>
                                         <button
                                             type="button"
                                             id="tag-submit"

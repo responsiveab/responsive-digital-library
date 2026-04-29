@@ -366,8 +366,16 @@ function Add(props) {
                                 id="tag-input"
                                 name="tag"
                                 placeholder="tagg"
+                                list="tag-suggestions"
                                 onInput={(e) => setTag(e.target.value)}
                             />
+                            <datalist id="tag-suggestions">
+                                {dbTags
+                                    .filter((t) => !tags.includes(t._id))
+                                    .map((t) => (
+                                        <option key={t._id} value={t._id} />
+                                    ))}
+                            </datalist>
                             <button
                                 type="button"
                                 id="tag-submit"
