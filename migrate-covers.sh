@@ -35,15 +35,20 @@ async function fetchAsDataUrl(url) {
     await client.connect();
     try {
         const books = client.db(MONGO_DB).collection("books");
-        const all = await books.find({}, { projection: { _id: 1, imgstr: 1 } }).toArray();
-        let migrated = 0, fallback = 0, kept = 0;
-        for (const book of all) {
+        const total = await books.countDocuments();
+        console.log(`Migrating ${total} books...`);
+
+        const cursor = books.find({}, { projection: { _id: 1, imgstr: 1 } });
+        let migrated = 0, fallback = 0, kept = 0, processed = 0;
+        for await (const book of cursor) {
             let next;
             if (!book.imgstr || typeof book.imgstr !== "string") {
                 next = COVER_MISSING_IMG;
                 fallback++;
             } else if (book.imgstr.startsWith("data:")) {
                 kept++;
+                processed++;
+                if (processed % 25 === 0) console.log(`  ${processed}/${total}`);
                 continue;
             } else if (/^https?:\/\//i.test(book.imgstr)) {
                 const dataUrl = await fetchAsDataUrl(book.imgstr);
@@ -53,15 +58,17 @@ async function fetchAsDataUrl(url) {
                 } else {
                     next = COVER_MISSING_IMG;
                     fallback++;
-                    console.warn(`fallback for ${book._id}: ${book.imgstr}`);
+                    console.warn(`  fallback for ${book._id}: ${book.imgstr}`);
                 }
             } else {
                 next = COVER_MISSING_IMG;
                 fallback++;
             }
             await books.updateOne({ _id: book._id }, { $set: { imgstr: next } });
+            processed++;
+            if (processed % 25 === 0) console.log(`  ${processed}/${total}`);
         }
-        console.log(`Done. migrated=${migrated} fallback=${fallback} kept=${kept} total=${all.length}`);
+        console.log(`Done. migrated=${migrated} fallback=${fallback} kept=${kept} total=${processed}`);
     } finally {
         await client.close();
     }
