@@ -1,8 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import axios from "axios";
 import "./index.css";
 import App from "./App";
 //import reportWebVitals from './reportWebVitals';
+
+axios.interceptors.response.use(
+    (res) => res,
+    (err) => {
+        if (
+            err.response?.status === 401 &&
+            err.response?.data?.error === "USER_NOT_FOUND"
+        ) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("account");
+            window.location.reload();
+        }
+        return Promise.reject(err);
+    }
+);
 
 ReactDOM.render(
     <React.StrictMode>
