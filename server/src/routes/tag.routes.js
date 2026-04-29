@@ -3,13 +3,14 @@ import Tag from "../models/tag.model.js";
 import Book from "../models/book.model.js";
 const tagRouter = express.Router();
 
-// Get all Tags
+// Get all Tags — derived from the tags actually used on books, so the list
+// stays accurate regardless of whether Tag-collection writes happened.
 tagRouter.get("/", async (req, res, next) => {
     try {
-        const result = await Tag.find({});
+        const tags = await Book.distinct("tags");
         res.status(200).send({
             success: true,
-            data: result,
+            data: tags.map((t) => ({ _id: t })),
         });
     } catch (err) {
         res.status(400).send({
