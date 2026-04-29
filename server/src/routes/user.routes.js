@@ -230,22 +230,4 @@ userRouter.post("/register", async (req, res) => {
     }
 });
 
-userRouter.delete("/delete", async (req, res) => {
-    try {
-        const { email } = req.body;
-        if (!email) {
-            return res.status(400).json({ message: "Email is required" });
-        }
-
-        const user = await User.findOneAndDelete({ email: email });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        res.json({ message: "User deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ message: "Server error", error: err.message });
-    }
-});
-
 export default userRouter;
