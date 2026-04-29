@@ -46,16 +46,59 @@ docker compose up --build
 
 ## Development
 
-Debugging is straight-forward in VSCode.
-Start the docker containers as per above, and then lauch the available launch configuration will give you a browser with breakpoint capabilities.
+The day-to-day cycle for shipping a change:
+
+1. **Edit locally**, then run the dev stack to verify:
+
+    ```shell
+    docker compose up --build
+    ```
+
+    React hot-reloads at <http://localhost:3000>, server via nodemon at port 8080. Debug from VS Code with the included launch configuration (Node inspector on `:9229`).
+
+2. **(Optional) Verify the prod-shape image locally** before pushing:
+
+    ```shell
+    docker compose -f docker-compose.build.yml up --build -d
+    ```
+
+    Same self-contained image CI builds, served at <http://localhost:8082>.
+
+3. **Push** to `main`. GitHub Actions builds and pushes a multi-arch `responsiveab/responsive-digital-library:latest` to Docker Hub.
+
+4. **Pull on staging** to verify the published image on this machine:
+
+    ```shell
+    cd ~/Utveckling/responsive-digital-library-staging
+    docker compose pull && docker compose up -d
+    ```
+
+5. **Deploy to prod** once staging looks good. SSH to lima, then in `/home/responsive/dockers/responsive-digital-library`:
+
+    ```shell
+    docker compose pull && docker compose up -d
+    ```
+
+### Environment setup
+
+Each environment needs a `.env` file next to its `docker-compose.yml` with at minimum:
+
+```
+TOKEN_KEY=<openssl rand -hex 32>
+```
+
+See `.env.example`. Rotating `TOKEN_KEY` invalidates every active session.
+
+### Operator scripts
+
+Run from the directory containing the active `docker-compose.yml`:
+
+-   `user-setup.sh` — register a new user
+-   `reset-password.sh` — set a new password for an existing user
+-   `delete-user.sh` — remove a user (their next API call clears their browser session)
+-   `migrate-covers.sh` — one-shot conversion of legacy URL covers to embedded data URLs
 
 ### [Docker install](DOCKER-INSTALL.md)
-
-### [Workflow](WORKFLOW.md)
-
-### [Docker troubleshooting](DOCKER-TROUBLESHOOTING.md)
-
-### [Unit testing guide](UNIT-TEST-GUIDE.md)
 
 ## License
 
