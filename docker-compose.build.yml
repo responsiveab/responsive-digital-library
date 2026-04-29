@@ -1,0 +1,29 @@
+services:
+  web:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: responsive-digital-library:local-build
+    ports:
+      - "8082:8080"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - mongo
+    networks:
+      - responsive-library-network
+  mongo:
+    restart: unless-stopped
+    image: mongo:7.0
+    volumes:
+      - data-volume:/data/db
+    networks:
+      - responsive-library-network
+
+networks:
+  responsive-library-network:
+    driver: bridge
+
+volumes:
+  data-volume:
