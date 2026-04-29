@@ -6,7 +6,7 @@ import "react-edit-text/dist/index.css";
 import { Editor } from "@tinymce/tinymce-react";
 
 import Tag from "../components/Tag";
-import cover_missing_img from "../media/cover_missing_img.png";
+import cover_missing_img from "../media/cover_missing_img";
 
 import "./css/Add.css";
 import HeaderWithoutSearch from "../components/headers/HeaderWithoutSearch";

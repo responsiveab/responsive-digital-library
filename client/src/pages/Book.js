@@ -464,19 +464,54 @@ function Book(props) {
         setTypedTag(""); // Trigger reactivity
     }
 
+    const handleCoverUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            setModifiedBook({ ...modifiedBook, imgstr: reader.result });
+        };
+        reader.readAsDataURL(file);
+    };
+
     return (
         <>
             <HeaderWithoutSearch user={props.user} />
             {
                 <main className="Book-Wrapper">
                     <div className="Book-Info">
-                        {originalBook.imgstr !== "Bild saknas" && (
-                            <div className="Book-Thumbnail">
-                                <img
-                                    src={originalBook.imgstr}
-                                    width="128px"
-                                    alt="thumbnail"
-                                ></img>
+                        {modifiedBook.imgstr &&
+                            modifiedBook.imgstr !== "Bild saknas" && (
+                                <div className="Book-Thumbnail">
+                                    <img
+                                        src={modifiedBook.imgstr}
+                                        width="128px"
+                                        alt="thumbnail"
+                                    ></img>
+                                </div>
+                            )}
+                        {editBookInfo && (
+                            <div className="Cover-Edit">
+                                {modifiedBook.imgstr?.startsWith("data:") ? (
+                                    <span>(uppladdad bild)</span>
+                                ) : (
+                                    <input
+                                        type="text"
+                                        placeholder="Bild-URL"
+                                        value={modifiedBook.imgstr || ""}
+                                        onChange={(e) =>
+                                            setModifiedBook({
+                                                ...modifiedBook,
+                                                imgstr: e.target.value,
+                                            })
+                                        }
+                                    />
+                                )}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleCoverUpload}
+                                />
                             </div>
                         )}
                         <div className="Book-Text">

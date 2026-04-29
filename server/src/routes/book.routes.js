@@ -1,9 +1,38 @@
 import express from "express";
+import axios from "axios";
 import Book from "../models/book.model.js";
 import auth from "../middleware/auth.js";
 
 
 const bookRouter = express.Router();
+
+// Inline SVG placeholder, kept in sync with client/src/media/cover_missing_img.js
+// and migrate-covers.sh.
+const COVER_MISSING_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="192" viewBox="0 0 128 192"><rect width="128" height="192" fill="gainsboro" stroke="lightgray"/><text x="64" y="92" text-anchor="middle" fill="gray" font-family="sans-serif" font-size="11">Ingen</text><text x="64" y="108" text-anchor="middle" fill="gray" font-family="sans-serif" font-size="11">omslagsbild</text></svg>`;
+const COVER_MISSING_IMG = `data:image/svg+xml;utf8,${encodeURIComponent(COVER_MISSING_SVG)}`;
+
+// Normalize imgstr so each book document is self-contained: fetch http(s) URLs
+// and replace them with data URLs, fall back to the SVG placeholder for
+// missing or unreachable images.
+async function normalizeImgstr(imgstr) {
+    if (!imgstr || typeof imgstr !== "string") return COVER_MISSING_IMG;
+    if (imgstr.startsWith("data:")) return imgstr;
+    if (!/^https?:\/\//i.test(imgstr)) return COVER_MISSING_IMG;
+    try {
+        const res = await axios.get(imgstr, {
+            responseType: "arraybuffer",
+            timeout: 10000,
+            maxContentLength: 5 * 1024 * 1024,
+            maxBodyLength: 5 * 1024 * 1024,
+        });
+        const contentType = res.headers["content-type"] || "image/jpeg";
+        const base64 = Buffer.from(res.data).toString("base64");
+        return `data:${contentType};base64,${base64}`;
+    } catch (err) {
+        console.warn(`normalizeImgstr: failed to fetch ${imgstr}: ${err.message}`);
+        return COVER_MISSING_IMG;
+    }
+}
 
 // Get all Books
 bookRouter.get("/", async (req, res, next) => {
@@ -110,7 +139,7 @@ bookRouter.post("/", auth, async (req, res, next) => {
         language: req.body.language,
         publisher: req.body.publisher,
         published: req.body.date,
-        imgstr: req.body.img,
+        imgstr: await normalizeImgstr(req.body.img),
         borrower: "i biblioteket",
         borrowed: false, // COMMENT: Hardcoded for now, since this
         digital: false, // behaviour isnt implemented yet
@@ -134,6 +163,9 @@ bookRouter.post("/", auth, async (req, res, next) => {
 bookRouter.patch("/:book_id", auth, async (req, res, next) => {
     try {
         const fieldsToUpdate = req.body;
+        if (Object.prototype.hasOwnProperty.call(fieldsToUpdate, "imgstr")) {
+            fieldsToUpdate.imgstr = await normalizeImgstr(fieldsToUpdate.imgstr);
+        }
         const result = await Book.findByIdAndUpdate(
             req.params.book_id,
             { $set: fieldsToUpdate },
