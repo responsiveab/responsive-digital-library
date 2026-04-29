@@ -64,7 +64,15 @@ function Login({ setAccount }) {
                     </button>
                 </form>
             </div>
-            <p id="loginPrompt">{prompt}</p>
+            {prompt && (
+                <>
+                    <p id="loginPrompt">{prompt}</p>
+                    <p className="forgot-password-hint">
+                        Forgot your password? Ask the admin to run{" "}
+                        <code>reset-password.sh</code> on the server.
+                    </p>
+                </>
+            )}
         </main>
     );
 }
