@@ -21,7 +21,7 @@ services:
         networks:
             - responsive-library-network
     mongo:
-        image: mongo:latest
+        image: mongo:7.0
         volumes:
             - data-volume:/data/db
         ports:

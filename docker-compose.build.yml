@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
     image: mongo:7.0
     volumes:
-      - data-volume:/data/db
+      - build-data-volume:/data/db
     networks:
       - responsive-library-network
 
@@ -26,4 +26,4 @@ networks:
     driver: bridge
 
 volumes:
-  data-volume:
+  build-data-volume:
