@@ -1,6 +1,7 @@
 import path from "path";
 import express from "express";
-import { upload, bucket } from "../middleware/upload.js";
+import { upload } from "../middleware/upload.js";
+import { bucket } from "../config/mongodb.config.js";
 import auth from "../middleware/auth.js";
 
 
@@ -39,17 +40,25 @@ fileRouter.post(
     auth,
     upload.single("file"),
     async (req, res) => {
+        if (!req.file) {
+            return res.status(400).send("No file uploaded");
+        }
         try {
-            console.log("Upload received!", req.file);
+            const uploadStream = bucket.openUploadStream(req.file.originalname);
+            uploadStream.end(req.file.buffer);
+            await new Promise((resolve, reject) => {
+                uploadStream.once("finish", resolve);
+                uploadStream.once("error", reject);
+            });
             res.send("file uploaded successfully.");
-        } catch (error) {
-            console.log("Upload failed!", req.file);
-            res.status(400).send("file not uploaded");
+        } catch (err) {
+            console.error("Upload failed:", err);
+            res.status(500).send("file not uploaded");
         }
     },
     (error, req, res, next) => {
         if (error) {
-            console.log("Upload failed!", req.file);
+            console.error("Upload middleware error:", error);
             res.status(500).send(error.message);
         }
     }

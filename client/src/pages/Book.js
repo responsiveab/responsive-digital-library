@@ -377,7 +377,7 @@ function Book(props) {
                     saveBook();
                     alert("Filen är uppladdad.");
                 })
-                .catch((err) => alert(err));
+                .catch((err) => alert(err.response?.data || err.message));
             window.location.reload(true);
         }
     }
