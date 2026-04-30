@@ -351,38 +351,22 @@ function Book(props) {
 
     async function uploadEbookFile(file, formData) {
         try {
-            const ebook = await axios.get(
-                process.env.REACT_APP_API_URL + `/api/files/ebook`,
-                {
-                    params: { filename: originalBook.filename },
-                    responseType: "blob",
-                }
+            await axios.post(
+                process.env.REACT_APP_API_URL + `/api/files/upload`,
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
             );
-            if (ebook) {
-                alert("Filen existerar redan.");
-                // TODO Why do we do this?
-                const blob = new Blob([ebook.data], {
-                    type: "application/pdf", //ebook.headers["content-type"],
-                });
-                const url = window.URL.createObjectURL(blob);
-                window.open(url);
-                window.location.reload(true);
-                return ebook;
-            }
-        } catch (error) {
-            await axios
-                .post(process.env.REACT_APP_API_URL + `/api/files/upload`, formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((res) => {
-                    modifiedBook.filename = file.name;
-                    saveBook();
-                    alert("Filen är uppladdad.");
-                })
-                .catch((err) => alert(err.response?.data || err.message));
-            window.location.reload(true);
+            const updatedBook = { ...modifiedBook, filename: file.name };
+            await axios.patch(
+                process.env.REACT_APP_API_URL + "/api/books/" + id,
+                updatedBook
+            );
+            setOriginalBook(updatedBook);
+            setModifiedBook(updatedBook);
+            setEditBookInfo(false);
+            alert("Filen är uppladdad.");
+        } catch (err) {
+            alert(err.response?.data || err.message);
         }
     }
 
