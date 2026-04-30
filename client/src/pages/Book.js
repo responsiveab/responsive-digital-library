@@ -450,7 +450,10 @@ function Book(props) {
         if (typedTag) {
             if (!modifiedBook.tags.includes(typedTag)) {
                 // Unless it's a duplicate tag
-                modifiedBook.tags.push(typedTag);
+                setModifiedBook({
+                    ...modifiedBook,
+                    tags: [...modifiedBook.tags, typedTag],
+                });
             }
             setTypedTag("");
             document.getElementById("tag-input").value = "";
@@ -458,10 +461,10 @@ function Book(props) {
     };
 
     function deleteTag(tag) {
-        console.log("delete tag: " + tag);
-        modifiedBook.tags = modifiedBook.tags.filter((t) => t !== tag);
-        setModifiedBook(modifiedBook);
-        setTypedTag(""); // Trigger reactivity
+        setModifiedBook({
+            ...modifiedBook,
+            tags: modifiedBook.tags.filter((t) => t !== tag),
+        });
     }
 
     const handleCoverUpload = (e) => {
