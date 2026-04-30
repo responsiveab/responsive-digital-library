@@ -328,10 +328,12 @@ function Book(props) {
 
     async function showEbook() {
         try {
-            const ebook = await axios.get(process.env.REACT_APP_API_URL + `/api/files/ebook` +
-                "?filename=" +
-                originalBook.filename,
-                { responseType: "blob" }
+            const ebook = await axios.get(
+                process.env.REACT_APP_API_URL + `/api/files/ebook`,
+                {
+                    params: { filename: originalBook.filename },
+                    responseType: "blob",
+                }
             );
             if (ebook) {
                 const blob = new Blob([ebook.data], {
@@ -349,10 +351,12 @@ function Book(props) {
 
     async function uploadEbookFile(file, formData) {
         try {
-            const ebook = await axios.get(process.env.REACT_APP_API_URL + `/api/files/ebook` +
-                "?filename=" +
-                originalBook.filename,
-                { responseType: "blob" }
+            const ebook = await axios.get(
+                process.env.REACT_APP_API_URL + `/api/files/ebook`,
+                {
+                    params: { filename: originalBook.filename },
+                    responseType: "blob",
+                }
             );
             if (ebook) {
                 alert("Filen existerar redan.");
@@ -385,10 +389,12 @@ function Book(props) {
     const downloadEbookFile = async (event) => {
         try {
             await axios
-                .get(process.env.REACT_APP_API_URL + `/api/files/download` +
-                    "?filename=" +
-                    originalBook.filename,
-                    { responseType: "blob" }
+                .get(
+                    process.env.REACT_APP_API_URL + `/api/files/download`,
+                    {
+                        params: { filename: originalBook.filename },
+                        responseType: "blob",
+                    }
                 )
                 .then((res) => {
                     const blob = new Blob([res.data], {
@@ -429,9 +435,9 @@ function Book(props) {
     const deleteEbookFile = async (event) => {
         try {
             await axios
-                .delete(process.env.REACT_APP_API_URL + "/api/files/delete" +
-                    "?filename=" +
-                    originalBook.filename
+                .delete(
+                    process.env.REACT_APP_API_URL + "/api/files/delete",
+                    { params: { filename: originalBook.filename } }
                 )
                 .then((res) => {
                     console.log(res);

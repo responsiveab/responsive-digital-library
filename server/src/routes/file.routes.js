@@ -31,7 +31,7 @@ fileRouter.get("/ebook", async (req, res) => {
         file.pipe(res);
     } catch (err) {
         console.log(err);
-        return es.status(500).send("Failed to download file.");
+        return res.status(500).send("Failed to download file.");
     }
 });
 
@@ -74,7 +74,7 @@ fileRouter.get("/download", auth, async (req, res) => {
         file.pipe(res);
     } catch (err) {
         console.log(err);
-        return es.status(500).send("Failed to download file.");
+        return res.status(500).send("Failed to download file.");
     }
 });
 
