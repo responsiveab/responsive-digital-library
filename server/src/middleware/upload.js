@@ -5,7 +5,7 @@ import multer from "multer";
 // is unmaintained and broken against the mongodb 6.x driver.
 const upload = multer({
     storage: multer.memoryStorage(),
-    limits: { fileSize: 50 * 1024 * 1024 },
+    limits: { fileSize: 200 * 1024 * 1024 },
 });
 
 export { upload };
