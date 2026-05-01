@@ -311,19 +311,19 @@ function Book(props) {
         });
     };
 
-    const saveBook = () => {
-        console.log(modifiedBook);
-        axios
-            .patch(
+    const saveBook = async () => {
+        try {
+            const res = await axios.patch(
                 process.env.REACT_APP_API_URL + "/api/books/" + id,
                 modifiedBook
-            )
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => console.log(err));
-        setOriginalBook(modifiedBook);
-        setEditBookInfo(false);
+            );
+            const saved = res.data.data;
+            setOriginalBook(saved);
+            setModifiedBook(saved);
+            setEditBookInfo(false);
+        } catch (err) {
+            alert(formatSaveError(err));
+        }
     };
 
     async function showEbook() {
@@ -455,6 +455,20 @@ function Book(props) {
             ...modifiedBook,
             tags: modifiedBook.tags.filter((t) => t !== tag),
         });
+    }
+
+    function formatSaveError(err) {
+        const data = err.response?.data;
+        const status = err.response?.status;
+        if (typeof data === "object" && data?.error) return data.error;
+        if (typeof data === "string" && !data.trimStart().startsWith("<")) {
+            return data;
+        }
+        if (status === 413) {
+            return "För stort innehåll — förmodligen är omslagsbilden för stor.";
+        }
+        if (status) return `Kunde inte spara boken (HTTP ${status}).`;
+        return err.message || "Kunde inte spara boken.";
     }
 
     const handleCoverUpload = (e) => {
