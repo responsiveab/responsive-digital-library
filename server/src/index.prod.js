@@ -19,9 +19,10 @@ app.use(cors());
 app.use(
     bodyParser.urlencoded({
         extended: true,
+        limit: "10mb",
     })
 );
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "10mb" }));
 
 //  Route for client
 app.use(express.static(CLIENT_BUILD_PATH));
